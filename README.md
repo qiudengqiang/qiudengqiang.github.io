@@ -1,2 +1,0 @@
-# github.io
-hexo+github
