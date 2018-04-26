@@ -5,9 +5,9 @@
   <subtitle>技术鸟的博客</subtitle>
   <link href="/atom.xml" rel="self"/>
   
-  <link href="https://techbird.me/"/>
+  <link href="http://techbird.me/"/>
   <updated>2018-04-23T04:18:56.000Z</updated>
-  <id>https://techbird.me/</id>
+  <id>http://techbird.me/</id>
   
   <author>
     <name>techbird</name>
@@ -18,8 +18,8 @@
   
   <entry>
     <title>Hello World</title>
-    <link href="https://techbird.me/2018/04/22/hello-world/"/>
-    <id>https://techbird.me/2018/04/22/hello-world/</id>
+    <link href="http://techbird.me/2018/04/22/hello-world/"/>
+    <id>http://techbird.me/2018/04/22/hello-world/</id>
     <published>2018-04-21T16:31:37.333Z</published>
     <updated>2018-04-23T04:18:56.000Z</updated>
     
