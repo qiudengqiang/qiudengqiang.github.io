@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://techbird.me/"/>
-  <updated>2018-04-29T06:07:20.670Z</updated>
+  <updated>2018-04-29T06:10:25.753Z</updated>
   <id>http://techbird.me/</id>
   
   <author>
@@ -21,16 +21,15 @@
     <link href="http://techbird.me/2018/04/28/xcode-pack-cer-create-process/"/>
     <id>http://techbird.me/2018/04/28/xcode-pack-cer-create-process/</id>
     <published>2018-04-28T03:48:37.000Z</published>
-    <updated>2018-04-29T06:07:20.670Z</updated>
+    <updated>2018-04-29T06:10:25.753Z</updated>
     
-    <content type="html"><![CDATA[<h3 id="创建CSR证书"><a href="#创建CSR证书" class="headerlink" title="创建CSR证书"></a>创建CSR证书</h3><ol><li>点击spotlight输入keychain打开钥匙串<br><img src="http://p7xd6yrmx.bkt.clouddn.com/WX20180415-192128.ed09497c15d24f6bb84e812effb1d0f9.png" alt=""></li><li><p>生成CSR文件</p></li><li><p><strong>注意</strong>：<br><img src="http://p7xd6yrmx.bkt.clouddn.com/DraggedImage.ae2ad2036be3471b9b1549406a95e44b.png" alt=""></p><h3 id="创建Cer证书"><a href="#创建Cer证书" class="headerlink" title="创建Cer证书"></a>创建Cer证书</h3></li><li><a href="https://developer.apple.com/account/" target="_blank" rel="noopener">登录 apple developer</a><br><img src="http://p7xd6yrmx.bkt.clouddn.com/DraggedImage.875c41f7a2ac4507a783cac258a194af.png" alt=""></li><li>使用CSR文件创建Development和Distribution的CER证书并下载<br><img src="http://p7xd6yrmx.bkt.clouddn.com/DraggedImage.ca56c2a73e474422ac1aaac410172bc6.png" alt=""></li><li>双击下载好的cer证书，然后导出对应的p12文件（dev/dis）<br><img src="http://p7xd6yrmx.bkt.clouddn.com/DraggedImage.bc375b929a6f463f8d85d6f92e6bc853.png" alt=""></li></ol><h3 id="创建Provisioning-Profile"><a href="#创建Provisioning-Profile" class="headerlink" title="创建Provisioning Profile"></a>创建Provisioning Profile</h3><p>这里要创建是三种profile（dev/dis/adhoc）<br><img src="http://p7xd6yrmx.bkt.clouddn.com/DraggedImage.8b0bda299adf43029f16d552dceac353.png" alt=""></p>]]></content>
+    <content type="html"><![CDATA[<h3 id="创建CSR证书"><a href="#创建CSR证书" class="headerlink" title="创建CSR证书"></a>创建CSR证书</h3><h1 id="点击spotlight输入keychain打开钥匙串"><a href="#点击spotlight输入keychain打开钥匙串" class="headerlink" title="点击spotlight输入keychain打开钥匙串"></a>点击spotlight输入keychain打开钥匙串</h1><p> <img src="http://p7xd6yrmx.bkt.clouddn.com/WX20180415-192128.ed09497c15d24f6bb84e812effb1d0f9.png" alt=""></p><h1 id="生成CSR文件"><a href="#生成CSR文件" class="headerlink" title="生成CSR文件"></a>生成CSR文件</h1><h1 id="注意："><a href="#注意：" class="headerlink" title="注意："></a><strong>注意</strong>：</h1><p> <img src="http://p7xd6yrmx.bkt.clouddn.com/DraggedImage.ae2ad2036be3471b9b1549406a95e44b.png" alt=""></p><h3 id="创建Cer证书"><a href="#创建Cer证书" class="headerlink" title="创建Cer证书"></a>创建Cer证书</h3><h1 id="登录-apple-developer"><a href="#登录-apple-developer" class="headerlink" title="登录 apple developer"></a><a href="https://developer.apple.com/account/" target="_blank" rel="noopener">登录 apple developer</a></h1><p> <img src="http://p7xd6yrmx.bkt.clouddn.com/DraggedImage.875c41f7a2ac4507a783cac258a194af.png" alt=""></p><h1 id="使用CSR文件创建Development和Distribution的CER证书并下载"><a href="#使用CSR文件创建Development和Distribution的CER证书并下载" class="headerlink" title="使用CSR文件创建Development和Distribution的CER证书并下载"></a>使用CSR文件创建Development和Distribution的CER证书并下载</h1><p> <img src="http://p7xd6yrmx.bkt.clouddn.com/DraggedImage.ca56c2a73e474422ac1aaac410172bc6.png" alt=""></p><h1 id="双击下载好的cer证书，然后导出对应的p12文件（dev-dis）"><a href="#双击下载好的cer证书，然后导出对应的p12文件（dev-dis）" class="headerlink" title="双击下载好的cer证书，然后导出对应的p12文件（dev/dis）"></a>双击下载好的cer证书，然后导出对应的p12文件（dev/dis）</h1><p> <img src="http://p7xd6yrmx.bkt.clouddn.com/DraggedImage.bc375b929a6f463f8d85d6f92e6bc853.png" alt=""></p><h3 id="创建Provisioning-Profile"><a href="#创建Provisioning-Profile" class="headerlink" title="创建Provisioning Profile"></a>创建Provisioning Profile</h3><p>这里要创建是三种profile（dev/dis/adhoc）<br><img src="http://p7xd6yrmx.bkt.clouddn.com/DraggedImage.8b0bda299adf43029f16d552dceac353.png" alt=""></p>]]></content>
     
     <summary type="html">
     
       
       
-        &lt;h3 id=&quot;创建CSR证书&quot;&gt;&lt;a href=&quot;#创建CSR证书&quot; class=&quot;headerlink&quot; title=&quot;创建CSR证书&quot;&gt;&lt;/a&gt;创建CSR证书&lt;/h3&gt;&lt;ol&gt;
-&lt;li&gt;点击spotlight输入keychain打开钥匙串&lt;br&gt;&lt;img src=&quot;http
+        &lt;h3 id=&quot;创建CSR证书&quot;&gt;&lt;a href=&quot;#创建CSR证书&quot; class=&quot;headerlink&quot; title=&quot;创建CSR证书&quot;&gt;&lt;/a&gt;创建CSR证书&lt;/h3&gt;&lt;h1 id=&quot;点击spotlight输入keychain打开钥匙串&quot;&gt;&lt;a href=&quot;#点击spotl
       
     
     </summary>
