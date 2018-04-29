@@ -21,7 +21,7 @@
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://p7xd6yrmx.bkt.clouddn.com/%E5%8D%A0%E4%BD%8D%E7%AC%A6.c3c0025120d24644bd5f8b826437ed9f.png">
 <meta property="og:image" content="http://p7xd6yrmx.bkt.clouddn.com/%E8%A7%86%E5%9B%BE%E6%8E%A7%E5%88%B6%E5%99%A8%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F02.352b2b30a64648848eccd65c30b76481.png">
-<meta property="og:updated_time" content="2018-04-29T07:25:33.348Z">
+<meta property="og:updated_time" content="2018-04-29T07:27:48.990Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="iOS-多线程基础和NSThread">
 <meta name="twitter:description" content="栈区/堆区/常量区 操作内存的栈区速度很快;栈区存储空间地址是连续的 操作内存的常量区速度很快;内存空间只开辟一次; 操作内存的堆区速度相对栈区和常量区要慢些;堆区内存空间不连续,需要寻址  123456// 存储在栈区 int num = 10;// 存储在常量区   NSString *str1 = @&quot;hello&quot;;// 存储在堆区 NSString *str2 = [NSString st">
@@ -127,23 +127,32 @@
 <li>sleep/加锁：阻塞状态</li>
 <li>exit：完全杀死（非正常死亡），<em>不要在主线程中调用</em></li>
 </ul>
-<h2 id="线程属性（name，stackSize，isMainThread，threadPriority，qualityOfService）"><a href="#线程属性（name，stackSize，isMainThread，threadPriority，qualityOfService）" class="headerlink" title="线程属性（name，stackSize，isMainThread，threadPriority，qualityOfService）"></a>线程属性（name，stackSize，isMainThread，threadPriority，qualityOfService）</h2><h3 id="name-线程名称"><a href="#name-线程名称" class="headerlink" title="name (线程名称)"></a>name (线程名称)</h3><pre><code>- 设置线程名称可以当线程执行的方法内部出现异常时，记录异常和当前线程
-</code></pre><h3 id="stackSize-栈区大小"><a href="#stackSize-栈区大小" class="headerlink" title="stackSize(栈区大小)"></a>stackSize(栈区大小)</h3><pre><code>- 默认情况下，无论是主线程还是子线程，栈区大小都是 512K
-- 栈区大小可以设置 
+<h2 id="线程属性（name，stackSize，isMainThread，threadPriority，qualityOfService）"><a href="#线程属性（name，stackSize，isMainThread，threadPriority，qualityOfService）" class="headerlink" title="线程属性（name，stackSize，isMainThread，threadPriority，qualityOfService）"></a>线程属性（name，stackSize，isMainThread，threadPriority，qualityOfService）</h2><h3 id="name-线程名称"><a href="#name-线程名称" class="headerlink" title="name (线程名称)"></a>name (线程名称)</h3><ul>
+<li>设置线程名称可以当线程执行的方法内部出现异常时，记录异常和当前线程</li>
+</ul>
+<h3 id="stackSize-栈区大小"><a href="#stackSize-栈区大小" class="headerlink" title="stackSize(栈区大小)"></a>stackSize(栈区大小)</h3><ul>
+<li>默认情况下，无论是主线程还是子线程，栈区大小都是 512K</li>
+<li><p>栈区大小可以设置 </p>
 <figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[<span class="built_in">NSThread</span> currentThread].stackSize = <span class="number">1024</span> * <span class="number">1024</span>;</span><br></pre></td></tr></table></figure>
-
-- 必须是 `4KB` 的倍数
-</code></pre><h3 id="isMainThread-是否主线程"><a href="#isMainThread-是否主线程" class="headerlink" title="isMainThread(是否主线程)"></a>isMainThread(是否主线程)</h3><h3 id="threadPriority-线程优先级"><a href="#threadPriority-线程优先级" class="headerlink" title="threadPriority(线程优先级)"></a>threadPriority(线程优先级)</h3><pre><code>- 优先级，是一个浮点数，取值范围从`0~1.0`
-- `1.0`表示优先级最高
-- `0.0`表示优先级最低
-- 默认优先级是 `0.5`
-- **优先级高只是保证 CPU 调度的可能性会高**
-</code></pre><h3 id="qualityOfService-服务质量-iOS-8-0-推出"><a href="#qualityOfService-服务质量-iOS-8-0-推出" class="headerlink" title="qualityOfService - 服务质量(iOS 8.0 推出)"></a>qualityOfService - 服务质量(iOS 8.0 推出)</h3><pre><code>- `NSQualityOfServiceUserInteractive` - 用户交互，例如绘图或者处理用户事件
-- `NSQualityOfServiceUserInitiated` - 用户需要
-- `NSQualityOfServiceUtility` - 实用工具，用户不需要立即得到结果
-- `NSQualityOfServiceBackground` - 后台
-- `NSQualityOfServiceDefault` - 默认，介于用户需要和实用工具之间
-</code></pre><h2 id="NSUInteger和NSInteger的区别"><a href="#NSUInteger和NSInteger的区别" class="headerlink" title="NSUInteger和NSInteger的区别"></a>NSUInteger和NSInteger的区别</h2><p><img src="http://p7xd6yrmx.bkt.clouddn.com/%E5%8D%A0%E4%BD%8D%E7%AC%A6.c3c0025120d24644bd5f8b826437ed9f.png" alt=""></p>
+</li>
+<li><p>必须是 <code>4KB</code> 的倍数</p>
+</li>
+</ul>
+<h3 id="isMainThread-是否主线程"><a href="#isMainThread-是否主线程" class="headerlink" title="isMainThread(是否主线程)"></a>isMainThread(是否主线程)</h3><h3 id="threadPriority-线程优先级"><a href="#threadPriority-线程优先级" class="headerlink" title="threadPriority(线程优先级)"></a>threadPriority(线程优先级)</h3><ul>
+<li>优先级，是一个浮点数，取值范围从<code>0~1.0</code></li>
+<li><code>1.0</code>表示优先级最高</li>
+<li><code>0.0</code>表示优先级最低</li>
+<li>默认优先级是 <code>0.5</code></li>
+<li><strong>优先级高只是保证 CPU 调度的可能性会高</strong></li>
+</ul>
+<h3 id="qualityOfService-服务质量-iOS-8-0-推出"><a href="#qualityOfService-服务质量-iOS-8-0-推出" class="headerlink" title="qualityOfService - 服务质量(iOS 8.0 推出)"></a>qualityOfService - 服务质量(iOS 8.0 推出)</h3><ul>
+<li><code>NSQualityOfServiceUserInteractive</code> - 用户交互，例如绘图或者处理用户事件</li>
+<li><code>NSQualityOfServiceUserInitiated</code> - 用户需要</li>
+<li><code>NSQualityOfServiceUtility</code> - 实用工具，用户不需要立即得到结果</li>
+<li><code>NSQualityOfServiceBackground</code> - 后台</li>
+<li><code>NSQualityOfServiceDefault</code> - 默认，介于用户需要和实用工具之间</li>
+</ul>
+<h2 id="NSUInteger和NSInteger的区别"><a href="#NSUInteger和NSInteger的区别" class="headerlink" title="NSUInteger和NSInteger的区别"></a>NSUInteger和NSInteger的区别</h2><p><img src="http://p7xd6yrmx.bkt.clouddn.com/%E5%8D%A0%E4%BD%8D%E7%AC%A6.c3c0025120d24644bd5f8b826437ed9f.png" alt=""></p>
 <ul>
 <li><code>NSInteger</code>有符号整数(有正负数)用 <code>%zd</code></li>
 <li><code>NSUInteger</code> 无符号整数(没有负数)用 <code>%tu</code></li>
@@ -158,14 +167,18 @@
 <li>枷锁后程序的执行效率比不加锁的时候要低，因为线程要的等待解锁</li>
 <li>牺牲了性能保证了安全</li>
 </ul>
-<h2 id="原子属性和非原子属性-以及自旋锁"><a href="#原子属性和非原子属性-以及自旋锁" class="headerlink" title="原子属性和非原子属性-以及自旋锁"></a>原子属性和非原子属性-以及自旋锁</h2><h3 id="nonatomic-非原子属性"><a href="#nonatomic-非原子属性" class="headerlink" title="nonatomic : 非原子属性"></a>nonatomic : 非原子属性</h3><h3 id="atomic-原子属性"><a href="#atomic-原子属性" class="headerlink" title="atomic : 原子属性"></a>atomic : 原子属性</h3><pre><code>- 线程安全的,针对多线程设计的属性修饰符,是默认值.
-- 特点 : 单写多读
-- 单写多读 : 保证同一时间,只有一个线程能够执行setter方法,但是可以有多个线程执行getter方法.
-- atomic 属性的setter里面里面有一把锁,叫做自旋锁.
-- 原子属性的setter方法是线程安全的;但是,getter方法不是线程安全的.
-</code></pre><h3 id="nonatomic和atomic对比："><a href="#nonatomic和atomic对比：" class="headerlink" title="nonatomic和atomic对比："></a>nonatomic和atomic对比：</h3><pre><code>- `nonatomic `: 非线程安全,适合内存小的移动设备.
-- `atomic` : 线程安全,需要消耗大量的资源.性能比非原子属性要差一点
-</code></pre><h2 id="线程间通信（怎么做到的？为什么能通信？）"><a href="#线程间通信（怎么做到的？为什么能通信？）" class="headerlink" title="线程间通信（怎么做到的？为什么能通信？）"></a>线程间通信（怎么做到的？为什么能通信？）</h2><ul>
+<h2 id="原子属性和非原子属性-以及自旋锁"><a href="#原子属性和非原子属性-以及自旋锁" class="headerlink" title="原子属性和非原子属性-以及自旋锁"></a>原子属性和非原子属性-以及自旋锁</h2><h3 id="nonatomic-非原子属性"><a href="#nonatomic-非原子属性" class="headerlink" title="nonatomic : 非原子属性"></a>nonatomic : 非原子属性</h3><h3 id="atomic-原子属性"><a href="#atomic-原子属性" class="headerlink" title="atomic : 原子属性"></a>atomic : 原子属性</h3><ul>
+<li>线程安全的,针对多线程设计的属性修饰符,是默认值.</li>
+<li>特点 : 单写多读</li>
+<li>单写多读 : 保证同一时间,只有一个线程能够执行setter方法,但是可以有多个线程执行getter方法.</li>
+<li>atomic 属性的setter里面里面有一把锁,叫做自旋锁.</li>
+<li>原子属性的setter方法是线程安全的;但是,getter方法不是线程安全的.</li>
+</ul>
+<h3 id="nonatomic和atomic对比："><a href="#nonatomic和atomic对比：" class="headerlink" title="nonatomic和atomic对比："></a>nonatomic和atomic对比：</h3><ul>
+<li><code>nonatomic</code>: 非线程安全,适合内存小的移动设备.</li>
+<li><code>atomic</code> : 线程安全,需要消耗大量的资源.性能比非原子属性要差一点</li>
+</ul>
+<h2 id="线程间通信（怎么做到的？为什么能通信？）"><a href="#线程间通信（怎么做到的？为什么能通信？）" class="headerlink" title="线程间通信（怎么做到的？为什么能通信？）"></a>线程间通信（怎么做到的？为什么能通信？）</h2><ul>
 <li>因为多线程共享地址空间和数据空间， 一个线程的数据可以直接提供给其他线程使用,叫做线程间通信</li>
 <li><code>performSelectorInBackground</code></li>
 <li><code>performSelectorOnMainThread</code></li>
