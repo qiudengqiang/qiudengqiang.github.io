@@ -4,25 +4,31 @@
 <head>
   <meta charset="UTF-8">
   
-    <title>Hello World | techbird&#39;s blog</title>
+    <title>Xcode 打包证书创建流程 | techbird&#39;s blog</title>
     <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
     
     <meta name="author" content="techbird">
     
 
     
-    <meta name="description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick">
-<meta name="keywords" content="云标签,分类">
+    <meta name="description" content="Xcode 打包证书创建流程创建CSR证书 点击spotlight输入keychain打开钥匙串 生成CSR文件注意：  创建Cer证书 登录 使用CSR文件创建Development和Distribution的CER证书并下载 双击下载好的cer证书，然后导出对应的p12文件（dev/dis）  创建Provisioning Profile这里要创建是三种profile（dev/dis/adho">
+<meta name="keywords" content="xcode,package">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Hello World">
-<meta property="og:url" content="http://techbird.me/2018/04/22/hello-world/index.html">
+<meta property="og:title" content="Xcode 打包证书创建流程">
+<meta property="og:url" content="http://techbird.me/2018/04/28/xcode-pack-cer-create-process/index.html">
 <meta property="og:site_name" content="techbird&#39;s blog">
-<meta property="og:description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick">
+<meta property="og:description" content="Xcode 打包证书创建流程创建CSR证书 点击spotlight输入keychain打开钥匙串 生成CSR文件注意：  创建Cer证书 登录 使用CSR文件创建Development和Distribution的CER证书并下载 双击下载好的cer证书，然后导出对应的p12文件（dev/dis）  创建Provisioning Profile这里要创建是三种profile（dev/dis/adho">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-04-26T14:47:03.000Z">
+<meta property="og:image" content="http://p7xd6yrmx.bkt.clouddn.com/WX20180415-192128.ed09497c15d24f6bb84e812effb1d0f9.png">
+<meta property="og:image" content="http://p7xd6yrmx.bkt.clouddn.com/DraggedImage.ae2ad2036be3471b9b1549406a95e44b.png">
+<meta property="og:image" content="http://p7xd6yrmx.bkt.clouddn.com/DraggedImage.875c41f7a2ac4507a783cac258a194af.png">
+<meta property="og:image" content="http://p7xd6yrmx.bkt.clouddn.com/DraggedImage.ca56c2a73e474422ac1aaac410172bc6.png">
+<meta property="og:image" content="http://p7xd6yrmx.bkt.clouddn.com/DraggedImage.bc375b929a6f463f8d85d6f92e6bc853.png">
+<meta property="og:updated_time" content="2018-04-29T05:55:20.412Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Hello World">
-<meta name="twitter:description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick">
+<meta name="twitter:title" content="Xcode 打包证书创建流程">
+<meta name="twitter:description" content="Xcode 打包证书创建流程创建CSR证书 点击spotlight输入keychain打开钥匙串 生成CSR文件注意：  创建Cer证书 登录 使用CSR文件创建Development和Distribution的CER证书并下载 双击下载好的cer证书，然后导出对应的p12文件（dev/dis）  创建Provisioning Profile这里要创建是三种profile（dev/dis/adho">
+<meta name="twitter:image" content="http://p7xd6yrmx.bkt.clouddn.com/WX20180415-192128.ed09497c15d24f6bb84e812effb1d0f9.png">
 <meta name="twitter:creator" content="@stephentalk">
 
     
@@ -83,14 +89,14 @@
 		<header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/04/22/hello-world/" title="Hello World" itemprop="url">Hello World</a>
+      <a href="/2018/04/28/xcode-pack-cer-create-process/" title="Xcode 打包证书创建流程" itemprop="url">Xcode 打包证书创建流程</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="techbird" target="_blank" itemprop="author">techbird</a>
 		
   <p class="article-time">
-    <time datetime="2018-04-21T16:31:37.333Z" itemprop="datePublished"> Published 2018-04-22</time>
+    <time datetime="2018-04-28T03:48:37.000Z" itemprop="datePublished"> Published 2018-04-28</time>
     
   </p>
 </header>
@@ -99,28 +105,34 @@
 		<div id="toc" class="toc-article">
 			<strong class="toc-title">Contents</strong>
 		
-			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Quick-Start"><span class="toc-number">1.</span> <span class="toc-text">Quick Start</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Create-a-new-post"><span class="toc-number">1.1.</span> <span class="toc-text">Create a new post</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Run-server"><span class="toc-number">1.2.</span> <span class="toc-text">Run server</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Generate-static-files"><span class="toc-number">1.3.</span> <span class="toc-text">Generate static files</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Deploy-to-remote-sites"><span class="toc-number">1.4.</span> <span class="toc-text">Deploy to remote sites</span></a></li></ol></li></ol>
+			<ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#Xcode-打包证书创建流程"><span class="toc-number">1.</span> <span class="toc-text">Xcode 打包证书创建流程</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#创建CSR证书"><span class="toc-number"></span> <span class="toc-text">创建CSR证书</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#创建Cer证书"><span class="toc-number"></span> <span class="toc-text">创建Cer证书</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#创建Provisioning-Profile"><span class="toc-number"></span> <span class="toc-text">创建Provisioning Profile</span></a>
 		
 		</div>
 		
-		<p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="noopener">Deployment</a></p>
+		<h3 id="Xcode-打包证书创建流程"><a href="#Xcode-打包证书创建流程" class="headerlink" title="Xcode 打包证书创建流程"></a>Xcode 打包证书创建流程</h3><h2 id="创建CSR证书"><a href="#创建CSR证书" class="headerlink" title="创建CSR证书"></a>创建CSR证书</h2><ul>
+<li>点击spotlight输入keychain打开钥匙串<br><img src="http://p7xd6yrmx.bkt.clouddn.com/WX20180415-192128.ed09497c15d24f6bb84e812effb1d0f9.png" alt="keychain"></li>
+<li>生成CSR文件<br><img src="http://p7xd6yrmx.bkt.clouddn.com/DraggedImage.ae2ad2036be3471b9b1549406a95e44b.png" alt="csr"><br><strong>注意</strong>：</li>
+</ul>
+<h2 id="创建Cer证书"><a href="#创建Cer证书" class="headerlink" title="创建Cer证书"></a>创建Cer证书</h2><ol>
+<li><a href="https://developer.apple.com/account/" target="_blank" rel="noopener">登录</a><br><img src="http://p7xd6yrmx.bkt.clouddn.com/DraggedImage.875c41f7a2ac4507a783cac258a194af.png" alt=""></li>
+<li>使用CSR文件创建Development和Distribution的CER证书并下载<br><img src="http://p7xd6yrmx.bkt.clouddn.com/DraggedImage.ca56c2a73e474422ac1aaac410172bc6.png" alt=""></li>
+<li>双击下载好的cer证书，然后导出对应的p12文件（dev/dis）<br><img src="http://p7xd6yrmx.bkt.clouddn.com/DraggedImage.bc375b929a6f463f8d85d6f92e6bc853.png" alt=""></li>
+</ol>
+<h2 id="创建Provisioning-Profile"><a href="#创建Provisioning-Profile" class="headerlink" title="创建Provisioning Profile"></a>创建Provisioning Profile</h2><p>这里要创建是三种profile（dev/dis/adhoc）<br>![]<a href="http://p7xd6yrmx.bkt.clouddn.com/DraggedImage.8b0bda299adf43029f16d552dceac353.png" target="_blank" rel="noopener">http://p7xd6yrmx.bkt.clouddn.com/DraggedImage.8b0bda299adf43029f16d552dceac353.png</a></p>
   
 	</div>
 		<footer class="article-footer clearfix">
 <div class="article-catetags">
 
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/xcode/">xcode</a>
+</div>
+
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/云标签/">云标签</a><a href="/tags/分类/">分类</a>
+  <span></span> <a href="/tags/xcode/">xcode</a><a href="/tags/package/">package</a>
   </div>
 
 </div>
@@ -129,7 +141,7 @@
 
 	<div class="article-share" id="share">
 	
-	  <div data-url="http://techbird.me/2018/04/22/hello-world/" data-title="Hello World | techbird&#39;s blog" data-tsina="6488657373" class="share clearfix">
+	  <div data-url="http://techbird.me/2018/04/28/xcode-pack-cer-create-process/" data-title="Xcode 打包证书创建流程 | techbird&#39;s blog" data-tsina="6488657373" class="share clearfix">
 	  </div>
 	
 	</div>
@@ -142,14 +154,14 @@
 	
 <nav class="article-nav clearfix">
  
- <div class="prev" >
- <a href="/2018/04/28/xcode-pack-cer-create-process/" title="Xcode 打包证书创建流程">
-  <strong>上一篇：</strong><br/>
-  <span>
-  Xcode 打包证书创建流程</span>
+
+<div class="next">
+<a href="/2018/04/22/hello-world/"  title="Hello World">
+ <strong>下一篇：</strong><br/> 
+ <span>Hello World
+</span>
 </a>
 </div>
-
 
 </nav>
 
@@ -169,7 +181,7 @@
   <div id="toc" class="toc-aside">
   <strong class="toc-title">Contents</strong>
  
- <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Quick-Start"><span class="toc-number">1.</span> <span class="toc-text">Quick Start</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Create-a-new-post"><span class="toc-number">1.1.</span> <span class="toc-text">Create a new post</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Run-server"><span class="toc-number">1.2.</span> <span class="toc-text">Run server</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Generate-static-files"><span class="toc-number">1.3.</span> <span class="toc-text">Generate static files</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Deploy-to-remote-sites"><span class="toc-number">1.4.</span> <span class="toc-text">Deploy to remote sites</span></a></li></ol></li></ol>
+ <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#Xcode-打包证书创建流程"><span class="toc-number">1.</span> <span class="toc-text">Xcode 打包证书创建流程</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#创建CSR证书"><span class="toc-number"></span> <span class="toc-text">创建CSR证书</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#创建Cer证书"><span class="toc-number"></span> <span class="toc-text">创建Cer证书</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#创建Provisioning-Profile"><span class="toc-number"></span> <span class="toc-text">创建Provisioning Profile</span></a>
  
   </div>
 
