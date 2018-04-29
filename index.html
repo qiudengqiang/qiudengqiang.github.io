@@ -85,10 +85,36 @@
     <h1 itemprop="name">iOS-多线程之NSOperation</h1>
     
      
-           <p itemprop="description" >常规写法1234567891011- (void) demo&amp;#123;	//创建队列:默认就是并发队列  NSOperationQueue * queue = [NSOperationQueue new];	//创建操作:默认就是异步任务	NSBlockOperation * </p>
+           <p itemprop="description" >常规写法1234567891011- (void)demo&amp;#123;	//创建队列:默认就是并发队列  NSOperationQueue * queue = [NSOperationQueue new];	//创建操作:默认就是异步任务	NSBlockOperation * o</p>
         
     
     <time datetime="2018-04-29T09:14:05.000Z" itemprop="datePublished">2018-04-29</time>
+  </a>
+</section>
+
+
+
+
+
+
+  
+<section class="post" itemscope itemprop="blogitem">
+  
+    <a href="/2018/04/29/ios-thread-gcd/" title="iOS-多线程之GCD" itemprop="url">
+  
+    <h1 itemprop="name">iOS-多线程之GCD</h1>
+    
+     
+           <p itemprop="description" >GCD与 NSThread 的对比NSThread的劣势
+如果要开多个线程 NSThread 必须实例化多个线程对象
+NSThread 靠 NSObject 的分类方法实现的线程间通讯,GCD 靠 block
+
+GCD的优势
+让代码更加简单,易于阅读和维护
+使用GCD 不需要管理</p>
+        
+    
+    <time datetime="2018-04-29T07:59:59.000Z" itemprop="datePublished">2018-04-29</time>
   </a>
 </section>
 
@@ -105,7 +131,7 @@
     <h1 itemprop="name">iOS-多线程之NSThread</h1>
     
      
-           <p itemprop="description" >多线程基础（NSThread）NSThread创建线程的三种方式123- NSThread *thread = [[NSThread alloc] initWithTarget:self selector:@selector(demo:) object:@&#34;alloc&#34;];- [</p>
+           <p itemprop="description" >多线程基础（NSThread）NSThread创建线程的三种方式1231. NSThread *thread = [[NSThread alloc] initWithTarget:self selector:@selector(demo:) object:@&#34;alloc&#34;];2.</p>
         
     
     <time datetime="2018-04-29T06:56:59.000Z" itemprop="datePublished">2018-04-29</time>
@@ -133,32 +159,6 @@
         
     
     <time datetime="2018-04-29T03:48:37.000Z" itemprop="datePublished">2018-04-29</time>
-  </a>
-</section>
-
-
-
-
-
-
-  
-<section class="post" itemscope itemprop="blogitem">
-  
-    <a href="/2018/04/25/ios-thread-gcd/" title="iOS-多线程之GCD" itemprop="url">
-  
-    <h1 itemprop="name">iOS-多线程之GCD</h1>
-    
-     
-           <p itemprop="description" >GCD与 NSThread 的对比NSThread的劣势
-如果要开多个线程 NSThread 必须实例化多个线程对象
-NSThread 靠 NSObject 的分类方法实现的线程间通讯,GCD 靠 block
-
-GCD的优势
-让代码更加简单,易于阅读和维护
-使用GCD 不需要管理</p>
-        
-    
-    <time datetime="2018-04-25T07:59:59.000Z" itemprop="datePublished">2018-04-25</time>
   </a>
 </section>
 
@@ -264,6 +264,10 @@ GCD的优势
 			
 		
 			
+				<li><a href="/tags/NSThread/" title="NSThread">NSThread<sup>1</sup></a></li>
+			
+		
+			
 				<li><a href="/tags/GCD/" title="GCD">GCD<sup>1</sup></a></li>
 			
 		
@@ -277,10 +281,6 @@ GCD的优势
 		
 			
 				<li><a href="/tags/package/" title="package">package<sup>1</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/NSThread/" title="NSThread">NSThread<sup>1</sup></a></li>
 			
 		
 		</ul>

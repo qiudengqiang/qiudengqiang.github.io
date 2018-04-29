@@ -11,18 +11,18 @@
     
 
     
-    <meta name="description" content="常规写法1234567891011- (void) demo&amp;#123;	//创建队列:默认就是并发队列  NSOperationQueue * queue = [NSOperationQueue new];	//创建操作:默认就是异步任务	NSBlockOperation * operation = [NSBlockOperation blockOperationWithBlock:^&amp;#123">
+    <meta name="description" content="常规写法1234567891011- (void)demo&amp;#123;	//创建队列:默认就是并发队列  NSOperationQueue * queue = [NSOperationQueue new];	//创建操作:默认就是异步任务	NSBlockOperation * operation = [NSBlockOperation blockOperationWithBlock:^&amp;#123;">
 <meta name="keywords" content="iOS,NSOperation">
 <meta property="og:type" content="article">
 <meta property="og:title" content="iOS-多线程之NSOperation">
 <meta property="og:url" content="http://techbird.me/2018/04/29/ios-thread-nsoperation/index.html">
 <meta property="og:site_name" content="techbird&#39;s blog">
-<meta property="og:description" content="常规写法1234567891011- (void) demo&amp;#123;	//创建队列:默认就是并发队列  NSOperationQueue * queue = [NSOperationQueue new];	//创建操作:默认就是异步任务	NSBlockOperation * operation = [NSBlockOperation blockOperationWithBlock:^&amp;#123">
+<meta property="og:description" content="常规写法1234567891011- (void)demo&amp;#123;	//创建队列:默认就是并发队列  NSOperationQueue * queue = [NSOperationQueue new];	//创建操作:默认就是异步任务	NSBlockOperation * operation = [NSBlockOperation blockOperationWithBlock:^&amp;#123;">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-04-29T09:22:17.351Z">
+<meta property="og:updated_time" content="2018-04-29T09:25:26.395Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="iOS-多线程之NSOperation">
-<meta name="twitter:description" content="常规写法1234567891011- (void) demo&amp;#123;	//创建队列:默认就是并发队列  NSOperationQueue * queue = [NSOperationQueue new];	//创建操作:默认就是异步任务	NSBlockOperation * operation = [NSBlockOperation blockOperationWithBlock:^&amp;#123">
+<meta name="twitter:description" content="常规写法1234567891011- (void)demo&amp;#123;	//创建队列:默认就是并发队列  NSOperationQueue * queue = [NSOperationQueue new];	//创建操作:默认就是异步任务	NSBlockOperation * operation = [NSBlockOperation blockOperationWithBlock:^&amp;#123;">
 <meta name="twitter:creator" content="@stephentalk">
 
     
@@ -103,9 +103,9 @@
 		
 		</div>
 		
-		<h2 id="常规写法"><a href="#常规写法" class="headerlink" title="常规写法"></a>常规写法</h2><figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="keyword">void</span>) demo&#123;</span><br><span class="line">	<span class="comment">//创建队列:默认就是并发队列</span></span><br><span class="line">  <span class="built_in">NSOperationQueue</span> * queue = [<span class="built_in">NSOperationQueue</span> new];</span><br><span class="line">	<span class="comment">//创建操作:默认就是异步任务</span></span><br><span class="line">	<span class="built_in">NSBlockOperation</span> * operation = [<span class="built_in">NSBlockOperation</span> blockOperationWithBlock:^&#123;</span><br><span class="line">		<span class="built_in">NSLog</span>(<span class="string">@"%@"</span>,[<span class="built_in">NSThread</span> currentThread]);</span><br><span class="line"></span><br><span class="line">	&#125;];</span><br><span class="line">	<span class="comment">//将操作添加到队列</span></span><br><span class="line">	[queue addOperation:operation];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="简写"><a href="#简写" class="headerlink" title="简写"></a>简写</h2><figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">-(<span class="keyword">void</span>)demo2&#123;</span><br><span class="line">	[[<span class="built_in">NSOperationQueue</span> new] addOperationWithBlock:^&#123;</span><br><span class="line">		<span class="built_in">NSLog</span>(<span class="string">@"%@"</span>,[<span class="built_in">NSThread</span> currentThread]);</span><br><span class="line">	&#125;];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="线程间通讯"><a href="#线程间通讯" class="headerlink" title="线程间通讯"></a>线程间通讯</h2><figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">-(<span class="keyword">void</span>)demo3&#123;</span><br><span class="line">	[[<span class="built_in">NSOperationQueue</span> new] addOperationWithBlock:^&#123;</span><br><span class="line">		<span class="built_in">NSLog</span>(<span class="string">@"耗时：%@"</span>,[<span class="built_in">NSThread</span> currentThread]);</span><br><span class="line">		<span class="comment">/// 回到主线程刷新UI</span></span><br><span class="line">		[[<span class="built_in">NSOperationQueue</span> mainQueue] addOperationWithBlock:^&#123;</span><br><span class="line">			<span class="built_in">NSLog</span>(<span class="string">@"refresh ui: %@"</span>,[<span class="built_in">NSThread</span> currentThread]);</span><br><span class="line">		&#125;];</span><br><span class="line">	&#125;];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+		<h2 id="常规写法"><a href="#常规写法" class="headerlink" title="常规写法"></a>常规写法</h2><figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="keyword">void</span>)demo&#123;</span><br><span class="line">	<span class="comment">//创建队列:默认就是并发队列</span></span><br><span class="line">  <span class="built_in">NSOperationQueue</span> * queue = [<span class="built_in">NSOperationQueue</span> new];</span><br><span class="line">	<span class="comment">//创建操作:默认就是异步任务</span></span><br><span class="line">	<span class="built_in">NSBlockOperation</span> * operation = [<span class="built_in">NSBlockOperation</span> blockOperationWithBlock:^&#123;</span><br><span class="line">		<span class="built_in">NSLog</span>(<span class="string">@"%@"</span>,[<span class="built_in">NSThread</span> currentThread]);</span><br><span class="line"></span><br><span class="line">	&#125;];</span><br><span class="line">	<span class="comment">//将操作添加到队列</span></span><br><span class="line">	[queue addOperation:operation];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="简写"><a href="#简写" class="headerlink" title="简写"></a>简写</h2><figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="keyword">void</span>)demo2&#123;</span><br><span class="line">	[[<span class="built_in">NSOperationQueue</span> new] addOperationWithBlock:^&#123;</span><br><span class="line">		<span class="built_in">NSLog</span>(<span class="string">@"%@"</span>,[<span class="built_in">NSThread</span> currentThread]);</span><br><span class="line">	&#125;];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="线程间通讯"><a href="#线程间通讯" class="headerlink" title="线程间通讯"></a>线程间通讯</h2><figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="keyword">void</span>)demo3&#123;</span><br><span class="line">	[[<span class="built_in">NSOperationQueue</span> new] addOperationWithBlock:^&#123;</span><br><span class="line">		<span class="built_in">NSLog</span>(<span class="string">@"耗时：%@"</span>,[<span class="built_in">NSThread</span> currentThread]);</span><br><span class="line">		<span class="comment">/// 回到主线程刷新UI</span></span><br><span class="line">		[[<span class="built_in">NSOperationQueue</span> mainQueue] addOperationWithBlock:^&#123;</span><br><span class="line">			<span class="built_in">NSLog</span>(<span class="string">@"refresh ui: %@"</span>,[<span class="built_in">NSThread</span> currentThread]);</span><br><span class="line">		&#125;];</span><br><span class="line">	&#125;];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
   
 	</div>
 		<footer class="article-footer clearfix">
@@ -143,9 +143,9 @@
  
 
 <div class="next">
-<a href="/2018/04/29/ios-nsthread/"  title="iOS-多线程之NSThread">
+<a href="/2018/04/29/ios-thread-gcd/"  title="iOS-多线程之GCD">
  <strong>下一篇：</strong><br/> 
- <span>iOS-多线程之NSThread
+ <span>iOS-多线程之GCD
 </span>
 </a>
 </div>
@@ -245,6 +245,10 @@
 			
 		
 			
+				<li><a href="/tags/NSThread/" title="NSThread">NSThread<sup>1</sup></a></li>
+			
+		
+			
 				<li><a href="/tags/GCD/" title="GCD">GCD<sup>1</sup></a></li>
 			
 		
@@ -258,10 +262,6 @@
 		
 			
 				<li><a href="/tags/package/" title="package">package<sup>1</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/NSThread/" title="NSThread">NSThread<sup>1</sup></a></li>
 			
 		
 		</ul>
