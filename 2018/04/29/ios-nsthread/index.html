@@ -21,7 +21,7 @@
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://p7xd6yrmx.bkt.clouddn.com/%E5%8D%A0%E4%BD%8D%E7%AC%A6.c3c0025120d24644bd5f8b826437ed9f.png">
 <meta property="og:image" content="http://p7xd6yrmx.bkt.clouddn.com/%E8%A7%86%E5%9B%BE%E6%8E%A7%E5%88%B6%E5%99%A8%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F02.352b2b30a64648848eccd65c30b76481.png">
-<meta property="og:updated_time" content="2018-04-29T07:07:31.500Z">
+<meta property="og:updated_time" content="2018-04-29T07:12:59.961Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="iOS-多线程基础和NSThread">
 <meta name="twitter:description" content="栈区/堆区/常量区 操作内存的栈区速度很快;栈区存储空间地址是连续的 操作内存的常量区速度很快;内存空间只开辟一次; 操作内存的堆区速度相对栈区和常量区要慢些;堆区内存空间不连续,需要寻址123456// 存储在栈区 int num = 10;// 存储在常量区   NSString *str1 = @&quot;hello&quot;;// 存储在堆区 NSString *str2 = [NSString stri">
@@ -121,16 +121,20 @@
 <li>如何使用： <code>@synthesize obj2 = _obj2;</code><h2 id="线程的状态-生命周期"><a href="#线程的状态-生命周期" class="headerlink" title="线程的状态-生命周期"></a>线程的状态-生命周期</h2></li>
 <li>start ：就绪状态，等待被CPU调用，当被调用的时候为运行状态</li>
 <li>sleep/加锁：阻塞状态</li>
-<li>exit：完全杀死（非正常死亡），<em>不要在主线程中调用</em><h2 id="线程属性（name，stackSize，isMainThread，threadPriority，qualityOfService）"><a href="#线程属性（name，stackSize，isMainThread，threadPriority，qualityOfService）" class="headerlink" title="线程属性（name，stackSize，isMainThread，threadPriority，qualityOfService）"></a>线程属性（name，stackSize，isMainThread，threadPriority，qualityOfService）</h2><h3 id="name-线程名称"><a href="#name-线程名称" class="headerlink" title="name - 线程名称"></a><code>name</code> - 线程名称</h3><ul>
-<li>设置线程名称可以当线程执行的方法内部出现异常时，记录异常和当前线程<h3 id="stackSize-栈区大小"><a href="#stackSize-栈区大小" class="headerlink" title="stackSize - 栈区大小"></a><code>stackSize</code> - 栈区大小</h3></li>
+<li><p>exit：完全杀死（非正常死亡），<em>不要在主线程中调用</em></p>
+<h2 id="线程属性（name，stackSize，isMainThread，threadPriority，qualityOfService）"><a href="#线程属性（name，stackSize，isMainThread，threadPriority，qualityOfService）" class="headerlink" title="线程属性（name，stackSize，isMainThread，threadPriority，qualityOfService）"></a>线程属性（name，stackSize，isMainThread，threadPriority，qualityOfService）</h2><h3 id="name-线程名称"><a href="#name-线程名称" class="headerlink" title="name - 线程名称"></a>name - 线程名称</h3><ul>
+<li>设置线程名称可以当线程执行的方法内部出现异常时，记录异常和当前线程<h3 id="stackSize-栈区大小"><a href="#stackSize-栈区大小" class="headerlink" title="stackSize - 栈区大小"></a>stackSize - 栈区大小</h3></li>
 <li>默认情况下，无论是主线程还是子线程，栈区大小都是 512K</li>
-<li>栈区大小可以设置 <code>Objc [NSThread currentThread].stackSize = 1024 * 1024;</code></li>
-<li>必须是 4KB 的倍数<h3 id="isMainThread-是否主线程"><a href="#isMainThread-是否主线程" class="headerlink" title="isMainThread - 是否主线程"></a><code>isMainThread</code> - 是否主线程</h3><h3 id="threadPriority-线程优先级"><a href="#threadPriority-线程优先级" class="headerlink" title="threadPriority - 线程优先级"></a><code>threadPriority</code> - 线程优先级</h3></li>
+<li><p>栈区大小可以设置 </p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[<span class="built_in">NSThread</span> currentThread].stackSize = <span class="number">1024</span> * <span class="number">1024</span>;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>必须是 4KB 的倍数</p>
+<h3 id="isMainThread-是否主线程"><a href="#isMainThread-是否主线程" class="headerlink" title="isMainThread - 是否主线程"></a>isMainThread - 是否主线程</h3><h3 id="threadPriority-线程优先级"><a href="#threadPriority-线程优先级" class="headerlink" title="threadPriority - 线程优先级"></a>threadPriority - 线程优先级</h3></li>
 <li>优先级，是一个浮点数，取值范围从<code>0~1.0</code></li>
 <li><code>1.0</code>表示优先级最高</li>
 <li><code>0.0</code>表示优先级最低</li>
 <li>默认优先级是 <code>0.5</code></li>
-<li><strong>优先级高只是保证 CPU 调度的可能性会高</strong><h3 id="qualityOfService-服务质量-iOS-8-0-推出"><a href="#qualityOfService-服务质量-iOS-8-0-推出" class="headerlink" title="qualityOfService - 服务质量(iOS 8.0 推出)"></a><code>qualityOfService</code> - 服务质量(iOS 8.0 推出)</h3></li>
+<li><strong>优先级高只是保证 CPU 调度的可能性会高</strong><h3 id="qualityOfService-服务质量-iOS-8-0-推出"><a href="#qualityOfService-服务质量-iOS-8-0-推出" class="headerlink" title="qualityOfService - 服务质量(iOS 8.0 推出)"></a>qualityOfService - 服务质量(iOS 8.0 推出)</h3></li>
 <li>NSQualityOfServiceUserInteractive - 用户交互，例如绘图或者处理用户事件</li>
 <li>NSQualityOfServiceUserInitiated - 用户需要</li>
 <li>NSQualityOfServiceUtility - 实用工具，用户不需要立即得到结果</li>
@@ -306,14 +310,6 @@
 		<ul class="clearfix">
 		
 			
-				<li><a href="/tags/云标签/" title="云标签">云标签<sup>1</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/分类/" title="分类">分类<sup>1</sup></a></li>
-			
-		
-			
 				<li><a href="/tags/iOS/" title="iOS">iOS<sup>1</sup></a></li>
 			
 		
@@ -327,6 +323,14 @@
 		
 			
 				<li><a href="/tags/package/" title="package">package<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/云标签/" title="云标签">云标签<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/分类/" title="分类">分类<sup>1</sup></a></li>
 			
 		
 		</ul>
