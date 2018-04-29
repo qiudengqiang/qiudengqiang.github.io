@@ -11,23 +11,24 @@
     
 
     
-    <meta name="description" content="Xcode 打包证书创建流程创建CSR证书 点击spotlight输入keychain打开钥匙串 生成CSR文件注意：  创建Cer证书 登录 使用CSR文件创建Development和Distribution的CER证书并下载 双击下载好的cer证书，然后导出对应的p12文件（dev/dis）  创建Provisioning Profile这里要创建是三种profile（dev/dis/adho">
+    <meta name="description" content="创建CSR证书 点击spotlight输入keychain打开钥匙串 生成CSR文件注意：  创建Cer证书 登录 使用CSR文件创建Development和Distribution的CER证书并下载 双击下载好的cer证书，然后导出对应的p12文件（dev/dis）  创建Provisioning Profile这里要创建是三种profile（dev/dis/adhoc）">
 <meta name="keywords" content="xcode,package">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Xcode 打包证书创建流程">
 <meta property="og:url" content="http://techbird.me/2018/04/28/xcode-pack-cer-create-process/index.html">
 <meta property="og:site_name" content="techbird&#39;s blog">
-<meta property="og:description" content="Xcode 打包证书创建流程创建CSR证书 点击spotlight输入keychain打开钥匙串 生成CSR文件注意：  创建Cer证书 登录 使用CSR文件创建Development和Distribution的CER证书并下载 双击下载好的cer证书，然后导出对应的p12文件（dev/dis）  创建Provisioning Profile这里要创建是三种profile（dev/dis/adho">
+<meta property="og:description" content="创建CSR证书 点击spotlight输入keychain打开钥匙串 生成CSR文件注意：  创建Cer证书 登录 使用CSR文件创建Development和Distribution的CER证书并下载 双击下载好的cer证书，然后导出对应的p12文件（dev/dis）  创建Provisioning Profile这里要创建是三种profile（dev/dis/adhoc）">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://p7xd6yrmx.bkt.clouddn.com/WX20180415-192128.ed09497c15d24f6bb84e812effb1d0f9.png">
 <meta property="og:image" content="http://p7xd6yrmx.bkt.clouddn.com/DraggedImage.ae2ad2036be3471b9b1549406a95e44b.png">
 <meta property="og:image" content="http://p7xd6yrmx.bkt.clouddn.com/DraggedImage.875c41f7a2ac4507a783cac258a194af.png">
 <meta property="og:image" content="http://p7xd6yrmx.bkt.clouddn.com/DraggedImage.ca56c2a73e474422ac1aaac410172bc6.png">
 <meta property="og:image" content="http://p7xd6yrmx.bkt.clouddn.com/DraggedImage.bc375b929a6f463f8d85d6f92e6bc853.png">
-<meta property="og:updated_time" content="2018-04-29T05:55:20.412Z">
+<meta property="og:image" content="http://p7xd6yrmx.bkt.clouddn.com/DraggedImage.8b0bda299adf43029f16d552dceac353.png">
+<meta property="og:updated_time" content="2018-04-29T05:57:39.343Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Xcode 打包证书创建流程">
-<meta name="twitter:description" content="Xcode 打包证书创建流程创建CSR证书 点击spotlight输入keychain打开钥匙串 生成CSR文件注意：  创建Cer证书 登录 使用CSR文件创建Development和Distribution的CER证书并下载 双击下载好的cer证书，然后导出对应的p12文件（dev/dis）  创建Provisioning Profile这里要创建是三种profile（dev/dis/adho">
+<meta name="twitter:description" content="创建CSR证书 点击spotlight输入keychain打开钥匙串 生成CSR文件注意：  创建Cer证书 登录 使用CSR文件创建Development和Distribution的CER证书并下载 双击下载好的cer证书，然后导出对应的p12文件（dev/dis）  创建Provisioning Profile这里要创建是三种profile（dev/dis/adhoc）">
 <meta name="twitter:image" content="http://p7xd6yrmx.bkt.clouddn.com/WX20180415-192128.ed09497c15d24f6bb84e812effb1d0f9.png">
 <meta name="twitter:creator" content="@stephentalk">
 
@@ -105,11 +106,11 @@
 		<div id="toc" class="toc-article">
 			<strong class="toc-title">Contents</strong>
 		
-			<ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#Xcode-打包证书创建流程"><span class="toc-number">1.</span> <span class="toc-text">Xcode 打包证书创建流程</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#创建CSR证书"><span class="toc-number"></span> <span class="toc-text">创建CSR证书</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#创建Cer证书"><span class="toc-number"></span> <span class="toc-text">创建Cer证书</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#创建Provisioning-Profile"><span class="toc-number"></span> <span class="toc-text">创建Provisioning Profile</span></a>
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#创建CSR证书"><span class="toc-number">1.</span> <span class="toc-text">创建CSR证书</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#创建Cer证书"><span class="toc-number">2.</span> <span class="toc-text">创建Cer证书</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#创建Provisioning-Profile"><span class="toc-number">3.</span> <span class="toc-text">创建Provisioning Profile</span></a></li></ol>
 		
 		</div>
 		
-		<h3 id="Xcode-打包证书创建流程"><a href="#Xcode-打包证书创建流程" class="headerlink" title="Xcode 打包证书创建流程"></a>Xcode 打包证书创建流程</h3><h2 id="创建CSR证书"><a href="#创建CSR证书" class="headerlink" title="创建CSR证书"></a>创建CSR证书</h2><ul>
+		<h2 id="创建CSR证书"><a href="#创建CSR证书" class="headerlink" title="创建CSR证书"></a>创建CSR证书</h2><ul>
 <li>点击spotlight输入keychain打开钥匙串<br><img src="http://p7xd6yrmx.bkt.clouddn.com/WX20180415-192128.ed09497c15d24f6bb84e812effb1d0f9.png" alt="keychain"></li>
 <li>生成CSR文件<br><img src="http://p7xd6yrmx.bkt.clouddn.com/DraggedImage.ae2ad2036be3471b9b1549406a95e44b.png" alt="csr"><br><strong>注意</strong>：</li>
 </ul>
@@ -118,7 +119,7 @@
 <li>使用CSR文件创建Development和Distribution的CER证书并下载<br><img src="http://p7xd6yrmx.bkt.clouddn.com/DraggedImage.ca56c2a73e474422ac1aaac410172bc6.png" alt=""></li>
 <li>双击下载好的cer证书，然后导出对应的p12文件（dev/dis）<br><img src="http://p7xd6yrmx.bkt.clouddn.com/DraggedImage.bc375b929a6f463f8d85d6f92e6bc853.png" alt=""></li>
 </ol>
-<h2 id="创建Provisioning-Profile"><a href="#创建Provisioning-Profile" class="headerlink" title="创建Provisioning Profile"></a>创建Provisioning Profile</h2><p>这里要创建是三种profile（dev/dis/adhoc）<br>![]<a href="http://p7xd6yrmx.bkt.clouddn.com/DraggedImage.8b0bda299adf43029f16d552dceac353.png" target="_blank" rel="noopener">http://p7xd6yrmx.bkt.clouddn.com/DraggedImage.8b0bda299adf43029f16d552dceac353.png</a></p>
+<h2 id="创建Provisioning-Profile"><a href="#创建Provisioning-Profile" class="headerlink" title="创建Provisioning Profile"></a>创建Provisioning Profile</h2><p>这里要创建是三种profile（dev/dis/adhoc）<br><img src="http://p7xd6yrmx.bkt.clouddn.com/DraggedImage.8b0bda299adf43029f16d552dceac353.png" alt=""></p>
   
 	</div>
 		<footer class="article-footer clearfix">
@@ -181,7 +182,7 @@
   <div id="toc" class="toc-aside">
   <strong class="toc-title">Contents</strong>
  
- <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#Xcode-打包证书创建流程"><span class="toc-number">1.</span> <span class="toc-text">Xcode 打包证书创建流程</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#创建CSR证书"><span class="toc-number"></span> <span class="toc-text">创建CSR证书</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#创建Cer证书"><span class="toc-number"></span> <span class="toc-text">创建Cer证书</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#创建Provisioning-Profile"><span class="toc-number"></span> <span class="toc-text">创建Provisioning Profile</span></a>
+ <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#创建CSR证书"><span class="toc-number">1.</span> <span class="toc-text">创建CSR证书</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#创建Cer证书"><span class="toc-number">2.</span> <span class="toc-text">创建Cer证书</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#创建Provisioning-Profile"><span class="toc-number">3.</span> <span class="toc-text">创建Provisioning Profile</span></a></li></ol>
  
   </div>
 
