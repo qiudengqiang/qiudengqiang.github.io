@@ -19,7 +19,7 @@
 <meta property="og:site_name" content="techbird&#39;s blog">
 <meta property="og:description" content="GCD与 NSThread 的对比NSThread的劣势 如果要开多个线程 NSThread 必须实例化多个线程对象 NSThread 靠 NSObject 的分类方法实现的线程间通讯,GCD 靠 block  GCD的优势 让代码更加简单,易于阅读和维护 使用GCD 不需要管理线程的创建/销毁/复用的过程,不用关心线程的生命周期 充分利用CPU的内核  队列有哪些，任务有几种队列 串行队列（Se">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-04-29T09:25:28.496Z">
+<meta property="og:updated_time" content="2018-04-29T11:38:35.353Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="iOS-多线程之GCD">
 <meta name="twitter:description" content="GCD与 NSThread 的对比NSThread的劣势 如果要开多个线程 NSThread 必须实例化多个线程对象 NSThread 靠 NSObject 的分类方法实现的线程间通讯,GCD 靠 block  GCD的优势 让代码更加简单,易于阅读和维护 使用GCD 不需要管理线程的创建/销毁/复用的过程,不用关心线程的生命周期 充分利用CPU的内核  队列有哪些，任务有几种队列 串行队列（Se">
@@ -133,7 +133,7 @@
 <figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"> - (<span class="keyword">void</span>)deadlockDemo</span><br><span class="line">&#123;</span><br><span class="line">	<span class="built_in">dispatch_queue_t</span> queue = dispatch_get_main_queue();</span><br><span class="line">	<span class="built_in">NSLog</span>(<span class="string">@"start”);</span></span><br><span class="line"><span class="string">	dispatch_sync(queue, ^&#123;</span></span><br><span class="line"><span class="string">		NSLog(@"</span>执行中...%<span class="string">@",[NSThread currentThread]);</span></span><br><span class="line"><span class="string">	&#125;);</span></span><br><span class="line"><span class="string">	NSLog(@"</span>end<span class="string">");</span></span><br><span class="line"><span class="string">&#125;</span></span><br></pre></td></tr></table></figure>
 </li>
 <li><p>死锁解决办法：主队列中的同步任务放进子线程中,不使其阻塞主线程</p>
-<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"> - (<span class="keyword">void</span>)resolveDemo</span><br><span class="line">&#123;</span><br><span class="line">	<span class="built_in">dispatch_async</span>(dispatch_queue_create(<span class="string">"ZJ"</span>, DISPATCH_QUEUE_CONCURRENT), ^&#123;</span><br><span class="line">		<span class="built_in">NSLog</span>(<span class="string">@"start"</span>);</span><br><span class="line">		<span class="built_in">dispatch_sync</span>(dispatch_get_main_queue(), ^&#123;</span><br><span class="line">			<span class="built_in">NSLog</span>(<span class="string">@"执行中...%@"</span>,[<span class="built_in">NSThread</span> currentThread]);</span><br><span class="line">		&#125;);</span><br><span class="line">		<span class="built_in">NSLog</span>(<span class="string">@"end"</span>);</span><br><span class="line">	&#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"> - (<span class="keyword">void</span>)resolveDemo</span><br><span class="line">&#123;</span><br><span class="line">	<span class="built_in">dispatch_async</span>(dispatch_queue_create(<span class="string">"flag"</span>, DISPATCH_QUEUE_CONCURRENT), ^&#123;</span><br><span class="line">		<span class="built_in">NSLog</span>(<span class="string">@"start"</span>);</span><br><span class="line">		<span class="built_in">dispatch_sync</span>(dispatch_get_main_queue(), ^&#123;</span><br><span class="line">			<span class="built_in">NSLog</span>(<span class="string">@"执行中...%@"</span>,[<span class="built_in">NSThread</span> currentThread]);</span><br><span class="line">		&#125;);</span><br><span class="line">		<span class="built_in">NSLog</span>(<span class="string">@"end"</span>);</span><br><span class="line">	&#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 </li>
 </ul>
 <h2 id="全局队列的两个参数分别代表什么？"><a href="#全局队列的两个参数分别代表什么？" class="headerlink" title="全局队列的两个参数分别代表什么？"></a>全局队列的两个参数分别代表什么？</h2><ul>
@@ -155,12 +155,12 @@
 <li>同步和异步决定了要不要开启新的线程 (同步不开，异步开)</li>
 </ul>
 <h2 id="GCD延迟执行-after"><a href="#GCD延迟执行-after" class="headerlink" title="GCD延迟执行(after)"></a>GCD延迟执行(after)</h2><ul>
-<li>延迟操作: <code>dispatch_after</code> 这个函数默认是异步执行的<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">-(<span class="keyword">void</span>)afterDemo&#123;</span><br><span class="line">  <span class="built_in">NSLog</span>(<span class="string">@"start"</span>);</span><br><span class="line">  dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(<span class="number">2.0</span>*<span class="built_in">NSEC_PER_SEC</span>)),dispatch_get_global_queue(),^&#123;</span><br><span class="line">    <span class="built_in">NSLog</span>(<span class="string">@"延迟执行的代码"</span>);</span><br><span class="line">  &#125;);</span><br><span class="line">  <span class="built_in">NSLog</span>(<span class="string">@"开始"</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<li>延迟操作: <code>dispatch_after</code> 这个函数默认是异步执行的<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">-(<span class="keyword">void</span>)afterDemo&#123;</span><br><span class="line">  <span class="built_in">NSLog</span>(<span class="string">@"start"</span>);</span><br><span class="line">  dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(<span class="number">2.0</span>*<span class="built_in">NSEC_PER_SEC</span>)),dispatch_get_global_queue(),^&#123;</span><br><span class="line">    <span class="built_in">NSLog</span>(<span class="string">@"延迟执行的代码"</span>);</span><br><span class="line">  &#125;);</span><br><span class="line">  <span class="built_in">NSLog</span>(<span class="string">@"end"</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 </li>
 </ul>
 <h3 id="GCD一次性执行-once"><a href="#GCD一次性执行-once" class="headerlink" title="GCD一次性执行(once)"></a>GCD一次性执行(once)</h3><ul>
 <li><code>dispatch_once_t</code> 内部有一把锁,能够保证线程安全.</li>
-<li><strong>原理</strong>：<code>onceToken</code> 有个初始值,当第一次执行时,判断是否是初始值,如果是初始值就执行函数内部的代码,执行结束之前会修改<code>onceToken</code>初始值.反之,就不执行.<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="keyword">void</span>)onceDemo</span><br><span class="line">&#123;</span><br><span class="line">	<span class="built_in">NSLog</span>(<span class="string">@"mark"</span>);</span><br><span class="line">	<span class="keyword">static</span> <span class="built_in">dispatch_once_t</span> onceToken;</span><br><span class="line">	<span class="built_in">NSLog</span>(<span class="string">@"返回值 %ld"</span>,onceToken);</span><br><span class="line">	<span class="built_in">dispatch_once</span>(&amp;onceToken, ^&#123;</span><br><span class="line">		<span class="built_in">NSLog</span>(<span class="string">@"hello"</span>);</span><br><span class="line">	&#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<li><strong>原理</strong>：<code>onceToken</code> 有个初始值,当第一次执行时,判断是否是初始值,如果是初始值就执行函数内部的代码,执行结束之前会修改<code>onceToken</code>初始值.反之,就不执行.<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="keyword">void</span>)onceDemo</span><br><span class="line">&#123;</span><br><span class="line">	<span class="built_in">NSLog</span>(<span class="string">@"mark"</span>);</span><br><span class="line">	<span class="keyword">static</span> <span class="built_in">dispatch_once_t</span> onceToken;</span><br><span class="line">	<span class="built_in">NSLog</span>(<span class="string">@"result %ld"</span>,onceToken);</span><br><span class="line">	<span class="built_in">dispatch_once</span>(&amp;onceToken, ^&#123;</span><br><span class="line">		<span class="built_in">NSLog</span>(<span class="string">@"hello"</span>);</span><br><span class="line">	&#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 </li>
 </ul>
 <h2 id="单例设计模式（iOS）"><a href="#单例设计模式（iOS）" class="headerlink" title="单例设计模式（iOS）"></a>单例设计模式（iOS）</h2><h3 id="单例设计模式的特点"><a href="#单例设计模式的特点" class="headerlink" title="单例设计模式的特点"></a>单例设计模式的特点</h3><ol>
@@ -321,15 +321,11 @@
 			
 		
 			
-				<li><a href="/tags/xcode/" title="xcode">xcode<sup>1</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/package/" title="package">package<sup>1</sup></a></li>
-			
-		
-			
 				<li><a href="/tags/NSThread/" title="NSThread">NSThread<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/GCD/" title="GCD">GCD<sup>1</sup></a></li>
 			
 		
 			
@@ -337,7 +333,11 @@
 			
 		
 			
-				<li><a href="/tags/GCD/" title="GCD">GCD<sup>1</sup></a></li>
+				<li><a href="/tags/xcode/" title="xcode">xcode<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/package/" title="package">package<sup>1</sup></a></li>
 			
 		
 		</ul>

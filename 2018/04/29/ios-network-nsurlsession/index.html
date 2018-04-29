@@ -4,25 +4,26 @@
 <head>
   <meta charset="UTF-8">
   
-    <title>Hello World | techbird&#39;s blog</title>
+    <title>iOS-NSURLSession | techbird&#39;s blog</title>
     <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
     
     <meta name="author" content="techbird">
     
 
     
-    <meta name="description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick">
-<meta name="keywords" content="云标签,分类">
+    <meta name="description" content="简介NSURLSession是iOS 7.0推出，用于替换NSURLConnection(iOS 9.0被弃用) 结构图 NSURLSession发送网络请求12345678910111213141516- (void)viewDidLoad &amp;#123;	[super viewDidLoad];	NSURL * URL = [NSURL URLWithString:@&quot;http://www.ba">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Hello World">
-<meta property="og:url" content="http://techbird.me/2018/04/22/hello-world/index.html">
+<meta property="og:title" content="iOS-NSURLSession">
+<meta property="og:url" content="http://techbird.me/2018/04/29/ios-network-nsurlsession/index.html">
 <meta property="og:site_name" content="techbird&#39;s blog">
-<meta property="og:description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick">
+<meta property="og:description" content="简介NSURLSession是iOS 7.0推出，用于替换NSURLConnection(iOS 9.0被弃用) 结构图 NSURLSession发送网络请求12345678910111213141516- (void)viewDidLoad &amp;#123;	[super viewDidLoad];	NSURL * URL = [NSURL URLWithString:@&quot;http://www.ba">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-04-26T14:47:03.000Z">
+<meta property="og:image" content="http://p7xd6yrmx.bkt.clouddn.com/DraggedImage.158bd84a0f3f4822a513d7866930dfe8.png">
+<meta property="og:updated_time" content="2018-04-29T11:38:27.706Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Hello World">
-<meta name="twitter:description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick">
+<meta name="twitter:title" content="iOS-NSURLSession">
+<meta name="twitter:description" content="简介NSURLSession是iOS 7.0推出，用于替换NSURLConnection(iOS 9.0被弃用) 结构图 NSURLSession发送网络请求12345678910111213141516- (void)viewDidLoad &amp;#123;	[super viewDidLoad];	NSURL * URL = [NSURL URLWithString:@&quot;http://www.ba">
+<meta name="twitter:image" content="http://p7xd6yrmx.bkt.clouddn.com/DraggedImage.158bd84a0f3f4822a513d7866930dfe8.png">
 <meta name="twitter:creator" content="@stephentalk">
 
     
@@ -83,14 +84,14 @@
 		<header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/04/22/hello-world/" title="Hello World" itemprop="url">Hello World</a>
+      <a href="/2018/04/29/ios-network-nsurlsession/" title="iOS-NSURLSession" itemprop="url">iOS-NSURLSession</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="techbird" target="_blank" itemprop="author">techbird</a>
 		
   <p class="article-time">
-    <time datetime="2018-04-21T16:31:37.333Z" itemprop="datePublished"> Published 2018-04-22</time>
+    <time datetime="2018-04-29T11:31:42.000Z" itemprop="datePublished"> Published 2018-04-29</time>
     
   </p>
 </header>
@@ -99,29 +100,27 @@
 		<div id="toc" class="toc-article">
 			<strong class="toc-title">Contents</strong>
 		
-			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Quick-Start"><span class="toc-number">1.</span> <span class="toc-text">Quick Start</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Create-a-new-post"><span class="toc-number">1.1.</span> <span class="toc-text">Create a new post</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Run-server"><span class="toc-number">1.2.</span> <span class="toc-text">Run server</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Generate-static-files"><span class="toc-number">1.3.</span> <span class="toc-text">Generate static files</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Deploy-to-remote-sites"><span class="toc-number">1.4.</span> <span class="toc-text">Deploy to remote sites</span></a></li></ol></li></ol>
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#简介"><span class="toc-number">1.</span> <span class="toc-text">简介</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#结构图"><span class="toc-number">2.</span> <span class="toc-text">结构图</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#NSURLSession发送网络请求"><span class="toc-number">3.</span> <span class="toc-text">NSURLSession发送网络请求</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#HTML字符串反序列化"><span class="toc-number">4.</span> <span class="toc-text">HTML字符串反序列化</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#小结"><span class="toc-number">5.</span> <span class="toc-text">小结</span></a></li></ol>
 		
 		</div>
 		
-		<p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="noopener">Deployment</a></p>
+		<h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>NSURLSession是iOS 7.0推出，用于替换NSURLConnection(iOS 9.0被弃用)</p>
+<h2 id="结构图"><a href="#结构图" class="headerlink" title="结构图"></a>结构图</h2><p><img src="http://p7xd6yrmx.bkt.clouddn.com/DraggedImage.158bd84a0f3f4822a513d7866930dfe8.png" alt=""></p>
+<h2 id="NSURLSession发送网络请求"><a href="#NSURLSession发送网络请求" class="headerlink" title="NSURLSession发送网络请求"></a>NSURLSession发送网络请求</h2><figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="keyword">void</span>)viewDidLoad &#123;</span><br><span class="line">	[<span class="keyword">super</span> viewDidLoad];</span><br><span class="line">	<span class="built_in">NSURL</span> * URL = [<span class="built_in">NSURL</span> URLWithString:<span class="string">@"http://www.baidu.com"</span>];</span><br><span class="line">	<span class="built_in">NSURLSession</span> * session = [<span class="built_in">NSURLSession</span> sharedSession];</span><br><span class="line">  <span class="built_in">NSURLSessionDataTask</span> * dataTask = [session dataTaskWithURL:URL completionHandler:^(<span class="built_in">NSData</span> * data,)]</span><br><span class="line">	<span class="built_in">NSURLSessionDataTask</span> * dataTask = [session dataTaskWithURL:URL completionHandler:^(<span class="built_in">NSData</span> * data, <span class="built_in">NSURLResponse</span> * response, <span class="built_in">NSError</span> * error) &#123;</span><br><span class="line">		<span class="comment">// data : 响应体; response : 响应头; error : 错误信息</span></span><br><span class="line">    <span class="keyword">if</span> (error == <span class="literal">nil</span> &amp;&amp; data != <span class="literal">nil</span>)&#123;</span><br><span class="line">      <span class="built_in">NSLog</span>(<span class="string">@"%@ -- %@ -- %@"</span>,response,data,[<span class="built_in">NSThread</span> currentThread]);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="built_in">NSLog</span>(<span class="string">@"%@"</span>,error);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">	&#125;];</span><br><span class="line">	[dataTask resume];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="HTML字符串反序列化"><a href="#HTML字符串反序列化" class="headerlink" title="HTML字符串反序列化"></a>HTML字符串反序列化</h2><figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[[<span class="built_in">NSOperationQueue</span> mainQueue] addOperationWithBlock:^&#123;</span><br><span class="line">			<span class="comment">// 反序列化HTML字符串</span></span><br><span class="line">			<span class="built_in">NSString</span> * html = [[<span class="built_in">NSString</span> alloc] initWithData:data encoding:<span class="built_in">NSUTF8StringEncoding</span>];</span><br><span class="line">			<span class="comment">// 展示HTML字符串</span></span><br><span class="line">			[<span class="keyword">self</span>.webView loadHTMLString:html baseURL:URL];</span><br><span class="line">&#125;];</span><br></pre></td></tr></table></figure>
+<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><ul>
+<li>为了方便程序员使用，苹果提供了一个全局单例 session.</li>
+<li>所有的 任务(Task) 都是由 session 发起的.</li>
+<li>所有的任务默认是挂起的，需要 resume.</li>
+<li>完成回调是异步的</li>
+<li>session可以自定义,自定义的时候可以同时设置代理.</li>
+<li>AFN 底层就是对 NSURLSession 的封装</li>
+</ul>
   
 	</div>
 		<footer class="article-footer clearfix">
 <div class="article-catetags">
 
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/云标签/">云标签</a><a href="/tags/分类/">分类</a>
-  </div>
 
 </div>
 
@@ -129,7 +128,7 @@
 
 	<div class="article-share" id="share">
 	
-	  <div data-url="http://techbird.me/2018/04/22/hello-world/" data-title="Hello World | techbird&#39;s blog" data-tsina="6488657373" class="share clearfix">
+	  <div data-url="http://techbird.me/2018/04/29/ios-network-nsurlsession/" data-title="iOS-NSURLSession | techbird&#39;s blog" data-tsina="6488657373" class="share clearfix">
 	  </div>
 	
 	</div>
@@ -142,14 +141,14 @@
 	
 <nav class="article-nav clearfix">
  
- <div class="prev" >
- <a href="/2018/04/29/xcode-pack-cer-create-process/" title="Xcode-打包证书创建流程">
-  <strong>上一篇：</strong><br/>
-  <span>
-  Xcode-打包证书创建流程</span>
+
+<div class="next">
+<a href="/2018/04/29/ios-networkbase-http-and-https/"  title="iOS-网络基础&amp;Http和Https">
+ <strong>下一篇：</strong><br/> 
+ <span>iOS-网络基础&amp;Http和Https
+</span>
 </a>
 </div>
-
 
 </nav>
 
@@ -169,7 +168,7 @@
   <div id="toc" class="toc-aside">
   <strong class="toc-title">Contents</strong>
  
- <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Quick-Start"><span class="toc-number">1.</span> <span class="toc-text">Quick Start</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Create-a-new-post"><span class="toc-number">1.1.</span> <span class="toc-text">Create a new post</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Run-server"><span class="toc-number">1.2.</span> <span class="toc-text">Run server</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Generate-static-files"><span class="toc-number">1.3.</span> <span class="toc-text">Generate static files</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Deploy-to-remote-sites"><span class="toc-number">1.4.</span> <span class="toc-text">Deploy to remote sites</span></a></li></ol></li></ol>
+ <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#简介"><span class="toc-number">1.</span> <span class="toc-text">简介</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#结构图"><span class="toc-number">2.</span> <span class="toc-text">结构图</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#NSURLSession发送网络请求"><span class="toc-number">3.</span> <span class="toc-text">NSURLSession发送网络请求</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#HTML字符串反序列化"><span class="toc-number">4.</span> <span class="toc-text">HTML字符串反序列化</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#小结"><span class="toc-number">5.</span> <span class="toc-text">小结</span></a></li></ol>
  
   </div>
 
