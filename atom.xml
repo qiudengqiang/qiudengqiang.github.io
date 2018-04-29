@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://techbird.me/"/>
-  <updated>2018-04-29T06:24:00.391Z</updated>
+  <updated>2018-04-29T06:29:22.702Z</updated>
   <id>http://techbird.me/</id>
   
   <author>
@@ -21,16 +21,16 @@
     <link href="http://techbird.me/2018/04/28/xcode-pack-cer-create-process/"/>
     <id>http://techbird.me/2018/04/28/xcode-pack-cer-create-process/</id>
     <published>2018-04-28T03:48:37.000Z</published>
-    <updated>2018-04-29T06:24:00.391Z</updated>
+    <updated>2018-04-29T06:29:22.702Z</updated>
     
-    <content type="html"><![CDATA[<h2 id="创建CSR证书"><a href="#创建CSR证书" class="headerlink" title="创建CSR证书"></a>创建CSR证书</h2><pre><code>1. 点击spotlight输入keychain打开钥匙串![](http://p7xd6yrmx.bkt.clouddn.com/WX20180415-192128.ed09497c15d24f6bb84e812effb1d0f9.png)2. 生成CSR文件3. **注意**：</code></pre><p> <img src="http://p7xd6yrmx.bkt.clouddn.com/DraggedImage.ae2ad2036be3471b9b1549406a95e44b.png" alt=""></p><h2 id="创建Cer证书"><a href="#创建Cer证书" class="headerlink" title="创建Cer证书"></a>创建Cer证书</h2><pre><code>1. [登录 apple developer](https://developer.apple.com/account/)![](http://p7xd6yrmx.bkt.clouddn.com/DraggedImage.875c41f7a2ac4507a783cac258a194af.png)2. 使用CSR文件创建Development和Distribution的CER证书并下载</code></pre><p> <img src="http://p7xd6yrmx.bkt.clouddn.com/DraggedImage.ca56c2a73e474422ac1aaac410172bc6.png" alt=""></p><pre><code>3. 双击下载好的cer证书，然后导出对应的p12文件（dev/dis）</code></pre><p> <img src="http://p7xd6yrmx.bkt.clouddn.com/DraggedImage.bc375b929a6f463f8d85d6f92e6bc853.png" alt=""></p><h2 id="创建Provisioning-Profile"><a href="#创建Provisioning-Profile" class="headerlink" title="创建Provisioning Profile"></a>创建Provisioning Profile</h2><pre><code>这里要创建是三种profile（dev/dis/adhoc）![](http://p7xd6yrmx.bkt.clouddn.com/DraggedImage.8b0bda299adf43029f16d552dceac353.png)</code></pre>]]></content>
+    <content type="html"><![CDATA[<h2 id="创建CSR证书"><a href="#创建CSR证书" class="headerlink" title="创建CSR证书"></a>创建CSR证书</h2><ol><li><p>点击spotlight输入keychain打开钥匙串<br><img src="http://p7xd6yrmx.bkt.clouddn.com/WX20180415-192128.ed09497c15d24f6bb84e812effb1d0f9.png" alt=""></p></li><li><p>生成CSR文件</p></li><li><p><strong>注意</strong>：<br><img src="http://p7xd6yrmx.bkt.clouddn.com/DraggedImage.ae2ad2036be3471b9b1549406a95e44b.png" alt=""></p></li></ol><h2 id="创建Cer证书"><a href="#创建Cer证书" class="headerlink" title="创建Cer证书"></a>创建Cer证书</h2><ol><li><p><a href="https://developer.apple.com/account/" target="_blank" rel="noopener">登录 apple developer</a><br><img src="http://p7xd6yrmx.bkt.clouddn.com/DraggedImage.875c41f7a2ac4507a783cac258a194af.png" alt=""></p></li><li><p>使用CSR文件创建Development和Distribution的CER证书并下载<br><img src="http://p7xd6yrmx.bkt.clouddn.com/DraggedImage.ca56c2a73e474422ac1aaac410172bc6.png" alt=""></p></li><li><p>双击下载好的cer证书，然后导出对应的p12文件（dev/dis）<br><img src="http://p7xd6yrmx.bkt.clouddn.com/DraggedImage.bc375b929a6f463f8d85d6f92e6bc853.png" alt=""></p></li></ol><h2 id="创建Provisioning-Profile"><a href="#创建Provisioning-Profile" class="headerlink" title="创建Provisioning Profile"></a>创建Provisioning Profile</h2><pre><code>这里要创建是三种profile（dev/dis/adhoc）![](http://p7xd6yrmx.bkt.clouddn.com/DraggedImage.8b0bda299adf43029f16d552dceac353.png)</code></pre>]]></content>
     
     <summary type="html">
     
       
       
-        &lt;h2 id=&quot;创建CSR证书&quot;&gt;&lt;a href=&quot;#创建CSR证书&quot; class=&quot;headerlink&quot; title=&quot;创建CSR证书&quot;&gt;&lt;/a&gt;创建CSR证书&lt;/h2&gt;&lt;pre&gt;&lt;code&gt;1. 点击spotlight输入keychain打开钥匙串
-![](http://p
+        &lt;h2 id=&quot;创建CSR证书&quot;&gt;&lt;a href=&quot;#创建CSR证书&quot; class=&quot;headerlink&quot; title=&quot;创建CSR证书&quot;&gt;&lt;/a&gt;创建CSR证书&lt;/h2&gt;&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;点击spotlight输入keychain打开钥匙串&lt;br&gt;&lt;img src=&quot;h
       
     
     </summary>
