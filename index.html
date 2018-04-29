@@ -77,144 +77,43 @@
     <div id="container">
       <div id="main">
 
-   
+  
+<section class="post" itemscope itemprop="blogitem">
+  
+    <a href="/2018/04/28/xcode-pack-cer-create-process/" title="Xcode 打包证书创建流程" itemprop="url">
+  
+    <h1 itemprop="name">Xcode 打包证书创建流程</h1>
     
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2018/04/28/xcode-pack-cer-create-process/" title="Xcode 打包证书创建流程" itemprop="url">Xcode 打包证书创建流程</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="techbird" target="_blank" itemprop="author">techbird</a>
-		
-  <p class="article-time">
-    <time datetime="2018-04-28T03:48:37.000Z" itemprop="datePublished"> Published 2018-04-28</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <h2 id="创建CSR证书"><a href="#创建CSR证书" class="headerlink" title="创建CSR证书"></a>创建CSR证书</h2><pre><code>1. 点击spotlight输入keychain打开钥匙串
+     
+           <p itemprop="description" >创建CSR证书1. 点击spotlight输入keychain打开钥匙串
 ![](http://p7xd6yrmx.bkt.clouddn.com/WX20180415-192128.ed09497c15d24f6bb84e812effb1d0f9.png)
 
-2. 生成CSR文件
-
-3. **注意**：
-</code></pre><p> <img src="http://p7xd6yrmx.bkt.clouddn.com/DraggedImage.ae2ad2036be3471b9b1549406a95e44b.png" alt=""></p>
-<h2 id="创建Cer证书"><a href="#创建Cer证书" class="headerlink" title="创建Cer证书"></a>创建Cer证书</h2><pre><code>1. [登录 apple developer](https://developer.apple.com/account/)
-![](http://p7xd6yrmx.bkt.clouddn.com/DraggedImage.875c41f7a2ac4507a783cac258a194af.png)
-
-2. 使用CSR文件创建Development和Distribution的CER证书并下载
-</code></pre><p> <img src="http://p7xd6yrmx.bkt.clouddn.com/DraggedImage.ca56c2a73e474422ac1aaac410172bc6.png" alt=""></p>
-<pre><code>3. 双击下载好的cer证书，然后导出对应的p12文件（dev/dis）
-</code></pre><p> <img src="http://p7xd6yrmx.bkt.clouddn.com/DraggedImage.bc375b929a6f463f8d85d6f92e6bc853.png" alt=""></p>
-<h2 id="创建Provisioning-Profile"><a href="#创建Provisioning-Profile" class="headerlink" title="创建Provisioning Profile"></a>创建Provisioning Profile</h2><pre><code>这里要创建是三种profile（dev/dis/adhoc）
-![](http://p7xd6yrmx.bkt.clouddn.com/DraggedImage.8b0bda299adf43029f16d552dceac353.png)
-</code></pre>
+2. 生成CSR文</p>
         
-        
-        <p class="article-more-link">
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-<div class="article-categories">
-  <span></span>
-  <a class="article-category-link" href="/categories/xcode/">xcode</a>
-</div>
+    
+    <time datetime="2018-04-28T03:48:37.000Z" itemprop="datePublished">2018-04-28</time>
+  </a>
+</section>
 
 
-  <div class="article-tags">
+
+
+
+
   
-  <span></span> <a href="/tags/xcode/">xcode</a><a href="/tags/package/">package</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-	  	<span></span>
-		<a href="/2018/04/28/xcode-pack-cer-create-process/#disqus_thread" class="comments-count-link">Comments</a>
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2018/04/22/hello-world/" title="Hello World" itemprop="url">Hello World</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="techbird" target="_blank" itemprop="author">techbird</a>
-		
-  <p class="article-time">
-    <time datetime="2018-04-21T16:31:37.333Z" itemprop="datePublished"> Published 2018-04-22</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="noopener">Deployment</a></p>
-
-        
-        
-        <p class="article-more-link">
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-
-  <div class="article-tags">
+<section class="post" itemscope itemprop="blogitem">
   
-  <span></span> <a href="/tags/云标签/">云标签</a><a href="/tags/分类/">分类</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-	  	<span></span>
-		<a href="/2018/04/22/hello-world/#disqus_thread" class="comments-count-link">Comments</a>
-	
-</div>
-
-</footer>
-
-
-    </article>
+    <a href="/2018/04/22/hello-world/" title="Hello World" itemprop="url">
+  
+    <h1 itemprop="name">Hello World</h1>
+    
+     
+           <p itemprop="description" >Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the </p>
+        
+    
+    <time datetime="2018-04-21T16:31:37.333Z" itemprop="datePublished">2018-04-22</time>
+  </a>
+</section>
 
 
 
@@ -236,19 +135,6 @@
 <script type="text/javascript" src="//cdn.jsdelivr.net/github-cards/latest/widget.js" ></script>
 </div>
 
-
-
-  
-<div class="categorieslist">
-	<p class="asidetitle">Categories</p>
-		<ul>
-		
-		  
-			<li><a href="/categories/xcode/" title="xcode">xcode<sup>1</sup></a></li>
-		  
-		
-		</ul>
-</div>
 
 
   <div class="linkslist">
@@ -273,6 +159,19 @@
   <div class="weiboshow">
   <p class="asidetitle">Weibo</p>
     <iframe width="100%" height="119" class="share_self"  frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=119&fansRow=2&ptype=1&speed=0&skin=9&isTitle=1&noborder=1&isWeibo=0&isFans=0&uid=6488657373&verifier=f458bf46&dpc=1"></iframe>
+</div>
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">Categories</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/xcode/" title="xcode">xcode<sup>1</sup></a></li>
+		  
+		
+		</ul>
 </div>
 
 
