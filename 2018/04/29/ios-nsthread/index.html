@@ -11,20 +11,20 @@
     
 
     
-    <meta name="description" content="栈区/堆区/常量区 操作内存的栈区速度很快;栈区存储空间地址是连续的 操作内存的常量区速度很快;内存空间只开辟一次; 操作内存的堆区速度相对栈区和常量区要慢些;堆区内存空间不连续,需要寻址123456// 存储在栈区 int num = 10;// 存储在常量区   NSString *str1 = @&quot;hello&quot;;// 存储在堆区NSString *str2 = [NSString strin">
+    <meta name="description" content="栈区/堆区/常量区 操作内存的栈区速度很快;栈区存储空间地址是连续的 操作内存的常量区速度很快;内存空间只开辟一次; 操作内存的堆区速度相对栈区和常量区要慢些;堆区内存空间不连续,需要寻址123456// 存储在栈区 int num = 10;// 存储在常量区   NSString *str1 = @&quot;hello&quot;;// 存储在堆区 NSString *str2 = [NSString stri">
 <meta name="keywords" content="iOS,NSThread">
 <meta property="og:type" content="article">
 <meta property="og:title" content="iOS-多线程基础和NSThread">
 <meta property="og:url" content="http://techbird.me/2018/04/29/ios-nsthread/index.html">
 <meta property="og:site_name" content="techbird&#39;s blog">
-<meta property="og:description" content="栈区/堆区/常量区 操作内存的栈区速度很快;栈区存储空间地址是连续的 操作内存的常量区速度很快;内存空间只开辟一次; 操作内存的堆区速度相对栈区和常量区要慢些;堆区内存空间不连续,需要寻址123456// 存储在栈区 int num = 10;// 存储在常量区   NSString *str1 = @&quot;hello&quot;;// 存储在堆区NSString *str2 = [NSString strin">
+<meta property="og:description" content="栈区/堆区/常量区 操作内存的栈区速度很快;栈区存储空间地址是连续的 操作内存的常量区速度很快;内存空间只开辟一次; 操作内存的堆区速度相对栈区和常量区要慢些;堆区内存空间不连续,需要寻址123456// 存储在栈区 int num = 10;// 存储在常量区   NSString *str1 = @&quot;hello&quot;;// 存储在堆区 NSString *str2 = [NSString stri">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://p7xd6yrmx.bkt.clouddn.com/%E5%8D%A0%E4%BD%8D%E7%AC%A6.c3c0025120d24644bd5f8b826437ed9f.png">
 <meta property="og:image" content="http://p7xd6yrmx.bkt.clouddn.com/%E8%A7%86%E5%9B%BE%E6%8E%A7%E5%88%B6%E5%99%A8%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F02.352b2b30a64648848eccd65c30b76481.png">
-<meta property="og:updated_time" content="2018-04-29T07:02:56.730Z">
+<meta property="og:updated_time" content="2018-04-29T07:07:31.500Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="iOS-多线程基础和NSThread">
-<meta name="twitter:description" content="栈区/堆区/常量区 操作内存的栈区速度很快;栈区存储空间地址是连续的 操作内存的常量区速度很快;内存空间只开辟一次; 操作内存的堆区速度相对栈区和常量区要慢些;堆区内存空间不连续,需要寻址123456// 存储在栈区 int num = 10;// 存储在常量区   NSString *str1 = @&quot;hello&quot;;// 存储在堆区NSString *str2 = [NSString strin">
+<meta name="twitter:description" content="栈区/堆区/常量区 操作内存的栈区速度很快;栈区存储空间地址是连续的 操作内存的常量区速度很快;内存空间只开辟一次; 操作内存的堆区速度相对栈区和常量区要慢些;堆区内存空间不连续,需要寻址123456// 存储在栈区 int num = 10;// 存储在常量区   NSString *str1 = @&quot;hello&quot;;// 存储在堆区 NSString *str2 = [NSString stri">
 <meta name="twitter:image" content="http://p7xd6yrmx.bkt.clouddn.com/%E5%8D%A0%E4%BD%8D%E7%AC%A6.c3c0025120d24644bd5f8b826437ed9f.png">
 <meta name="twitter:creator" content="@stephentalk">
 
@@ -109,15 +109,11 @@
 		<h2 id="栈区-堆区-常量区"><a href="#栈区-堆区-常量区" class="headerlink" title="栈区/堆区/常量区"></a>栈区/堆区/常量区</h2><ul>
 <li>操作内存的栈区速度很快;栈区存储空间地址是连续的</li>
 <li>操作内存的常量区速度很快;内存空间只开辟一次;</li>
-<li>操作内存的堆区速度相对栈区和常量区要慢些;堆区内存空间不连续,需要寻址<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 存储在栈区</span></span><br><span class="line"> <span class="keyword">int</span> num = <span class="number">10</span>;</span><br><span class="line"><span class="comment">// 存储在常量区  </span></span><br><span class="line"> <span class="built_in">NSString</span> *str1 = <span class="string">@"hello"</span>;</span><br><span class="line"><span class="comment">// 存储在堆区</span></span><br><span class="line"><span class="built_in">NSString</span> *str2 = [<span class="built_in">NSString</span> stringWithFormat:<span class="string">@"hello_%d"</span>,i];</span><br></pre></td></tr></table></figure>
+<li>操作内存的堆区速度相对栈区和常量区要慢些;堆区内存空间不连续,需要寻址<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 存储在栈区</span></span><br><span class="line"> <span class="keyword">int</span> num = <span class="number">10</span>;</span><br><span class="line"><span class="comment">// 存储在常量区  </span></span><br><span class="line"> <span class="built_in">NSString</span> *str1 = <span class="string">@"hello"</span>;</span><br><span class="line"><span class="comment">// 存储在堆区</span></span><br><span class="line"> <span class="built_in">NSString</span> *str2 = [<span class="built_in">NSString</span> stringWithFormat:<span class="string">@"hello_%d"</span>,i];</span><br></pre></td></tr></table></figure>
 </li>
 </ul>
-<h2 id="NSThread创建线程的三种方式"><a href="#NSThread创建线程的三种方式" class="headerlink" title="NSThread创建线程的三种方式"></a>NSThread创建线程的三种方式</h2><ul>
-<li><code>NSThread *thread = [[NSThread alloc] initWithTarget:self selector:@selector(demo:) object:@&quot;alloc&quot;];</code></li>
-<li><code>[NSThread detachNewThreadSelector:@selector(demo:) toTarget:self withObject:@&quot;detach&quot;];</code><ul>
-<li><code>[self performSelectorInBackground:@selector(demo:) withObject:@&quot;perform&quot;];</code><h2 id="target和selector的关系"><a href="#target和selector的关系" class="headerlink" title="target和selector的关系"></a>target和selector的关系</h2></li>
-</ul>
-</li>
+<h2 id="NSThread创建线程的三种方式"><a href="#NSThread创建线程的三种方式" class="headerlink" title="NSThread创建线程的三种方式"></a>NSThread创建线程的三种方式</h2><figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">- <span class="built_in">NSThread</span> *thread = [[<span class="built_in">NSThread</span> alloc] initWithTarget:<span class="keyword">self</span> selector:<span class="keyword">@selector</span>(demo:) object:<span class="string">@"alloc"</span>];</span><br><span class="line">- [<span class="built_in">NSThread</span> detachNewThreadSelector:<span class="keyword">@selector</span>(demo:) toTarget:<span class="keyword">self</span> withObject:<span class="string">@"detach"</span>];</span><br><span class="line">- [<span class="keyword">self</span> performSelectorInBackground:<span class="keyword">@selector</span>(demo:) withObject:<span class="string">@"perform"</span>];</span><br></pre></td></tr></table></figure>
+<h2 id="target和selector的关系"><a href="#target和selector的关系" class="headerlink" title="target和selector的关系"></a>target和selector的关系</h2><ul>
 <li>执行哪个对象上的哪个方法.<h2 id="synthesize是啥？什么情况下使用？"><a href="#synthesize是啥？什么情况下使用？" class="headerlink" title="@synthesize是啥？什么情况下使用？"></a>@synthesize是啥？什么情况下使用？</h2></li>
 <li>首先一旦重写来属性的setter和getter方法后,系统不再自动生成带下划线的成员变量，而这行代码会创造一个带下划线前缀的实例变量名，同时使用这个属性生成getter 和 setter 方法。</li>
 <li>使用<code>@synthesize</code> 只有一个目的——给实例变量起个别名，或者说为同一个变量添加两个名字。</li>
@@ -128,7 +124,7 @@
 <li>exit：完全杀死（非正常死亡），<em>不要在主线程中调用</em><h2 id="线程属性（name，stackSize，isMainThread，threadPriority，qualityOfService）"><a href="#线程属性（name，stackSize，isMainThread，threadPriority，qualityOfService）" class="headerlink" title="线程属性（name，stackSize，isMainThread，threadPriority，qualityOfService）"></a>线程属性（name，stackSize，isMainThread，threadPriority，qualityOfService）</h2><h3 id="name-线程名称"><a href="#name-线程名称" class="headerlink" title="name - 线程名称"></a><code>name</code> - 线程名称</h3><ul>
 <li>设置线程名称可以当线程执行的方法内部出现异常时，记录异常和当前线程<h3 id="stackSize-栈区大小"><a href="#stackSize-栈区大小" class="headerlink" title="stackSize - 栈区大小"></a><code>stackSize</code> - 栈区大小</h3></li>
 <li>默认情况下，无论是主线程还是子线程，栈区大小都是 512K</li>
-<li>栈区大小可以设置 <code>[NSThread currentThread].stackSize = 1024 * 1024;</code></li>
+<li>栈区大小可以设置 <code>Objc [NSThread currentThread].stackSize = 1024 * 1024;</code></li>
 <li>必须是 4KB 的倍数<h3 id="isMainThread-是否主线程"><a href="#isMainThread-是否主线程" class="headerlink" title="isMainThread - 是否主线程"></a><code>isMainThread</code> - 是否主线程</h3><h3 id="threadPriority-线程优先级"><a href="#threadPriority-线程优先级" class="headerlink" title="threadPriority - 线程优先级"></a><code>threadPriority</code> - 线程优先级</h3></li>
 <li>优先级，是一个浮点数，取值范围从<code>0~1.0</code></li>
 <li><code>1.0</code>表示优先级最高</li>
@@ -180,8 +176,8 @@
 <li><code>viewWillDisappear</code>：界面即将从屏幕上消失</li>
 <li><code>viewDidDisappear</code>：界面已经完全消失</li>
 <li><code>dealloc</code>：控制器销毁<h2 id="什么时候用stong-weak"><a href="#什么时候用stong-weak" class="headerlink" title="什么时候用stong/weak"></a>什么时候用<code>stong</code>/<code>weak</code></h2></li>
-<li>根视图和父视图需要使用strong; 子视图使用weak</li>
-<li>没有强指针指向的对象使用strong; 有强指针指向的可以可以weak</li>
+<li>根视图和父视图需要使用<code>strong</code>; 子视图使用<code>weak</code></li>
+<li>没有强指针指向的对象使用<code>strong</code>; 有强指针指向的可以可以<code>weak</code></li>
 </ul>
   
 	</div>
