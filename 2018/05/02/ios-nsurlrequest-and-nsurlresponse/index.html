@@ -4,31 +4,27 @@
 <head>
   <meta charset="UTF-8">
   
-    <title>Xcode-打包证书创建流程 | techbird&#39;s blog</title>
+    <title>iOS-NSURLRequest&amp;NSURLResponse | techbird&#39;s blog</title>
     <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
     
     <meta name="author" content="techbird">
     
 
     
-    <meta name="description" content="创建CSR证书点击spotlight输入keychain打开钥匙串   生成CSR文件注意： 创建Cer证书登录 apple developer使用CSR文件创建Development和Distribution的CER证书并下载 双击下载好的cer证书，然后导出对应的p12文件（dev/dis） 创建Provisioning Profile这里要创建是三种profile（dev/dis/adhoc">
-<meta name="keywords" content="Xcode,package">
+    <meta name="description" content="NSURLRequest创建请求对象 (缓存策略和超时时长都是默认的)1NSURLRequest * request = [NSURLRequest requestWithURL:url]; 创建请求对象的同时指定缓存策略和超时时长1NSURLRequest * request = [NSURLRequest requestWithURL:url cachePolicy:0 timeoutInt">
+<meta name="keywords" content="iOS,Network,NSURLRequest,NSURLResponse">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Xcode-打包证书创建流程">
-<meta property="og:url" content="http://techbird.me/2018/04/29/xcode-pack-cer-create-process/index.html">
+<meta property="og:title" content="iOS-NSURLRequest&amp;NSURLResponse">
+<meta property="og:url" content="http://techbird.me/2018/05/02/ios-nsurlrequest-and-nsurlresponse/index.html">
 <meta property="og:site_name" content="techbird&#39;s blog">
-<meta property="og:description" content="创建CSR证书点击spotlight输入keychain打开钥匙串   生成CSR文件注意： 创建Cer证书登录 apple developer使用CSR文件创建Development和Distribution的CER证书并下载 双击下载好的cer证书，然后导出对应的p12文件（dev/dis） 创建Provisioning Profile这里要创建是三种profile（dev/dis/adhoc">
+<meta property="og:description" content="NSURLRequest创建请求对象 (缓存策略和超时时长都是默认的)1NSURLRequest * request = [NSURLRequest requestWithURL:url]; 创建请求对象的同时指定缓存策略和超时时长1NSURLRequest * request = [NSURLRequest requestWithURL:url cachePolicy:0 timeoutInt">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://p7xd6yrmx.bkt.clouddn.com/WX20180415-192128.ed09497c15d24f6bb84e812effb1d0f9.png">
-<meta property="og:image" content="http://p7xd6yrmx.bkt.clouddn.com/DraggedImage.ae2ad2036be3471b9b1549406a95e44b.png">
-<meta property="og:image" content="http://p7xd6yrmx.bkt.clouddn.com/DraggedImage.ca56c2a73e474422ac1aaac410172bc6.png">
-<meta property="og:image" content="http://p7xd6yrmx.bkt.clouddn.com/DraggedImage.bc375b929a6f463f8d85d6f92e6bc853.png">
-<meta property="og:image" content="http://p7xd6yrmx.bkt.clouddn.com/DraggedImage.8b0bda299adf43029f16d552dceac353.png">
-<meta property="og:updated_time" content="2018-04-30T03:08:55.551Z">
+<meta property="og:image" content="http://p7xd6yrmx.bkt.clouddn.com/HTTP%E9%80%9A%E8%AE%AF%E8%BF%87%E7%A8%8B.png">
+<meta property="og:updated_time" content="2018-05-02T14:38:32.392Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Xcode-打包证书创建流程">
-<meta name="twitter:description" content="创建CSR证书点击spotlight输入keychain打开钥匙串   生成CSR文件注意： 创建Cer证书登录 apple developer使用CSR文件创建Development和Distribution的CER证书并下载 双击下载好的cer证书，然后导出对应的p12文件（dev/dis） 创建Provisioning Profile这里要创建是三种profile（dev/dis/adhoc">
-<meta name="twitter:image" content="http://p7xd6yrmx.bkt.clouddn.com/WX20180415-192128.ed09497c15d24f6bb84e812effb1d0f9.png">
+<meta name="twitter:title" content="iOS-NSURLRequest&amp;NSURLResponse">
+<meta name="twitter:description" content="NSURLRequest创建请求对象 (缓存策略和超时时长都是默认的)1NSURLRequest * request = [NSURLRequest requestWithURL:url]; 创建请求对象的同时指定缓存策略和超时时长1NSURLRequest * request = [NSURLRequest requestWithURL:url cachePolicy:0 timeoutInt">
+<meta name="twitter:image" content="http://p7xd6yrmx.bkt.clouddn.com/HTTP%E9%80%9A%E8%AE%AF%E8%BF%87%E7%A8%8B.png">
 <meta name="twitter:creator" content="@stephentalk">
 
     
@@ -89,14 +85,14 @@
 		<header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/04/29/xcode-pack-cer-create-process/" title="Xcode-打包证书创建流程" itemprop="url">Xcode-打包证书创建流程</a>
+      <a href="/2018/05/02/ios-nsurlrequest-and-nsurlresponse/" title="iOS-NSURLRequest&amp;NSURLResponse" itemprop="url">iOS-NSURLRequest&amp;NSURLResponse</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="techbird" target="_blank" itemprop="author">techbird</a>
 		
   <p class="article-time">
-    <time datetime="2018-04-29T03:48:37.000Z" itemprop="datePublished"> Published 2018-04-29</time>
+    <time datetime="2018-05-02T14:30:51.000Z" itemprop="datePublished"> Published 2018-05-02</time>
     
   </p>
 </header>
@@ -105,15 +101,98 @@
 		<div id="toc" class="toc-article">
 			<strong class="toc-title">Contents</strong>
 		
-			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#创建CSR证书"><span class="toc-number">1.</span> <span class="toc-text">创建CSR证书</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#点击spotlight输入keychain打开钥匙串"><span class="toc-number">1.1.</span> <span class="toc-text">点击spotlight输入keychain打开钥匙串</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#生成CSR文件"><span class="toc-number">1.2.</span> <span class="toc-text">生成CSR文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#注意："><span class="toc-number">1.3.</span> <span class="toc-text">注意：</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#创建Cer证书"><span class="toc-number">2.</span> <span class="toc-text">创建Cer证书</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#登录-apple-developer"><span class="toc-number">2.1.</span> <span class="toc-text">登录 apple developer</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#使用CSR文件创建Development和Distribution的CER证书并下载"><span class="toc-number">2.2.</span> <span class="toc-text">使用CSR文件创建Development和Distribution的CER证书并下载</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#双击下载好的cer证书，然后导出对应的p12文件（dev-dis）"><span class="toc-number">2.3.</span> <span class="toc-text">双击下载好的cer证书，然后导出对应的p12文件（dev/dis）</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#创建Provisioning-Profile"><span class="toc-number">3.</span> <span class="toc-text">创建Provisioning Profile</span></a></li></ol>
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#NSURLRequest"><span class="toc-number">1.</span> <span class="toc-text">NSURLRequest</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#创建请求对象-缓存策略和超时时长都是默认的"><span class="toc-number">1.1.</span> <span class="toc-text">创建请求对象 (缓存策略和超时时长都是默认的)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#创建请求对象的同时指定缓存策略和超时时长"><span class="toc-number">1.2.</span> <span class="toc-text">创建请求对象的同时指定缓存策略和超时时长</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#缓存策略"><span class="toc-number">1.3.</span> <span class="toc-text">缓存策略</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#超时时长"><span class="toc-number">1.4.</span> <span class="toc-text">超时时长</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#NSMutableURLRequest（可变请求）"><span class="toc-number">1.5.</span> <span class="toc-text">NSMutableURLRequest（可变请求）</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#NSURLResponse"><span class="toc-number">2.</span> <span class="toc-text">NSURLResponse</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#响应头"><span class="toc-number">2.1.</span> <span class="toc-text">响应头</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#响应体-data"><span class="toc-number">2.2.</span> <span class="toc-text">响应体 data</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#GET请求-URL中有中文时如何处理？"><span class="toc-number">3.</span> <span class="toc-text">GET请求 URL中有中文时如何处理？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#URL转字符串的方法"><span class="toc-number">4.</span> <span class="toc-text">URL转字符串的方法</span></a></li></ol>
 		
 		</div>
 		
-		<h2 id="创建CSR证书"><a href="#创建CSR证书" class="headerlink" title="创建CSR证书"></a>创建CSR证书</h2><h3 id="点击spotlight输入keychain打开钥匙串"><a href="#点击spotlight输入keychain打开钥匙串" class="headerlink" title="点击spotlight输入keychain打开钥匙串"></a>点击spotlight输入keychain打开钥匙串</h3><p><img src="http://p7xd6yrmx.bkt.clouddn.com/WX20180415-192128.ed09497c15d24f6bb84e812effb1d0f9.png" alt="">  </p>
-<h3 id="生成CSR文件"><a href="#生成CSR文件" class="headerlink" title="生成CSR文件"></a>生成CSR文件</h3><h3 id="注意："><a href="#注意：" class="headerlink" title="注意："></a><strong>注意</strong>：</h3><p><img src="http://p7xd6yrmx.bkt.clouddn.com/DraggedImage.ae2ad2036be3471b9b1549406a95e44b.png" alt=""></p>
-<h2 id="创建Cer证书"><a href="#创建Cer证书" class="headerlink" title="创建Cer证书"></a>创建Cer证书</h2><h3 id="登录-apple-developer"><a href="#登录-apple-developer" class="headerlink" title="登录 apple developer"></a><a href="https://developer.apple.com/account/" target="_blank" rel="noopener">登录 apple developer</a></h3><h3 id="使用CSR文件创建Development和Distribution的CER证书并下载"><a href="#使用CSR文件创建Development和Distribution的CER证书并下载" class="headerlink" title="使用CSR文件创建Development和Distribution的CER证书并下载"></a>使用CSR文件创建Development和Distribution的CER证书并下载</h3><p><img src="http://p7xd6yrmx.bkt.clouddn.com/DraggedImage.ca56c2a73e474422ac1aaac410172bc6.png" alt=""></p>
-<h3 id="双击下载好的cer证书，然后导出对应的p12文件（dev-dis）"><a href="#双击下载好的cer证书，然后导出对应的p12文件（dev-dis）" class="headerlink" title="双击下载好的cer证书，然后导出对应的p12文件（dev/dis）"></a>双击下载好的cer证书，然后导出对应的p12文件（dev/dis）</h3><p><img src="http://p7xd6yrmx.bkt.clouddn.com/DraggedImage.bc375b929a6f463f8d85d6f92e6bc853.png" alt=""></p>
-<h2 id="创建Provisioning-Profile"><a href="#创建Provisioning-Profile" class="headerlink" title="创建Provisioning Profile"></a>创建Provisioning Profile</h2><p>这里要创建是三种profile（dev/dis/adhoc）<br><img src="http://p7xd6yrmx.bkt.clouddn.com/DraggedImage.8b0bda299adf43029f16d552dceac353.png" alt=""></p>
+		<p><img src="http://p7xd6yrmx.bkt.clouddn.com/HTTP%E9%80%9A%E8%AE%AF%E8%BF%87%E7%A8%8B.png" alt=""></p>
+<h2 id="NSURLRequest"><a href="#NSURLRequest" class="headerlink" title="NSURLRequest"></a>NSURLRequest</h2><h3 id="创建请求对象-缓存策略和超时时长都是默认的"><a href="#创建请求对象-缓存策略和超时时长都是默认的" class="headerlink" title="创建请求对象 (缓存策略和超时时长都是默认的)"></a>创建请求对象 (缓存策略和超时时长都是默认的)</h3><figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">NSURLRequest</span> * request = [<span class="built_in">NSURLRequest</span> requestWithURL:url];</span><br></pre></td></tr></table></figure>
+<h3 id="创建请求对象的同时指定缓存策略和超时时长"><a href="#创建请求对象的同时指定缓存策略和超时时长" class="headerlink" title="创建请求对象的同时指定缓存策略和超时时长"></a>创建请求对象的同时指定缓存策略和超时时长</h3><figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">NSURLRequest</span> * request = [<span class="built_in">NSURLRequest</span> requestWithURL:url cachePolicy:<span class="number">0</span> timeoutInterval:<span class="number">15</span>];</span><br></pre></td></tr></table></figure>
+<h3 id="缓存策略"><a href="#缓存策略" class="headerlink" title="缓存策略"></a>缓存策略</h3><table>
+<thead>
+<tr>
+<th>枚举</th>
+<th>数值</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>NSURLRequestUseProtocolCachePolicy</code></td>
+<td>0</td>
+<td>默认的缓存策略</td>
+</tr>
+<tr>
+<td><code>NSURLRequestReloadIgnoringLocalCacheData</code></td>
+<td>1</td>
+<td><ul><li>忽略本地缓存数据，始终加载服务器的数据</li><li>对数据的及时性要求高的应用</li></ul></td>
+</tr>
+<tr>
+<td><code>NSURLRequestReturnCacheDataElseLoad</code></td>
+<td>2</td>
+<td>如果有缓存，就返回缓存，否则加载最新数据</td>
+</tr>
+<tr>
+<td><code>NSURLRequestReturnCacheDataDontLoad</code></td>
+<td>3</td>
+<td>只加载缓存数据,不去服务器上获取(离线地图)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="超时时长"><a href="#超时时长" class="headerlink" title="超时时长"></a>超时时长</h3><ul>
+<li>默认网络时长是 <code>60 s</code><blockquote>
+<p><code>SDWebImage</code> 的默认超时时长是 <code>15</code> 秒<br><code>AFN</code> 的默认超时时长是 <code>60</code> 秒</p>
+</blockquote>
+</li>
+</ul>
+<h3 id="NSMutableURLRequest（可变请求）"><a href="#NSMutableURLRequest（可变请求）" class="headerlink" title="NSMutableURLRequest（可变请求）"></a>NSMutableURLRequest（可变请求）</h3><figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 可变的请求对象才能设置额外的信息</span></span><br><span class="line"><span class="built_in">NSMutableURLRequest</span> *requestM = [<span class="built_in">NSMutableURLRequest</span> requestWithURL:url cachePolicy:<span class="number">0</span> timeoutInterval:<span class="number">15</span>];</span><br><span class="line"><span class="comment">// 设置请求头 : 告诉服务器,我的设备是iphone</span></span><br><span class="line">[requestM setValue:<span class="string">@"iphone AppleWebKit"</span> forHTTPHeaderField:<span class="string">@"User-Agent"</span>];</span><br></pre></td></tr></table></figure>
+<h2 id="NSURLResponse"><a href="#NSURLResponse" class="headerlink" title="NSURLResponse"></a>NSURLResponse</h2><h3 id="响应头"><a href="#响应头" class="headerlink" title="响应头"></a>响应头</h3><table>
+<thead>
+<tr>
+<th>响应属性</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>URL</code></td>
+<td>服务器反馈的 URL，有的时候，服务器会重定向新的 URL</td>
+</tr>
+<tr>
+<td><code>MIMEType</code></td>
+<td><ul><li>服务器告诉客户端，返回的二进制数据的类型（纯文本，视频，语音，超文本等）</li><li><code>ContentType</code></li><li>根据 MIMEType 客户端就知道使用什么软件处理返回的二进制数据</li></ul></td>
+</tr>
+<tr>
+<td><code>statusCode</code></td>
+<td>状态码<br><ul><li>1XX消息</li><li>2XX 成功</li><li>3XX 更多选择</li><li>4XX 客户端错误</li><li>5XX 服务器错误</li></ul></td>
+</tr>
+<tr>
+<td><code>expectedContentLength</code></td>
+<td>数据长度，下载文件总长度</td>
+</tr>
+<tr>
+<td><code>suggestedFilename</code></td>
+<td>获取服务器的文件的名称</td>
+</tr>
+<tr>
+<td><code>allHeaderFields</code></td>
+<td>返回数据的头部信息，key－value格式</td>
+</tr>
+<tr>
+<td><code>textEncodingName</code></td>
+<td>编码的名称</td>
+</tr>
+</tbody>
+</table>
+<h3 id="响应体-data"><a href="#响应体-data" class="headerlink" title="响应体 data"></a>响应体 data</h3><ul>
+<li><code>data</code> 服务器返回的二进制数据，程序员最关心的内容</li>
+<li>拿到响应体之后,无法直接使用,需要进行反序列化,转换成OC对象.</li>
+</ul>
+<h2 id="GET请求-URL中有中文时如何处理？"><a href="#GET请求-URL中有中文时如何处理？" class="headerlink" title="GET请求 URL中有中文时如何处理？"></a>GET请求 URL中有中文时如何处理？</h2><figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">NSString</span> * URLString = [URLString stringByAddingPercentEncodingWithAllowedCharacters:[<span class="built_in">NSCharacterSet</span> URLQueryAllowedCharacterSet]];</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>注意：GET请求时,问号<code>?</code>后面的查询字符串里面不能有中文或者空格.如果有就需要使用%转义,不然URL会为nil. POST请求时,请求体里面可以有中文.<br>URLQueryAllowedCharacterSet : 百分号转义查询字符串</p>
+</blockquote>
+<h2 id="URL转字符串的方法"><a href="#URL转字符串的方法" class="headerlink" title="URL转字符串的方法"></a>URL转字符串的方法</h2><figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[filePath.path / filePath.absoluteString]</span><br></pre></td></tr></table></figure>
   
 	</div>
 		<footer class="article-footer clearfix">
@@ -121,13 +200,13 @@
 
 <div class="article-categories">
   <span></span>
-  <a class="article-category-link" href="/categories/Xcode/">Xcode</a>
+  <a class="article-category-link" href="/categories/iOS/">iOS</a>
 </div>
 
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/Xcode/">Xcode</a><a href="/tags/package/">package</a>
+  <span></span> <a href="/tags/iOS/">iOS</a><a href="/tags/Network/">Network</a><a href="/tags/NSURLRequest/">NSURLRequest</a><a href="/tags/NSURLResponse/">NSURLResponse</a>
   </div>
 
 </div>
@@ -136,7 +215,7 @@
 
 	<div class="article-share" id="share">
 	
-	  <div data-url="http://techbird.me/2018/04/29/xcode-pack-cer-create-process/" data-title="Xcode-打包证书创建流程 | techbird&#39;s blog" data-tsina="6488657373" class="share clearfix">
+	  <div data-url="http://techbird.me/2018/05/02/ios-nsurlrequest-and-nsurlresponse/" data-title="iOS-NSURLRequest&amp;NSURLResponse | techbird&#39;s blog" data-tsina="6488657373" class="share clearfix">
 	  </div>
 	
 	</div>
@@ -149,19 +228,11 @@
 	
 <nav class="article-nav clearfix">
  
- <div class="prev" >
- <a href="/2018/04/29/ios-nsthread/" title="iOS-多线程之NSThread">
-  <strong>上一篇：</strong><br/>
-  <span>
-  iOS-多线程之NSThread</span>
-</a>
-</div>
-
 
 <div class="next">
-<a href="/2018/04/22/hello-world/"  title="Hello World">
+<a href="/2018/04/29/ios-network-nsurlsession/"  title="iOS-NSURLSession">
  <strong>下一篇：</strong><br/> 
- <span>Hello World
+ <span>iOS-NSURLSession
 </span>
 </a>
 </div>
@@ -184,7 +255,7 @@
   <div id="toc" class="toc-aside">
   <strong class="toc-title">Contents</strong>
  
- <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#创建CSR证书"><span class="toc-number">1.</span> <span class="toc-text">创建CSR证书</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#点击spotlight输入keychain打开钥匙串"><span class="toc-number">1.1.</span> <span class="toc-text">点击spotlight输入keychain打开钥匙串</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#生成CSR文件"><span class="toc-number">1.2.</span> <span class="toc-text">生成CSR文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#注意："><span class="toc-number">1.3.</span> <span class="toc-text">注意：</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#创建Cer证书"><span class="toc-number">2.</span> <span class="toc-text">创建Cer证书</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#登录-apple-developer"><span class="toc-number">2.1.</span> <span class="toc-text">登录 apple developer</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#使用CSR文件创建Development和Distribution的CER证书并下载"><span class="toc-number">2.2.</span> <span class="toc-text">使用CSR文件创建Development和Distribution的CER证书并下载</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#双击下载好的cer证书，然后导出对应的p12文件（dev-dis）"><span class="toc-number">2.3.</span> <span class="toc-text">双击下载好的cer证书，然后导出对应的p12文件（dev/dis）</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#创建Provisioning-Profile"><span class="toc-number">3.</span> <span class="toc-text">创建Provisioning Profile</span></a></li></ol>
+ <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#NSURLRequest"><span class="toc-number">1.</span> <span class="toc-text">NSURLRequest</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#创建请求对象-缓存策略和超时时长都是默认的"><span class="toc-number">1.1.</span> <span class="toc-text">创建请求对象 (缓存策略和超时时长都是默认的)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#创建请求对象的同时指定缓存策略和超时时长"><span class="toc-number">1.2.</span> <span class="toc-text">创建请求对象的同时指定缓存策略和超时时长</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#缓存策略"><span class="toc-number">1.3.</span> <span class="toc-text">缓存策略</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#超时时长"><span class="toc-number">1.4.</span> <span class="toc-text">超时时长</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#NSMutableURLRequest（可变请求）"><span class="toc-number">1.5.</span> <span class="toc-text">NSMutableURLRequest（可变请求）</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#NSURLResponse"><span class="toc-number">2.</span> <span class="toc-text">NSURLResponse</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#响应头"><span class="toc-number">2.1.</span> <span class="toc-text">响应头</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#响应体-data"><span class="toc-number">2.2.</span> <span class="toc-text">响应体 data</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#GET请求-URL中有中文时如何处理？"><span class="toc-number">3.</span> <span class="toc-text">GET请求 URL中有中文时如何处理？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#URL转字符串的方法"><span class="toc-number">4.</span> <span class="toc-text">URL转字符串的方法</span></a></li></ol>
  
   </div>
 
