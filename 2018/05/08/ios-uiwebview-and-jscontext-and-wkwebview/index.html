@@ -1,0 +1,691 @@
+
+ <!DOCTYPE HTML>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+  
+    <title>iOS-UIWebView&amp;JSContext&amp;WKWebView | techbird&#39;s blog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="techbird">
+    
+
+    
+    <meta name="description" content="UIWebView A view that embeds web content in your app.  UIWebView 的JS注入 案例 : 移除网页的某些不需要展示的标签   准备网页地址 : http://m.dianping.com/tuan/deal/5501525  浏览器终端中演示JS代码删除网页中元素 需要处理的网页    网页处理的步骤 123456以删除导航为例 :">
+<meta name="keywords" content="iOS,Network,WebView">
+<meta property="og:type" content="article">
+<meta property="og:title" content="iOS-UIWebView&amp;JSContext&amp;WKWebView">
+<meta property="og:url" content="http://techbird.me/2018/05/08/ios-uiwebview-and-jscontext-and-wkwebview/index.html">
+<meta property="og:site_name" content="techbird&#39;s blog">
+<meta property="og:description" content="UIWebView A view that embeds web content in your app.  UIWebView 的JS注入 案例 : 移除网页的某些不需要展示的标签   准备网页地址 : http://m.dianping.com/tuan/deal/5501525  浏览器终端中演示JS代码删除网页中元素 需要处理的网页    网页处理的步骤 123456以删除导航为例 :">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://p7xd6yrmx.bkt.clouddn.com/WX20180508-174926.png">
+<meta property="og:image" content="http://p7xd6yrmx.bkt.clouddn.com/WX20180508-175123.png">
+<meta property="og:updated_time" content="2018-05-08T09:59:12.904Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="iOS-UIWebView&amp;JSContext&amp;WKWebView">
+<meta name="twitter:description" content="UIWebView A view that embeds web content in your app.  UIWebView 的JS注入 案例 : 移除网页的某些不需要展示的标签   准备网页地址 : http://m.dianping.com/tuan/deal/5501525  浏览器终端中演示JS代码删除网页中元素 需要处理的网页    网页处理的步骤 123456以删除导航为例 :">
+<meta name="twitter:image" content="http://p7xd6yrmx.bkt.clouddn.com/WX20180508-174926.png">
+<meta name="twitter:creator" content="@stephentalk">
+
+    
+    <link rel="alternative" href="/atom.xml" title="techbird&#39;s blog" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.png" alt="techbird&#39;s blog" title="techbird&#39;s blog"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="techbird&#39;s blog">techbird&#39;s blog</a></h1>
+				<h2 class="blog-motto">timeline of techology</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:techbird.me">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/05/08/ios-uiwebview-and-jscontext-and-wkwebview/" title="iOS-UIWebView&amp;JSContext&amp;WKWebView" itemprop="url">iOS-UIWebView&amp;JSContext&amp;WKWebView</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="techbird" target="_blank" itemprop="author">techbird</a>
+		
+  <p class="article-time">
+    <time datetime="2018-05-08T09:33:53.000Z" itemprop="datePublished"> Published 2018-05-08</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#UIWebView"><span class="toc-number">1.</span> <span class="toc-text">UIWebView</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#UIWebView-的JS注入"><span class="toc-number">1.1.</span> <span class="toc-text">UIWebView 的JS注入</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#浏览器终端中演示JS代码删除网页中元素"><span class="toc-number">1.1.1.</span> <span class="toc-text">浏览器终端中演示JS代码删除网页中元素</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#OC调用JS-实现-JS注入"><span class="toc-number">1.1.2.</span> <span class="toc-text">OC调用JS 实现 JS注入</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#JS注入的具体实现"><span class="toc-number">1.1.3.</span> <span class="toc-text">JS注入的具体实现</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#UIWebView监听网页标签的点击-JS调用OC"><span class="toc-number">1.2.</span> <span class="toc-text">UIWebView监听网页标签的点击(JS调用OC)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#JS调用OC需要实现的代理方法"><span class="toc-number">1.2.1.</span> <span class="toc-text">JS调用OC需要实现的代理方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#JS注入给标签添加点击事件"><span class="toc-number">1.2.2.</span> <span class="toc-text">JS注入给标签添加点击事件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#拦截webView上所有的网络请求-筛选请求"><span class="toc-number">1.2.3.</span> <span class="toc-text">拦截webView上所有的网络请求,筛选请求</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#JSContext"><span class="toc-number">2.</span> <span class="toc-text">JSContext</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#JSContexts实现OC与JS交互"><span class="toc-number">2.1.</span> <span class="toc-text">JSContexts实现OC与JS交互</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#使用JSContext-实现-JS调用OC"><span class="toc-number">2.2.</span> <span class="toc-text">使用JSContext 实现 JS调用OC</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#使用JSContext-实现-JS注入"><span class="toc-number">2.3.</span> <span class="toc-text">使用JSContext 实现 JS注入</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#WKWebView"><span class="toc-number">3.</span> <span class="toc-text">WKWebView</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#WKWebView的OC和JS交互"><span class="toc-number">3.1.</span> <span class="toc-text">WKWebView的OC和JS交互</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#代理方法介绍"><span class="toc-number">3.1.1.</span> <span class="toc-text">代理方法介绍</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#准备WKWebView"><span class="toc-number">3.1.2.</span> <span class="toc-text">准备WKWebView</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#OC调用JS-JS注入-类似UIWebView"><span class="toc-number">3.1.3.</span> <span class="toc-text">OC调用JS : JS注入 (类似UIWebView)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#JS调用OC-类似UIWebView"><span class="toc-number">3.1.4.</span> <span class="toc-text">JS调用OC : (类似UIWebView)</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#WKWebView-监听加载进度"><span class="toc-number">3.2.</span> <span class="toc-text">WKWebView 监听加载进度</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#初始化WKWebView和进度条"><span class="toc-number">3.2.1.</span> <span class="toc-text">初始化WKWebView和进度条</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#KVO监听进度"><span class="toc-number">3.2.2.</span> <span class="toc-text">KVO监听进度</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#WKWebView-其他"><span class="toc-number">3.3.</span> <span class="toc-text">WKWebView 其他</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#WKUIDelegate"><span class="toc-number">3.3.1.</span> <span class="toc-text">WKUIDelegate</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Bug-Tips"><span class="toc-number">3.3.2.</span> <span class="toc-text">Bug Tips</span></a></li></ol></li></ol></li></ol>
+		
+		</div>
+		
+		<h1 id="UIWebView"><a href="#UIWebView" class="headerlink" title="UIWebView"></a>UIWebView</h1><blockquote>
+<p>A view that embeds web content in your app.</p>
+</blockquote>
+<h2 id="UIWebView-的JS注入"><a href="#UIWebView-的JS注入" class="headerlink" title="UIWebView 的JS注入"></a>UIWebView 的JS注入</h2><blockquote>
+<p>案例 : 移除网页的某些不需要展示的标签</p>
+</blockquote>
+<ul>
+<li>准备网页地址 : <a href="http://m.dianping.com/tuan/deal/5501525" target="_blank" rel="noopener">http://m.dianping.com/tuan/deal/5501525</a></li>
+</ul>
+<h3 id="浏览器终端中演示JS代码删除网页中元素"><a href="#浏览器终端中演示JS代码删除网页中元素" class="headerlink" title="浏览器终端中演示JS代码删除网页中元素"></a>浏览器终端中演示JS代码删除网页中元素</h3><ul>
+<li>需要处理的网页<br><img src="http://p7xd6yrmx.bkt.clouddn.com/WX20180508-174926.png" alt=""></li>
+</ul>
+<hr>
+<ul>
+<li><p>网页处理的步骤</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">以删除导航为例 :</span><br><span class="line">  <span class="number">1.</span>先找到该节点 : <span class="keyword">var</span> headerTag = <span class="built_in">document</span>.getElementsByTagName(<span class="string">'header'</span>)[<span class="number">0</span>];</span><br><span class="line">  <span class="number">2.</span>再找到父节点 : headerTag.parentNode</span><br><span class="line">  <span class="number">3.</span>最后用它的父节点删除该节点 : headerTag.parentNode.removeChild(headerTag);</span><br><span class="line"></span><br><span class="line">  合并: <span class="keyword">var</span> headerTag = <span class="built_in">document</span>.getElementsByTagName(<span class="string">'header'</span>)[<span class="number">0</span>];headerTag.parentNode.removeChild(headerTag);</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>删除导航</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> headerTag = <span class="built_in">document</span>.getElementsByTagName(<span class="string">'header'</span>)[<span class="number">0</span>];headerTag.parentNode.removeChild(headerTag);</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>删除底部悬停按钮</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> footerBtnTag = <span class="built_in">document</span>.getElementsByClassName(<span class="string">'footer-btn-fix'</span>)[<span class="number">0</span>]; footerBtnTag.parentNode.removeChild(footerBtnTag);</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>删除底部布局</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> footerTag = <span class="built_in">document</span>.getElementsByClassName(<span class="string">'footer'</span>)[<span class="number">0</span>]; footerTag.parentNode.removeChild(footerTag);</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>处理之后的网页<br><img src="http://p7xd6yrmx.bkt.clouddn.com/WX20180508-175123.png" alt=""></p>
+</li>
+</ul>
+<hr>
+<h3 id="OC调用JS-实现-JS注入"><a href="#OC调用JS-实现-JS注入" class="headerlink" title="OC调用JS 实现 JS注入"></a>OC调用JS 实现 JS注入</h3><blockquote>
+<p>OC和JS的交互需要使用UIWebView的代理方法作为桥梁实现</p>
+</blockquote>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="keyword">void</span>)viewDidLoad &#123;</span><br><span class="line">	[<span class="keyword">super</span> viewDidLoad];</span><br><span class="line"></span><br><span class="line">	<span class="built_in">NSURL</span> * URL = [<span class="built_in">NSURL</span> URLWithString:<span class="string">@"http://m.dianping.com/tuan/deal/5501525"</span>];</span><br><span class="line">	[<span class="keyword">self</span>.webView loadRequest:[<span class="built_in">NSURLRequest</span> requestWithURL:URL]];</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 设置代理</span></span><br><span class="line">	<span class="keyword">self</span>.webView.delegate = <span class="keyword">self</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>网页加载完时调用的代理方法</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="keyword">void</span>)webViewDidFinishLoad:(<span class="built_in">UIWebView</span> * ) webView;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>网页加载完成之后,调用JS代码的OC方法</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="keyword">nullable</span> <span class="built_in">NSString</span> * )stringByEvaluatingJavaScriptFromString:(<span class="built_in">NSString</span> * )script;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="JS注入的具体实现"><a href="#JS注入的具体实现" class="headerlink" title="JS注入的具体实现"></a>JS注入的具体实现</h3><figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="keyword">void</span>)webViewDidFinishLoad:(<span class="built_in">UIWebView</span> * )webView</span><br><span class="line">&#123;</span><br><span class="line">	<span class="comment">// 拼接JS的代码</span></span><br><span class="line">	<span class="built_in">NSMutableString</span> * JSStringM = [<span class="built_in">NSMutableString</span> string];</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 删除导航</span></span><br><span class="line">	[JSStringM appendString:<span class="string">@"var headerTag = document.getElementsByTagName('header')[0];headerTag.parentNode.removeChild(headerTag);"</span>];</span><br><span class="line">	<span class="comment">// 删除底部悬停按钮</span></span><br><span class="line">	[JSStringM appendString:<span class="string">@"var footerBtnTag = document.getElementsByClassName('footer-btn-fix')[0]; footerBtnTag.parentNode.removeChild(footerBtnTag);"</span>];</span><br><span class="line">	<span class="comment">// 删除底部布局</span></span><br><span class="line">	[JSStringM appendString:<span class="string">@"var footerTag = document.getElementsByClassName('footer')[0]; footerTag.parentNode.removeChild(footerTag);"</span>];</span><br><span class="line"></span><br><span class="line">	<span class="comment">// OC调用JS代码</span></span><br><span class="line">	[webView stringByEvaluatingJavaScriptFromString:JSStringM];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="UIWebView监听网页标签的点击-JS调用OC"><a href="#UIWebView监听网页标签的点击-JS调用OC" class="headerlink" title="UIWebView监听网页标签的点击(JS调用OC)"></a>UIWebView监听网页标签的点击(JS调用OC)</h2><blockquote>
+<p>案例 : 点击网页某个标签跳转到苹果原生控制器<br>核心思想 : 拦截webView上所有的网络请求</p>
+</blockquote>
+<h3 id="JS调用OC需要实现的代理方法"><a href="#JS调用OC需要实现的代理方法" class="headerlink" title="JS调用OC需要实现的代理方法"></a>JS调用OC需要实现的代理方法</h3><figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-(<span class="built_in">BOOL</span>) webView:(<span class="built_in">UIWebView</span> * )webView shouldStartLoadWithRequest:(<span class="built_in">NSURLRequest</span> * )request navigationType:(<span class="built_in">UIWebViewNavigationType</span>)navigationType;</span><br></pre></td></tr></table></figure>
+<h3 id="JS注入给标签添加点击事件"><a href="#JS注入给标签添加点击事件" class="headerlink" title="JS注入给标签添加点击事件"></a>JS注入给标签添加点击事件</h3><ul>
+<li><p>网页标签添加点击事件</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[JSStringM appendString:<span class="string">@"var figureTag = document.getElementsByTagName('figure')[0].children[0]; figureTag.onclick = function()&#123;window.location.href = 'custom://techbird.me'&#125;;"</span>];</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>标签的点击事件注入到JS</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="keyword">void</span>)webViewDidFinishLoad:(<span class="built_in">UIWebView</span> * )webView</span><br><span class="line">&#123;</span><br><span class="line">	<span class="comment">// 拼接JS的代码</span></span><br><span class="line">	<span class="built_in">NSMutableString</span> * JSStringM = [<span class="built_in">NSMutableString</span> string];</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 删除导航</span></span><br><span class="line">	[JSStringM appendString:<span class="string">@"var headerTag = document.getElementsByTagName('header')[0];headerTag.parentNode.removeChild(headerTag);"</span>];</span><br><span class="line">	<span class="comment">// 删除底部悬停按钮</span></span><br><span class="line">	[JSStringM appendString:<span class="string">@"var footerBtnTag = document.getElementsByClassName('footer-btn-fix')[0]; footerBtnTag.parentNode.removeChild(footerBtnTag);"</span>];</span><br><span class="line">	<span class="comment">// 删除底部布局</span></span><br><span class="line">	[JSStringM appendString:<span class="string">@"var footerTag = document.getElementsByClassName('footer')[0]; footerTag.parentNode.removeChild(footerTag);"</span>];</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 给标签添加点击事件</span></span><br><span class="line">	[JSStringM appendString:<span class="string">@"var figureTag = document.getElementsByTagName('figure')[0].children[0]; figureTag.onclick = function()&#123;window.location.href = ‘custom://techbird.me‘&#125;;”];</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">	// OC调用JS代码</span></span><br><span class="line"><span class="string">	[webView stringByEvaluatingJavaScriptFromString:JSStringM];</span></span><br><span class="line"><span class="string">&#125;</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<blockquote>
+<ul>
+<li>给标签添加点击事件的目的 : 使标签可点击</li>
+<li>点击事件发送网络请求的目的 : 可以拦截到标签的点击事件</li>
+<li>自定义协议的目的 : 给事件设计一个特殊的标记,如果拦截到请求,就通过特殊的标记来区别要做的事情</li>
+</ul>
+</blockquote>
+<h3 id="拦截webView上所有的网络请求-筛选请求"><a href="#拦截webView上所有的网络请求-筛选请求" class="headerlink" title="拦截webView上所有的网络请求,筛选请求"></a>拦截webView上所有的网络请求,筛选请求</h3><figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> 1.JS与OC交互的桥梁</span></span><br><span class="line"><span class="comment"> 2.可以拦截webView上所有的请求</span></span><br><span class="line"><span class="comment"> 3.给标签添加点击事件,点击事件主要就是发送请求;发送的请求是自定义协议的,目的是为了做标记.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line">- (<span class="built_in">BOOL</span>)webView:(<span class="built_in">UIWebView</span> * )webView shouldStartLoadWithRequest:(<span class="built_in">NSURLRequest</span> * )request navigationType:(<span class="built_in">UIWebViewNavigationType</span>)navigationType</span><br><span class="line">&#123;</span><br><span class="line">	<span class="built_in">NSLog</span>(<span class="string">@"%@"</span>,request.URL.absoluteString);</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 拿到网页的请求地址</span></span><br><span class="line">	<span class="built_in">NSString</span> * URLString = request.URL.absoluteString;</span><br><span class="line">	<span class="comment">// 判断网页的请求地址协议是否是我们自定义的那个</span></span><br><span class="line">	<span class="built_in">NSRange</span> range = [URLString rangeOfString:@“custom:<span class="comment">//techbird.me”];</span></span><br><span class="line">	<span class="keyword">if</span> (range.length &gt; <span class="number">0</span>) &#123;</span><br><span class="line">		<span class="comment">// 点击网页中的图片,实现OC原生界面的跳转</span></span><br><span class="line">		TestViewController * VC = [[TestViewController alloc] init];</span><br><span class="line">		[<span class="keyword">self</span>.navigationController pushViewController:VC animated:<span class="literal">YES</span>];</span><br><span class="line">		<span class="keyword">return</span> <span class="literal">NO</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="literal">YES</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="JSContext"><a href="#JSContext" class="headerlink" title="JSContext"></a>JSContext</h1><p>JSContext是JavaScript的运行上下文，他主要作用是执行js代码和注册native方法接口</p>
+<h2 id="JSContexts实现OC与JS交互"><a href="#JSContexts实现OC与JS交互" class="headerlink" title="JSContexts实现OC与JS交互"></a>JSContexts实现OC与JS交互</h2><ul>
+<li>获取上下文<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">JSContext *context = [<span class="keyword">self</span>.webView valueForKeyPath:<span class="string">@"documentView.webView.mainFrame.javaScriptContext"</span>];</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="使用JSContext-实现-JS调用OC"><a href="#使用JSContext-实现-JS调用OC" class="headerlink" title="使用JSContext 实现 JS调用OC"></a>使用JSContext 实现 JS调用OC</h2><figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="keyword">void</span>)viewDidLoad &#123;</span><br><span class="line">	[<span class="keyword">super</span> viewDidLoad];</span><br><span class="line"></span><br><span class="line">	<span class="built_in">NSURLRequest</span> * request = [<span class="built_in">NSURLRequest</span> requestWithURL:[<span class="built_in">NSURL</span> URLWithString:<span class="string">@"http://m.dianping.com/tuan/deal/5501525"</span>]];</span><br><span class="line">	[<span class="keyword">self</span>.webView loadRequest:request];</span><br><span class="line">	<span class="keyword">self</span>.webView.delegate = <span class="keyword">self</span>;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 获取上下文</span></span><br><span class="line">	JSContext * context = [<span class="keyword">self</span>.webView valueForKeyPath:<span class="string">@"documentView.webView.mainFrame.javaScriptContext"</span>];</span><br><span class="line">	<span class="comment">// 监听图片标签点击</span></span><br><span class="line">	context[<span class="string">@"imgtag"</span>] = ^ &#123;</span><br><span class="line">		[<span class="keyword">self</span>.navigationController pushViewController:[TestViewController new] animated:<span class="literal">YES</span>];</span><br><span class="line">	&#125;;</span><br><span class="line">	<span class="comment">// 监听购买标签点击</span></span><br><span class="line">	context[<span class="string">@"buytag"</span>] = ^ &#123;</span><br><span class="line">		[<span class="keyword">self</span>.navigationController pushViewController:[Test1ViewController new] animated:<span class="literal">YES</span>];</span><br><span class="line">	&#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="使用JSContext-实现-JS注入"><a href="#使用JSContext-实现-JS注入" class="headerlink" title="使用JSContext 实现 JS注入"></a>使用JSContext 实现 JS注入</h2><figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="keyword">void</span>)webViewDidFinishLoad:(<span class="built_in">UIWebView</span> * )webView</span><br><span class="line">&#123;</span><br><span class="line">	<span class="comment">// 拿到JS的上下文</span></span><br><span class="line">	JSContext * context = [<span class="keyword">self</span>.webView valueForKeyPath:<span class="string">@"documentView.webView.mainFrame.javaScriptContext"</span>];</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 直接调用JS的函数,还可以向函数里面传入需要的参数.在XCode中向JS中的alert传入需要的message</span></span><br><span class="line">	<span class="comment">// 拼接JS的代码</span></span><br><span class="line">	<span class="built_in">NSMutableString</span> * JSStringM = [<span class="built_in">NSMutableString</span> string];</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 删除导航</span></span><br><span class="line">	[JSStringM appendString:<span class="string">@"var headerTag = document.getElementsByTagName('header')[0];headerTag.parentNode.removeChild(headerTag);"</span>];</span><br><span class="line">	<span class="comment">// 删除底部悬停按钮</span></span><br><span class="line">	[JSStringM appendString:<span class="string">@"var footerBtnTag = document.getElementsByClassName('footer-btn-fix')[0]; footerBtnTag.parentNode.removeChild(footerBtnTag);"</span>];</span><br><span class="line">	<span class="comment">// 删除底部布局</span></span><br><span class="line">	[JSStringM appendString:<span class="string">@"var footerTag = document.getElementsByClassName('footer')[0]; footerTag.parentNode.removeChild(footerTag);"</span>];</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 给图片标签添加点击事件 : 自定义协议</span></span><br><span class="line">	[JSStringM appendString:<span class="string">@"var figureTag = document.getElementsByTagName('figure')[0].children[0]; figureTag.onclick = function imgtagclick() &#123;imgtag();&#125;;"</span>];</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 给以过期的购买标签重新添加点击事件</span></span><br><span class="line">	[JSStringM appendString:<span class="string">@"var buyBtnTag = document.getElementsByClassName('buy-btn btn-gray')[0]; buyBtnTag.onclick = function buybtnclick() &#123;buytag();&#125;;"</span>];</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 执行这个JS代码</span></span><br><span class="line">	[context evaluateScript:JSStringM];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="WKWebView"><a href="#WKWebView" class="headerlink" title="WKWebView"></a>WKWebView</h1><blockquote>
+<p>Starting in iOS 8.0 and OS X 10.10, use WKWebView to add web content to your app. Do not use UIWebView or WebView.</p>
+</blockquote>
+<h2 id="WKWebView的OC和JS交互"><a href="#WKWebView的OC和JS交互" class="headerlink" title="WKWebView的OC和JS交互"></a>WKWebView的OC和JS交互</h2><ul>
+<li><p>使用前导入头文件</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#import <span class="meta-string">&lt;WebKit/WebKit.h&gt;</span></span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>遵守代理协议</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">webView.navigationDelegate = <span class="keyword">self</span>;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="代理方法介绍"><a href="#代理方法介绍" class="headerlink" title="代理方法介绍"></a>代理方法介绍</h3><ul>
+<li><p>面即将开始加载时调用 (拦截网页的网络请求 : JS调用OC)</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="keyword">void</span>)webView:(<span class="built_in">WKWebView</span> * )webView decidePolicyForNavigationAction:(<span class="built_in">WKNavigationAction</span> * )navigationAction decisionHandler:(<span class="keyword">void</span> (^)(<span class="built_in">WKNavigationActionPolicy</span>))decisionHandler;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>页面开始加载时调用</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="keyword">void</span>)webView:(<span class="built_in">WKWebView</span> * )webView didStartProvisionalNavigation:(<span class="built_in">WKNavigation</span> * )navigation;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>收到响应后,决定是否跳转,即是否把这个链接对应的网页加载到WKWebView上</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="keyword">void</span>)webView:(<span class="built_in">WKWebView</span> * )webView decidePolicyForNavigationResponse:(<span class="built_in">WKNavigationResponse</span> * )navigationResponse decisionHandler:(<span class="keyword">void</span> (^)(<span class="built_in">WKNavigationResponsePolicy</span>))decisionHandler;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>当内容开始返回时调用,即服务器已经在向客户端发送网页数据</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="keyword">void</span>)webView:(<span class="built_in">WKWebView</span> * )webView didCommitNavigation:(<span class="built_in">WKNavigation</span> * )navigation;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>页面加载完成之后调用 (OC调用JS : JS注入)</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="keyword">void</span>)webView:(<span class="built_in">WKWebView</span> * )webView didFinishNavigation:(<span class="built_in">WKNavigation</span> * )navigation;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>页面加载失败时调用</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="keyword">void</span>)webView:(<span class="built_in">WKWebView</span> * )webView didFailProvisionalNavigation:(<span class="built_in">WKNavigation</span> * )navigation;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="准备WKWebView"><a href="#准备WKWebView" class="headerlink" title="准备WKWebView"></a>准备WKWebView</h3><figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="keyword">void</span>)viewDidLoad &#123;</span><br><span class="line">	[<span class="keyword">super</span> viewDidLoad];</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 创建WKWebView</span></span><br><span class="line">	<span class="built_in">WKWebView</span> * webView = [[<span class="built_in">WKWebView</span> alloc] initWithFrame:[<span class="built_in">UIScreen</span> mainScreen].bounds];</span><br><span class="line">	[<span class="keyword">self</span>.view addSubview:webView];</span><br><span class="line">	webView.backgroundColor = [<span class="built_in">UIColor</span> redColor];</span><br><span class="line">	<span class="keyword">self</span>.webView = webView;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 设置代理</span></span><br><span class="line">	<span class="keyword">self</span>.webView.navigationDelegate = <span class="keyword">self</span>;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 加载的网页</span></span><br><span class="line">	<span class="built_in">NSURL</span> * URL = [<span class="built_in">NSURL</span> URLWithString:<span class="string">@"http://m.dianping.com/tuan/deal/5501525"</span>];</span><br><span class="line">	<span class="built_in">NSURLRequest</span> * request = [<span class="built_in">NSURLRequest</span> requestWithURL:URL];</span><br><span class="line">	[<span class="keyword">self</span>.webView loadRequest:request];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="OC调用JS-JS注入-类似UIWebView"><a href="#OC调用JS-JS注入-类似UIWebView" class="headerlink" title="OC调用JS : JS注入 (类似UIWebView)"></a>OC调用JS : JS注入 (类似UIWebView)</h3><figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 页面加载完成之后调用</span></span><br><span class="line">- (<span class="keyword">void</span>)webView:(<span class="built_in">WKWebView</span> * )webView didFinishNavigation:(<span class="built_in">WKNavigation</span> * )navigation</span><br><span class="line">&#123;</span><br><span class="line">	<span class="comment">// 拼接JS的代码</span></span><br><span class="line">	<span class="built_in">NSMutableString</span> * JSStringM = [<span class="built_in">NSMutableString</span> string];</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 删除导航</span></span><br><span class="line">	[JSStringM appendString:<span class="string">@"var headerTag = document.getElementsByTagName('header')[0];headerTag.parentNode.removeChild(headerTag);"</span>];</span><br><span class="line">	<span class="comment">// 删除底部悬停按钮</span></span><br><span class="line">	[JSStringM appendString:<span class="string">@"var footerBtnTag = document.getElementsByClassName('footer-btn-fix')[0]; footerBtnTag.parentNode.removeChild(footerBtnTag);"</span>];</span><br><span class="line">	<span class="comment">// 删除底部布局</span></span><br><span class="line">	[JSStringM appendString:<span class="string">@"var footerTag = document.getElementsByClassName('footer')[0]; footerTag.parentNode.removeChild(footerTag);"</span>];</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 给标签添加点击事件 : 自定义协议</span></span><br><span class="line">	[JSStringM appendString:<span class="string">@"var figureTag = document.getElementsByTagName('figure')[0].children[0]; figureTag.onclick = function()&#123;window.location.href = ‘custom://techbird.me'&#125;;”];</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">	// OC调用JS代码</span></span><br><span class="line"><span class="string">	[webView evaluateJavaScript:JSStringM completionHandler:nil];</span></span><br><span class="line"><span class="string">&#125;</span></span><br></pre></td></tr></table></figure>
+<h3 id="JS调用OC-类似UIWebView"><a href="#JS调用OC-类似UIWebView" class="headerlink" title="JS调用OC : (类似UIWebView)"></a>JS调用OC : (类似UIWebView)</h3><figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 在发送请求之前，决定是否跳转</span></span><br><span class="line">- (<span class="keyword">void</span>)webView:(<span class="built_in">WKWebView</span> * )webView decidePolicyForNavigationAction:(<span class="built_in">WKNavigationAction</span> * )navigationAction decisionHandler:(<span class="keyword">void</span> (^)(<span class="built_in">WKNavigationActionPolicy</span>))decisionHandler</span><br><span class="line">&#123;</span><br><span class="line">	<span class="built_in">NSLog</span>(<span class="string">@"在发送请求之前，决定是否跳转 decidePolicyForNavigationAction"</span>);</span><br><span class="line"></span><br><span class="line">	<span class="built_in">NSString</span> * URLString = navigationAction.request.URL.absoluteString;</span><br><span class="line">	<span class="built_in">NSLog</span>(<span class="string">@"监测到的WKWebView上的请求 %@"</span>,URLString);</span><br><span class="line"></span><br><span class="line">	<span class="built_in">NSRange</span> range = [URLString rangeOfString:<span class="string">@"custom://"</span>];</span><br><span class="line">	<span class="keyword">if</span> (range.length &gt; <span class="number">0</span>) &#123;</span><br><span class="line"></span><br><span class="line">		[<span class="keyword">self</span>.navigationController pushViewController:[[TestViewController alloc] init] animated:<span class="literal">YES</span>];</span><br><span class="line"></span><br><span class="line">		<span class="comment">// 不允许跳转,即不加载这个链接对应的内容</span></span><br><span class="line">		decisionHandler(<span class="built_in">WKNavigationActionPolicyCancel</span>);</span><br><span class="line">	&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">		<span class="comment">// 允许跳转,即加载这个链接对应的内容</span></span><br><span class="line">		decisionHandler(<span class="built_in">WKNavigationActionPolicyAllow</span>);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="WKWebView-监听加载进度"><a href="#WKWebView-监听加载进度" class="headerlink" title="WKWebView 监听加载进度"></a>WKWebView 监听加载进度</h2><h3 id="初始化WKWebView和进度条"><a href="#初始化WKWebView和进度条" class="headerlink" title="初始化WKWebView和进度条"></a>初始化WKWebView和进度条</h3><figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="keyword">void</span>)viewDidLoad &#123;</span><br><span class="line">	[<span class="keyword">super</span> viewDidLoad];</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 创建进度条</span></span><br><span class="line">	<span class="keyword">self</span>.progress = [[<span class="built_in">UIProgressView</span> alloc] init];</span><br><span class="line">	<span class="keyword">self</span>.progress.frame = <span class="built_in">CGRectMake</span>(<span class="number">0</span>, <span class="number">64</span>, [<span class="built_in">UIScreen</span> mainScreen].bounds.size.width, <span class="number">10</span>);</span><br><span class="line">	[<span class="keyword">self</span>.view addSubview:<span class="keyword">self</span>.progress];</span><br><span class="line">	<span class="keyword">self</span>.progress.progress = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 创建WKWebView</span></span><br><span class="line">	<span class="built_in">WKWebView</span> * webView = [[<span class="built_in">WKWebView</span> alloc] initWithFrame:[<span class="built_in">UIScreen</span> mainScreen].bounds];</span><br><span class="line">	[<span class="keyword">self</span>.view addSubview:webView];</span><br><span class="line">	webView.backgroundColor = [<span class="built_in">UIColor</span> redColor];</span><br><span class="line">	<span class="keyword">self</span>.webView = webView;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 设置代理</span></span><br><span class="line">	<span class="keyword">self</span>.webView.navigationDelegate = <span class="keyword">self</span>;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 加载的网页</span></span><br><span class="line">	<span class="built_in">NSURL</span> * URL = [<span class="built_in">NSURL</span> URLWithString:<span class="string">@"http://m.dianping.com/tuan/deal/5501525"</span>];</span><br><span class="line">	<span class="built_in">NSURLRequest</span> * request = [<span class="built_in">NSURLRequest</span> requestWithURL:URL];</span><br><span class="line">	[<span class="keyword">self</span>.webView loadRequest:request];</span><br><span class="line"></span><br><span class="line">	<span class="comment">// KVO添加进度监听</span></span><br><span class="line">	[webView addObserver:<span class="keyword">self</span> forKeyPath:<span class="string">@"estimatedProgress"</span> options:<span class="built_in">NSKeyValueObservingOptionNew</span> context:<span class="literal">nil</span>];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="KVO监听进度"><a href="#KVO监听进度" class="headerlink" title="KVO监听进度"></a>KVO监听进度</h3><figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="keyword">void</span>)observeValueForKeyPath:(<span class="built_in">NSString</span> * )keyPath ofObject:(<span class="keyword">id</span>)object change:(<span class="built_in">NSDictionary</span> * )change context:(<span class="keyword">void</span> * )context &#123;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> (object == <span class="keyword">self</span>.webView &amp;&amp; [keyPath isEqualToString:<span class="string">@"estimatedProgress"</span>]) &#123;</span><br><span class="line"></span><br><span class="line">		<span class="built_in">CGFloat</span> newprogress = [[change objectForKey:<span class="built_in">NSKeyValueChangeNewKey</span>] doubleValue];</span><br><span class="line"></span><br><span class="line">		<span class="built_in">NSLog</span>(<span class="string">@"进度 %f"</span>,newprogress);</span><br><span class="line"></span><br><span class="line">		<span class="keyword">if</span> (newprogress != <span class="number">1.000000</span>) &#123;</span><br><span class="line"></span><br><span class="line">			<span class="comment">// 网页加载时就展示进度</span></span><br><span class="line">			<span class="keyword">self</span>.progress.hidden = <span class="literal">NO</span>;</span><br><span class="line">			<span class="keyword">self</span>.progress.progress = newprogress;</span><br><span class="line"></span><br><span class="line">		&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">			<span class="comment">// 网页加载完成就进度</span></span><br><span class="line">			<span class="keyword">self</span>.progress.hidden = <span class="literal">YES</span>;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="WKWebView-其他"><a href="#WKWebView-其他" class="headerlink" title="WKWebView 其他"></a>WKWebView 其他</h2><h3 id="WKUIDelegate"><a href="#WKUIDelegate" class="headerlink" title="WKUIDelegate"></a>WKUIDelegate</h3><ul>
+<li><p>创建一个新的WebView</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-(<span class="built_in">WKWebView</span> * )webView:(<span class="built_in">WKWebView</span> * )webView createWebViewWithConfiguration:(<span class="built_in">WKWebViewConfiguration</span> * )configuration forNavigationAction:(<span class="built_in">WKNavigationAction</span> * )navigationAction windowFeatures:(<span class="built_in">WKWindowFeatures</span> * )windowFeatures;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>弹出警告的提示框时调用</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> *  弹出警告的提示框时调用</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> *  @param webView           实现该代理的webview</span></span><br><span class="line"><span class="comment"> *  @param message           警告框中的内容</span></span><br><span class="line"><span class="comment"> *  @param frame             主窗口</span></span><br><span class="line"><span class="comment"> *  @param completionHandler 警告框消失调用</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line">-(<span class="keyword">void</span>)webView:(<span class="built_in">WKWebView</span> * )webView runJavaScriptAlertPanelWithMessage:(<span class="built_in">NSString</span> * )message initiatedByFrame:(<span class="keyword">void</span> (^)())completionHandler;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>弹出确认的提示框时调用</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> *  弹出确认的提示框时调用</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> *  @param webView           实现该代理的webview</span></span><br><span class="line"><span class="comment"> *  @param message           确认框中的内容</span></span><br><span class="line"><span class="comment"> *  @param frame             主窗口</span></span><br><span class="line"><span class="comment"> *  @param completionHandler 警告框消失调用</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line">-(<span class="keyword">void</span>)webView:(<span class="built_in">WKWebView</span> * )webView runJavaScriptConfirmPanelWithMessage:(<span class="built_in">NSString</span> * )message initiatedByFrame:(<span class="built_in">WKFrameInfo</span> * )frame completionHandler:(<span class="keyword">void</span> (^)(<span class="built_in">BOOL</span> result))completionHandler;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>弹出输入提示框时调用</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> *  弹出输入提示框时调用</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> *  @param webView           实现该代理的webview</span></span><br><span class="line"><span class="comment"> *  @param message           确认框中的内容</span></span><br><span class="line"><span class="comment"> *  @param defaultText       默认的输入框文本信息</span></span><br><span class="line"><span class="comment"> *  @param frame             主窗口</span></span><br><span class="line"><span class="comment"> *  @param completionHandler 警告框消失调用</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line">-(<span class="keyword">void</span>)webView:(<span class="built_in">WKWebView</span> * )webView runJavaScriptTextInputPanelWithPrompt:(<span class="built_in">NSString</span> * )prompt defaultText:(<span class="keyword">nullable</span> <span class="built_in">NSString</span> * )defaultText initiatedByFrame:(<span class="built_in">WKFrameInfo</span> * )frame completionHandler:(<span class="keyword">void</span> (^)(<span class="built_in">NSString</span> * __<span class="keyword">nullable</span> result))completionHandler;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="Bug-Tips"><a href="#Bug-Tips" class="headerlink" title="Bug Tips"></a>Bug Tips</h3><p><a href="https://github.com/ShingoFukuyama/WKWebViewTips" target="_blank" rel="noopener">https://github.com/ShingoFukuyama/WKWebViewTips</a></p>
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/iOS/">iOS</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/iOS/">iOS</a><a href="/tags/Network/">Network</a><a href="/tags/WebView/">WebView</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="http://techbird.me/2018/05/08/ios-uiwebview-and-jscontext-and-wkwebview/" data-title="iOS-UIWebView&amp;JSContext&amp;WKWebView | techbird&#39;s blog" data-tsina="6488657373" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+
+<div class="next">
+<a href="/2018/05/08/xcode-code-snippets/"  title="Xcode-代码片段Code Snippets">
+ <strong>下一篇：</strong><br/> 
+ <span>Xcode-代码片段Code Snippets
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+<section id="comments" class="comment">
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  </div>
+</section>
+
+
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#UIWebView"><span class="toc-number">1.</span> <span class="toc-text">UIWebView</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#UIWebView-的JS注入"><span class="toc-number">1.1.</span> <span class="toc-text">UIWebView 的JS注入</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#浏览器终端中演示JS代码删除网页中元素"><span class="toc-number">1.1.1.</span> <span class="toc-text">浏览器终端中演示JS代码删除网页中元素</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#OC调用JS-实现-JS注入"><span class="toc-number">1.1.2.</span> <span class="toc-text">OC调用JS 实现 JS注入</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#JS注入的具体实现"><span class="toc-number">1.1.3.</span> <span class="toc-text">JS注入的具体实现</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#UIWebView监听网页标签的点击-JS调用OC"><span class="toc-number">1.2.</span> <span class="toc-text">UIWebView监听网页标签的点击(JS调用OC)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#JS调用OC需要实现的代理方法"><span class="toc-number">1.2.1.</span> <span class="toc-text">JS调用OC需要实现的代理方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#JS注入给标签添加点击事件"><span class="toc-number">1.2.2.</span> <span class="toc-text">JS注入给标签添加点击事件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#拦截webView上所有的网络请求-筛选请求"><span class="toc-number">1.2.3.</span> <span class="toc-text">拦截webView上所有的网络请求,筛选请求</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#JSContext"><span class="toc-number">2.</span> <span class="toc-text">JSContext</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#JSContexts实现OC与JS交互"><span class="toc-number">2.1.</span> <span class="toc-text">JSContexts实现OC与JS交互</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#使用JSContext-实现-JS调用OC"><span class="toc-number">2.2.</span> <span class="toc-text">使用JSContext 实现 JS调用OC</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#使用JSContext-实现-JS注入"><span class="toc-number">2.3.</span> <span class="toc-text">使用JSContext 实现 JS注入</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#WKWebView"><span class="toc-number">3.</span> <span class="toc-text">WKWebView</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#WKWebView的OC和JS交互"><span class="toc-number">3.1.</span> <span class="toc-text">WKWebView的OC和JS交互</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#代理方法介绍"><span class="toc-number">3.1.1.</span> <span class="toc-text">代理方法介绍</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#准备WKWebView"><span class="toc-number">3.1.2.</span> <span class="toc-text">准备WKWebView</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#OC调用JS-JS注入-类似UIWebView"><span class="toc-number">3.1.3.</span> <span class="toc-text">OC调用JS : JS注入 (类似UIWebView)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#JS调用OC-类似UIWebView"><span class="toc-number">3.1.4.</span> <span class="toc-text">JS调用OC : (类似UIWebView)</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#WKWebView-监听加载进度"><span class="toc-number">3.2.</span> <span class="toc-text">WKWebView 监听加载进度</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#初始化WKWebView和进度条"><span class="toc-number">3.2.1.</span> <span class="toc-text">初始化WKWebView和进度条</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#KVO监听进度"><span class="toc-number">3.2.2.</span> <span class="toc-text">KVO监听进度</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#WKWebView-其他"><span class="toc-number">3.3.</span> <span class="toc-text">WKWebView 其他</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#WKUIDelegate"><span class="toc-number">3.3.1.</span> <span class="toc-text">WKUIDelegate</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Bug-Tips"><span class="toc-number">3.3.2.</span> <span class="toc-text">Bug Tips</span></a></li></ol></li></ol></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+
+  
+<div class="github-card">
+<p class="asidetitle">Github Card</p>
+<div class="github-card" data-github="qiudengqiang" data-theme="medium"></div>
+<script type="text/javascript" src="//cdn.jsdelivr.net/github-cards/latest/widget.js" ></script>
+</div>
+
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="http://techbird.me/about" target="_blank" title="RESUME">RESUME</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="http://mood.techbird.me" target="_blank" title="MOOD">MOOD</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="weiboshow">
+  <p class="asidetitle">Weibo</p>
+    <iframe width="100%" height="119" class="share_self"  frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=119&fansRow=2&ptype=1&speed=0&skin=9&isTitle=1&noborder=1&isWeibo=0&isFans=0&uid=6488657373&verifier=f458bf46&dpc=1"></iframe>
+</div>
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">Categories</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/Xcode/" title="Xcode">Xcode<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/iOS/" title="iOS">iOS<sup>7</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/iOS/" title="iOS">iOS<sup>7</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Network/" title="Network">Network<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Thread/" title="Thread">Thread<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Xcode/" title="Xcode">Xcode<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/NSURLSession/" title="NSURLSession">NSURLSession<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Http/" title="Http">Http<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Https/" title="Https">Https<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/分类/" title="分类">分类<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/NSThread/" title="NSThread">NSThread<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/NSURLRequest/" title="NSURLRequest">NSURLRequest<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/NSURLResponse/" title="NSURLResponse">NSURLResponse<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/GCD/" title="GCD">GCD<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/NSOperation/" title="NSOperation">NSOperation<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/云标签/" title="云标签">云标签<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/WebView/" title="WebView">WebView<sup>1</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> Stay hungry，stay foolish <br/>
+			Talk is cheap，show me the code.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		<a href="http://weibo.com/6488657373 for http://weibo.com/techbird" target="_blank" class="icon-weibo" title="微博"></a>
+		
+		
+		<a href="https://github.com/qiudengqiang" target="_blank" class="icon-github" title="github"></a>
+		
+		
+		
+		<a href="https://twitter.com/stephentalk" target="_blank" class="icon-twitter" title="twitter"></a>
+		
+		
+		
+		
+		
+		
+		
+		<a href="mailto:qiudengqiang@gmail.com" target="_blank" class="icon-email" title="Email Me"></a>
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2018 
+		
+		<a href="/about" target="_blank" title="techbird">techbird</a>
+		
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+<script type="text/javascript">
+
+var disqus_shortname = 'techbird-1';
+
+(function(){
+  var dsq = document.createElement('script');
+  dsq.type = 'text/javascript';
+  dsq.async = true;
+  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+}());
+(function(){
+  var dsq = document.createElement('script');
+  dsq.type = 'text/javascript';
+  dsq.async = true;
+  dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+}());
+</script>
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>
