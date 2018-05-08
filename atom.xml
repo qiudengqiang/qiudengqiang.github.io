@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://techbird.me/"/>
-  <updated>2018-05-02T14:38:32.392Z</updated>
+  <updated>2018-05-08T02:11:57.515Z</updated>
   <id>http://techbird.me/</id>
   
   <author>
@@ -15,6 +15,32 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Xcode-代码片段Code Snippets</title>
+    <link href="http://techbird.me/2018/05/08/xcode-code-snippets/"/>
+    <id>http://techbird.me/2018/05/08/xcode-code-snippets/</id>
+    <published>2018-05-08T02:01:47.000Z</published>
+    <updated>2018-05-08T02:11:57.515Z</updated>
+    
+    <content type="html"><![CDATA[<p>在iOS开发过程中，经常会用到一些相似的代码。我们可以将这些代码保存起来，在使用的时候直接从Code Snippets拖拽代码块到指定的位置，也可以设置一些快捷方式来调用Xcode代码片段。</p><h2 id="新增"><a href="#新增" class="headerlink" title="新增"></a>新增</h2><ul><li>例如编写以下代码片段<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">strong</span>) &lt;<span class="meta">#Type#&gt; *<span class="meta-string">&lt;#value#&gt;</span>;</span></span><br></pre></td></tr></table></figure></li></ul><p>&lt;##&gt; 作用是占位，## 之间可以输入提示文字。</p><ul><li>使用快捷键：command+option+0</li><li><p>将上述代码片段拖拽到下图所示区域<br>  <img src="http://p7xd6yrmx.bkt.clouddn.com/code%20snippets.png" alt=""></p><blockquote><p><strong>小技巧</strong>：用鼠标选中代码块后把光标放在所选代码块上点击长按2-3秒(光标会由插入标变为小箭头状态)就可以拖拽了</p></blockquote></li><li><p>弹出下图<br>  <img src="http://p7xd6yrmx.bkt.clouddn.com/code%20snippet%20dialog.png" alt=""></p><blockquote><p>Title：标题<br>Summary：描述<br>Platform：可以使用的平台<br>Language：可以在哪些语言中使用<br>Completion Shortcut：快捷方式（例如：@xs）。<br>Completion Scopes：作用范围</p></blockquote></li></ul><h2 id="修改"><a href="#修改" class="headerlink" title="修改"></a>修改</h2><p>对代码片段进行修改，选中代码片段，点击edit即可。</p><h2 id="删除"><a href="#删除" class="headerlink" title="删除"></a>删除</h2><p>对代码片段进行删除，选中代码片段，按delete键即可。</p><h2 id="Git管理"><a href="#Git管理" class="headerlink" title="Git管理"></a>Git管理</h2><p>为了方便在更换电脑后可以更快速的使用自己的代码块，可以托管在Github上进行管理，这样在家里和公司两台Mac任何一端有了更新，另一端随时都可以pull一下使用了。</p><h3 id="Xcode中代码片段默认的目录："><a href="#Xcode中代码片段默认的目录：" class="headerlink" title="Xcode中代码片段默认的目录："></a>Xcode中代码片段默认的目录：</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">~/Library/Developer/Xcode/UserData/CodeSnippets</span><br></pre></td></tr></table></figure><h3 id="同步代码片段"><a href="#同步代码片段" class="headerlink" title="同步代码片段"></a>同步代码片段</h3><p>上述目录设置成一个 Git 的版本库，将代码片段放到 Github 上。</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;在iOS开发过程中，经常会用到一些相似的代码。我们可以将这些代码保存起来，在使用的时候直接从Code Snippets拖拽代码块到指定的位置，也可以设置一些快捷方式来调用Xcode代码片段。&lt;/p&gt;
+&lt;h2 id=&quot;新增&quot;&gt;&lt;a href=&quot;#新增&quot; class=&quot;head
+      
+    
+    </summary>
+    
+      <category term="Xcode" scheme="http://techbird.me/categories/Xcode/"/>
+    
+    
+      <category term="Xcode" scheme="http://techbird.me/tags/Xcode/"/>
+    
+  </entry>
   
   <entry>
     <title>iOS-NSURLRequest&amp;NSURLResponse</title>
