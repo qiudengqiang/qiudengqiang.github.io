@@ -19,7 +19,7 @@
 <meta property="og:site_name" content="techbird&#39;s blog">
 <meta property="og:description" content="引言Apple 在iOS4.0之后推出Block，它本身封装了一段代码并可以将这段代码当做变量，参数，属性，数据类型，函数（匿名），代码块（只有在被调用时才会执行）等等，使用方式灵活，功能十分强大。 Block的简单使用定义Block 无参无返回值 1234 void(^block)() = ^()&amp;#123;  NSLog(@&quot;this is a no param and no return o">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-05-10T04:55:25.335Z">
+<meta property="og:updated_time" content="2018-05-10T04:59:46.229Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Objective-C-Block">
 <meta name="twitter:description" content="引言Apple 在iOS4.0之后推出Block，它本身封装了一段代码并可以将这段代码当做变量，参数，属性，数据类型，函数（匿名），代码块（只有在被调用时才会执行）等等，使用方式灵活，功能十分强大。 Block的简单使用定义Block 无参无返回值 1234 void(^block)() = ^()&amp;#123;  NSLog(@&quot;this is a no param and no return o">
@@ -146,7 +146,9 @@
 <li><p>小结<br>block内修改的外部变量，需要用<code>__block</code>修饰.在此后若被block访问修改，变量的内存地址会重新指向拷贝后开辟的新的内存地址.</p>
 </li>
 </ul>
-<h2 id="验证一个想法"><a href="#验证一个想法" class="headerlink" title="验证一个想法"></a>验证一个想法</h2><figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> num = <span class="number">10</span>;</span><br><span class="line">   <span class="built_in">NSLog</span>(<span class="string">@"%p %d"</span>,&amp;num,num);</span><br><span class="line">   <span class="keyword">void</span>(^block)(<span class="keyword">void</span>(^)()) = ^(<span class="keyword">void</span>(^block2)())&#123;</span><br><span class="line">       <span class="built_in">NSLog</span>(<span class="string">@"%@ %p %d"</span>,block2,&amp;num,num);</span><br><span class="line">   &#125;;</span><br><span class="line">   num = <span class="number">20</span>;</span><br><span class="line">   <span class="built_in">NSLog</span>(<span class="string">@"%@ %p %d"</span>,block,&amp;num,num);</span><br><span class="line">   <span class="comment">//本身作为参数传入并输出指针对象的堆栈</span></span><br><span class="line">   block(block);</span><br></pre></td></tr></table></figure>
+<h2 id="验证一个想法"><a href="#验证一个想法" class="headerlink" title="验证一个想法"></a>验证一个想法</h2><blockquote>
+<p>在<code>ARC</code>/<code>MRC</code>中block内<code>引用</code>外部变量地址如何在堆栈中变化，通过将Block自身作为自身的参数传入<br><figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> num = <span class="number">10</span>;</span><br><span class="line">   <span class="built_in">NSLog</span>(<span class="string">@"%p %d"</span>,&amp;num,num);</span><br><span class="line">   <span class="keyword">void</span>(^block)(<span class="keyword">void</span>(^)()) = ^(<span class="keyword">void</span>(^block2)())&#123;</span><br><span class="line">       <span class="built_in">NSLog</span>(<span class="string">@"%@ %p %d"</span>,block2,&amp;num,num);</span><br><span class="line">   &#125;;</span><br><span class="line">   num = <span class="number">20</span>;</span><br><span class="line">   <span class="built_in">NSLog</span>(<span class="string">@"%@ %p %d"</span>,block,&amp;num,num);</span><br><span class="line">   <span class="comment">//本身作为参数传入并输出指针对象的堆栈</span></span><br><span class="line">   block(block);</span><br></pre></td></tr></table></figure></p>
+</blockquote>
 <blockquote>
 <p>1.在<code>ARC</code>中block内引用外部变量地址如何在堆栈中变化，</p>
 </blockquote>
@@ -368,15 +370,7 @@
 			
 		
 			
-				<li><a href="/tags/Https/" title="Https">Https<sup>1</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/NSOperation/" title="NSOperation">NSOperation<sup>1</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/NSThread/" title="NSThread">NSThread<sup>1</sup></a></li>
+				<li><a href="/tags/NSURLResponse/" title="NSURLResponse">NSURLResponse<sup>1</sup></a></li>
 			
 		
 			
@@ -384,19 +378,15 @@
 			
 		
 			
+				<li><a href="/tags/Https/" title="Https">Https<sup>1</sup></a></li>
+			
+		
+			
 				<li><a href="/tags/分类/" title="分类">分类<sup>1</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/WebView/" title="WebView">WebView<sup>1</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/Block/" title="Block">Block<sup>1</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/Http/" title="Http">Http<sup>1</sup></a></li>
+				<li><a href="/tags/NSThread/" title="NSThread">NSThread<sup>1</sup></a></li>
 			
 		
 			
@@ -404,11 +394,23 @@
 			
 		
 			
-				<li><a href="/tags/NSURLResponse/" title="NSURLResponse">NSURLResponse<sup>1</sup></a></li>
+				<li><a href="/tags/Http/" title="Http">Http<sup>1</sup></a></li>
 			
 		
 			
 				<li><a href="/tags/GCD/" title="GCD">GCD<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/WebView/" title="WebView">WebView<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/NSOperation/" title="NSOperation">NSOperation<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Block/" title="Block">Block<sup>1</sup></a></li>
 			
 		
 			
