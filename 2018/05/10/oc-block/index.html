@@ -19,7 +19,7 @@
 <meta property="og:site_name" content="techbird&#39;s blog">
 <meta property="og:description" content="引言Apple 在iOS4.0之后推出Block，它本身封装了一段代码并可以将这段代码当做变量，参数，属性，数据类型，函数（匿名），代码块（只有在被调用时才会执行）等等，使用方式灵活，功能十分强大。 Block的简单使用定义Block 无参无返回值 1234 void(^block)() = ^()&amp;#123;  NSLog(@&quot;this is a no param and no return o">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-05-10T05:02:08.055Z">
+<meta property="og:updated_time" content="2018-05-10T05:05:08.219Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Objective-C-Block">
 <meta name="twitter:description" content="引言Apple 在iOS4.0之后推出Block，它本身封装了一段代码并可以将这段代码当做变量，参数，属性，数据类型，函数（匿名），代码块（只有在被调用时才会执行）等等，使用方式灵活，功能十分强大。 Block的简单使用定义Block 无参无返回值 1234 void(^block)() = ^()&amp;#123;  NSLog(@&quot;this is a no param and no return o">
@@ -192,10 +192,7 @@
 <li><p>输出结果：</p>
 <figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">2018-05-09 23:14:43.139413+0800 BlockDemo[3468:994925] &lt;__NSMallocBlock__: 0x60400024ea60&gt; -- &lt;__NSMallocBlock__: 0x60400024ea60&gt;</span><br></pre></td></tr></table></figure>
 </li>
-<li><p>小结<br>在<code>ARC</code>环境下,上述block本来就保存在堆区,给属性赋值的时候,调用<code>setter</code>方法时,只会给一个引用.</p>
-<blockquote>
-<p><strong>注</strong> : 在<code>ARC</code>环境下,使用strong和copy的效果是一模一样的</p>
-</blockquote>
+<li><p>小结：<br>在<code>ARC</code>环境下,上述block本来就保存在堆区,给属性赋值的时候,调用<code>setter</code>方法时,只会给一个引用.故<code>ARC</code>下使用strong和copy的效果是一模一样的</p>
 </li>
 </ul>
 <h3 id="MRC（为什么必须用copy）"><a href="#MRC（为什么必须用copy）" class="headerlink" title="MRC（为什么必须用copy）"></a>MRC（为什么必须用<code>copy</code>）</h3><figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">-(<span class="keyword">void</span>)blockDemo</span><br><span class="line">&#123;</span><br><span class="line"> <span class="keyword">int</span> num = <span class="number">10</span>;</span><br><span class="line"> <span class="keyword">void</span> (^task)() = ^ &#123;</span><br><span class="line">   <span class="built_in">NSLog</span>(<span class="string">@"%d"</span>,num);</span><br><span class="line"> &#125;;</span><br><span class="line"> <span class="comment">// MRC : 栈区 ==&gt; __NSStackBlock__</span></span><br><span class="line"> <span class="comment">// 这个赋值过程会copy,也会引用计数+1</span></span><br><span class="line"> <span class="comment">//    self.task = task;</span></span><br><span class="line"> <span class="comment">// 这个赋值过程不会copy,仅仅是引用计数+1,内存依然在栈区</span></span><br><span class="line"> `_task` = task;</span><br><span class="line"> <span class="built_in">NSLog</span>(<span class="string">@"%@ -- %@"</span>,task,`_task`);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -366,11 +363,7 @@
 			
 		
 			
-				<li><a href="/tags/NSURLResponse/" title="NSURLResponse">NSURLResponse<sup>1</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/NSURLSession/" title="NSURLSession">NSURLSession<sup>1</sup></a></li>
+				<li><a href="/tags/云标签/" title="云标签">云标签<sup>1</sup></a></li>
 			
 		
 			
@@ -378,15 +371,19 @@
 			
 		
 			
-				<li><a href="/tags/分类/" title="分类">分类<sup>1</sup></a></li>
-			
-		
-			
 				<li><a href="/tags/NSThread/" title="NSThread">NSThread<sup>1</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/NSURLRequest/" title="NSURLRequest">NSURLRequest<sup>1</sup></a></li>
+				<li><a href="/tags/NSURLSession/" title="NSURLSession">NSURLSession<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/NSURLResponse/" title="NSURLResponse">NSURLResponse<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/GCD/" title="GCD">GCD<sup>1</sup></a></li>
 			
 		
 			
@@ -394,7 +391,7 @@
 			
 		
 			
-				<li><a href="/tags/GCD/" title="GCD">GCD<sup>1</sup></a></li>
+				<li><a href="/tags/分类/" title="分类">分类<sup>1</sup></a></li>
 			
 		
 			
@@ -410,7 +407,7 @@
 			
 		
 			
-				<li><a href="/tags/云标签/" title="云标签">云标签<sup>1</sup></a></li>
+				<li><a href="/tags/NSURLRequest/" title="NSURLRequest">NSURLRequest<sup>1</sup></a></li>
 			
 		
 		</ul>
