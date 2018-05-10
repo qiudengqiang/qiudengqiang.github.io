@@ -1,0 +1,670 @@
+
+ <!DOCTYPE HTML>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+  
+    <title>Objective-C-Block | techbird&#39;s blog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="techbird">
+    
+
+    
+    <meta name="description" content="引言Apple 在iOS4.0之后推出Block，它本身封装了一段代码并可以将这段代码当做变量，参数，属性，数据类型，函数（匿名），代码块（只有在被调用时才会执行）等等，使用方式灵活，功能十分强大。 Block的简单使用定义Block 无参无返回值 1234 void(^block)() = ^()&amp;#123;  NSLog(@&quot;this is a no param and no return o">
+<meta name="keywords" content="iOS,Objective-C,Block">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Objective-C-Block">
+<meta property="og:url" content="http://techbird.me/2018/05/10/oc-block/index.html">
+<meta property="og:site_name" content="techbird&#39;s blog">
+<meta property="og:description" content="引言Apple 在iOS4.0之后推出Block，它本身封装了一段代码并可以将这段代码当做变量，参数，属性，数据类型，函数（匿名），代码块（只有在被调用时才会执行）等等，使用方式灵活，功能十分强大。 Block的简单使用定义Block 无参无返回值 1234 void(^block)() = ^()&amp;#123;  NSLog(@&quot;this is a no param and no return o">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-05-10T04:18:34.073Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Objective-C-Block">
+<meta name="twitter:description" content="引言Apple 在iOS4.0之后推出Block，它本身封装了一段代码并可以将这段代码当做变量，参数，属性，数据类型，函数（匿名），代码块（只有在被调用时才会执行）等等，使用方式灵活，功能十分强大。 Block的简单使用定义Block 无参无返回值 1234 void(^block)() = ^()&amp;#123;  NSLog(@&quot;this is a no param and no return o">
+<meta name="twitter:creator" content="@stephentalk">
+
+    
+    <link rel="alternative" href="/atom.xml" title="techbird&#39;s blog" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.png" alt="techbird&#39;s blog" title="techbird&#39;s blog"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="techbird&#39;s blog">techbird&#39;s blog</a></h1>
+				<h2 class="blog-motto">timeline of techology</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:techbird.me">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/05/10/oc-block/" title="Objective-C-Block" itemprop="url">Objective-C-Block</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="techbird" target="_blank" itemprop="author">techbird</a>
+		
+  <p class="article-time">
+    <time datetime="2018-05-10T03:21:20.000Z" itemprop="datePublished"> Published 2018-05-10</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#引言"><span class="toc-number">1.</span> <span class="toc-text">引言</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Block的简单使用"><span class="toc-number">2.</span> <span class="toc-text">Block的简单使用</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#定义Block"><span class="toc-number">2.1.</span> <span class="toc-text">定义Block</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#定义Block的快捷方式"><span class="toc-number">2.2.</span> <span class="toc-text">定义Block的快捷方式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Block定义成属性"><span class="toc-number">2.3.</span> <span class="toc-text">Block定义成属性</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Block作参数"><span class="toc-number">2.4.</span> <span class="toc-text">Block作参数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#typedef-定义Block"><span class="toc-number">2.5.</span> <span class="toc-text">typedef 定义Block</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Block与外部变量"><span class="toc-number">3.</span> <span class="toc-text">Block与外部变量</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Block内部访问-引用-外部变量"><span class="toc-number">3.1.</span> <span class="toc-text">Block内部访问/引用 外部变量</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Block内部修改外部变量"><span class="toc-number">3.2.</span> <span class="toc-text">Block内部修改外部变量</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#block内存管理（MRC-ARC）"><span class="toc-number">4.</span> <span class="toc-text">block内存管理（MRC/ARC）</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#函数体"><span class="toc-number">4.1.</span> <span class="toc-text">函数体</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#当函数体不变时"><span class="toc-number">4.1.1.</span> <span class="toc-text">当函数体不变时</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#当函数体可变时（即访问修改外部变量时）"><span class="toc-number">4.1.2.</span> <span class="toc-text">当函数体可变时（即访问修改外部变量时）</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Block属性"><span class="toc-number">4.2.</span> <span class="toc-text">Block属性</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#copy关键字的探讨"><span class="toc-number">4.3.</span> <span class="toc-text">copy关键字的探讨</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#ARC-（为什么可以用copy-strong）"><span class="toc-number">4.3.1.</span> <span class="toc-text">ARC （为什么可以用copy / strong）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#MRC（为什么必须用copy）"><span class="toc-number">4.3.2.</span> <span class="toc-text">MRC（为什么必须用copy）</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#面试时如何回答？"><span class="toc-number">4.4.</span> <span class="toc-text">面试时如何回答？</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Block的循环引用"><span class="toc-number">5.</span> <span class="toc-text">Block的循环引用</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#满足什么条件会出现循环应用"><span class="toc-number">5.1.</span> <span class="toc-text">满足什么条件会出现循环应用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#如何解决循环引用"><span class="toc-number">5.2.</span> <span class="toc-text">如何解决循环引用</span></a></li></ol></li></ol>
+		
+		</div>
+		
+		<h1 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h1><p>Apple 在iOS4.0之后推出Block，它本身封装了一段代码并可以将这段代码当做变量，参数，属性，数据类型，函数（匿名），代码块（只有在被调用时才会执行）等等，使用方式灵活，功能十分强大。</p>
+<h1 id="Block的简单使用"><a href="#Block的简单使用" class="headerlink" title="Block的简单使用"></a>Block的简单使用</h1><h2 id="定义Block"><a href="#定义Block" class="headerlink" title="定义Block"></a>定义Block</h2><ul>
+<li><p>无参无返回值</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"> <span class="keyword">void</span>(^block)() = ^()&#123;</span><br><span class="line">  <span class="built_in">NSLog</span>(<span class="string">@"this is a no param and no return of block"</span>);</span><br><span class="line">&#125;;</span><br><span class="line">block();</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>有参无返回值</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span>(^block)(<span class="built_in">NSString</span> * ) = ^(<span class="built_in">NSString</span> * param)&#123;</span><br><span class="line">  <span class="built_in">NSLog</span>(<span class="string">@"this is a has param and no return of block"</span>);</span><br><span class="line">&#125;;</span><br><span class="line">block(<span class="string">@"param"</span>);</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>有参有返回值</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">NSString</span> *(^block)(<span class="built_in">NSString</span> * ) = ^(<span class="built_in">NSString</span> * param)&#123;</span><br><span class="line">  <span class="built_in">NSLog</span>(<span class="string">@"this is a has param and return of block"</span>);</span><br><span class="line">  <span class="keyword">return</span> <span class="string">@""</span>;</span><br><span class="line">&#125;;</span><br><span class="line">block(<span class="string">@"param"</span>);</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="定义Block的快捷方式"><a href="#定义Block的快捷方式" class="headerlink" title="定义Block的快捷方式"></a>定义Block的快捷方式</h2><blockquote>
+<p>Block 的定义可以借助键入 inlineBlock 速记.</p>
+</blockquote>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// inlineBlock</span></span><br><span class="line">returnType (^blockName)(parameterTypes) = ^(parameters) &#123;</span><br><span class="line">   statements</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h2 id="Block定义成属性"><a href="#Block定义成属性" class="headerlink" title="Block定义成属性"></a>Block定义成属性</h2><figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">@property</span> (<span class="keyword">copy</span>, <span class="keyword">nonatomic</span>) <span class="keyword">void</span>(^block)();</span><br></pre></td></tr></table></figure>
+<h2 id="Block作参数"><a href="#Block作参数" class="headerlink" title="Block作参数"></a>Block作参数</h2><figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">-(<span class="keyword">void</span>)demo04&#123;</span><br><span class="line"> <span class="keyword">void</span>(^block)() = ^&#123;</span><br><span class="line">   <span class="built_in">NSLog</span>(<span class="string">@"block become param"</span>);</span><br><span class="line"> &#125;;</span><br><span class="line"> [<span class="keyword">self</span> callbackWith:block];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">-(<span class="keyword">void</span>)callbackWith:(<span class="keyword">void</span>(^)())block&#123;</span><br><span class="line"> <span class="comment">//调用外界传入的block</span></span><br><span class="line"> block();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="typedef-定义Block"><a href="#typedef-定义Block" class="headerlink" title="typedef 定义Block"></a>typedef 定义Block</h2><figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 声明</span></span><br><span class="line"><span class="keyword">typedef</span> <span class="keyword">void</span>(^MyBlock)();</span><br><span class="line"><span class="comment">// 使用</span></span><br><span class="line">MyBlock block01 = ^&#123;</span><br><span class="line"> <span class="built_in">NSLog</span>(<span class="string">@"block01"</span>);</span><br><span class="line">&#125;;</span><br><span class="line">block01();</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>小结：方便之处在于可以常用类型的Block可以用typedef来定义</p>
+<h1 id="Block与外部变量"><a href="#Block与外部变量" class="headerlink" title="Block与外部变量"></a>Block与外部变量</h1><h2 id="Block内部访问-引用-外部变量"><a href="#Block内部访问-引用-外部变量" class="headerlink" title="Block内部访问/引用 外部变量"></a>Block内部访问/引用 外部变量</h2><figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> num = <span class="number">10</span>;</span><br><span class="line"><span class="built_in">NSLog</span>(<span class="string">@"%p %d"</span>,&amp;num,num);</span><br><span class="line"><span class="keyword">void</span>(^block)() = ^&#123;</span><br><span class="line">  <span class="built_in">NSLog</span>(<span class="string">@"%p %d"</span>,&amp;num,num);</span><br><span class="line">&#125;;</span><br><span class="line">num = <span class="number">20</span>;</span><br><span class="line"><span class="built_in">NSLog</span>(<span class="string">@"%p %d"</span>,&amp;num,num);</span><br><span class="line">block();</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>输出结果：</p>
+<figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">2018-05-09 22:40:42.479729+0800 BlockDemo[2969:864883] 0x7ffeec9489dc 10</span><br><span class="line">2018-05-09 22:40:42.479900+0800 BlockDemo[2969:864883] 0x7ffeec9489dc 20</span><br><span class="line">2018-05-09 22:40:42.480024+0800 BlockDemo[2969:864883] 0x60000025bd70 10</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>小结<br>在block中访问外部的变量时，会自动拷贝到堆内存一份并开辟新的地址，这就是深拷贝</p>
+</li>
+</ul>
+<h2 id="Block内部修改外部变量"><a href="#Block内部修改外部变量" class="headerlink" title="Block内部修改外部变量"></a>Block内部修改外部变量</h2><figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">__block <span class="keyword">int</span> num = <span class="number">10</span>;</span><br><span class="line"> <span class="built_in">NSLog</span>(<span class="string">@"%p %d"</span>,&amp;num,num);</span><br><span class="line"> <span class="keyword">void</span>(^block)() = ^&#123;</span><br><span class="line">   num = <span class="number">30</span>;</span><br><span class="line">   <span class="built_in">NSLog</span>(<span class="string">@"%p %d"</span>,&amp;num,num);</span><br><span class="line"> &#125;;</span><br><span class="line"> num = <span class="number">20</span>;</span><br><span class="line"> <span class="built_in">NSLog</span>(<span class="string">@"%p %d"</span>,&amp;num,num);</span><br><span class="line"> block();</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>输出结果：</p>
+<figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">2018-05-09 22:48:03.067693+0800 BlockDemo[3088:893606] 0x7ffee50399d8 10</span><br><span class="line">2018-05-09 22:48:03.067869+0800 BlockDemo[3088:893606] 0x60000022f1b8 20</span><br><span class="line">2018-05-09 22:48:03.068033+0800 BlockDemo[3088:893606] 0x60000022f1b8 30</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>小结<br>block内修改的外部变量，需要用<code>__block</code>修饰.在此后若被block访问修改，变量的内存地址会重新指向拷贝后开辟的新的内存地址.</p>
+</li>
+</ul>
+<h1 id="block内存管理（MRC-ARC）"><a href="#block内存管理（MRC-ARC）" class="headerlink" title="block内存管理（MRC/ARC）"></a>block内存管理（MRC/ARC）</h1><h2 id="函数体"><a href="#函数体" class="headerlink" title="函数体"></a>函数体</h2><h3 id="当函数体不变时"><a href="#当函数体不变时" class="headerlink" title="当函数体不变时"></a>当函数体不变时</h3><figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span>(^myBlock)() = ^ &#123;</span><br><span class="line"> <span class="built_in">NSLog</span>(<span class="string">@"hello world"</span>);</span><br><span class="line">&#125;;</span><br><span class="line"><span class="built_in">NSLog</span>(<span class="string">@"%@"</span>, myBlock);</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>输出结果：</p>
+<figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">2018-05-09 22:59:07.637768+0800 BlockDemo[3288:930159] &lt;__NSGlobalBlock__: 0x10afa20d8&gt;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>小结：<br>不引用任何外部变量的 block 保存在全局区 NSGlobalBlock，如果Block没有引用外部变量,那么这个Block的函数体内部包装的代码都不会发生变化,而且执行效率高,保存在全局区;(类似不变的字符串存在常量区)</p>
+<h3 id="当函数体可变时（即访问修改外部变量时）"><a href="#当函数体可变时（即访问修改外部变量时）" class="headerlink" title="当函数体可变时（即访问修改外部变量时）"></a>当函数体可变时（即访问修改外部变量时）</h3><figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> i = <span class="number">10</span>;</span><br><span class="line"><span class="keyword">void</span>(^myBlock)() = ^ &#123;</span><br><span class="line"> <span class="built_in">NSLog</span>(<span class="string">@"hello world %d"</span>, i);</span><br><span class="line">&#125;;</span><br><span class="line"><span class="built_in">NSLog</span>(<span class="string">@"%@"</span>, myBlock);</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>输出结果：</p>
+<figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">2018-05-09 23:03:01.082413+0800 BlockDemo[3349:946888] &lt;__NSMallocBlock__: 0x600000440090&gt;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>小结：<br>引用外部变量的 block 保存在 :<br><code>ARC</code> : 堆区 NSMallocBlock<br><code>MRC</code> : 栈区 NSStackBlock<br>因此在定义 block 属性时应该使用 <code>copy</code> 关键字，将 block 从栈区复制到堆区</p>
+</li>
+</ul>
+<h2 id="Block属性"><a href="#Block属性" class="headerlink" title="Block属性"></a>Block属性</h2><figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//定义 block 属性</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">copy</span>) <span class="keyword">void</span> (^demoBlock)();</span><br><span class="line"></span><br><span class="line">-(<span class="keyword">void</span>)blockDemo &#123;</span><br><span class="line"> <span class="keyword">int</span> i = <span class="number">10</span>;</span><br><span class="line"> <span class="keyword">void</span>(^myBlock)() = ^ &#123;</span><br><span class="line">   <span class="built_in">NSLog</span>(<span class="string">@"hello world %d"</span>, i);</span><br><span class="line"> &#125;;</span><br><span class="line"></span><br><span class="line"> <span class="built_in">NSLog</span>(<span class="string">@"%@"</span>, myBlock);</span><br><span class="line"> <span class="comment">// 错误的写法，不会调用 setter 方法,MRC下,无法拷贝到堆区</span></span><br><span class="line"> <span class="comment">//`_demoBlock` = myBlock;</span></span><br><span class="line"> <span class="comment">// 正确的写法，调用 setter 方法，并且对 block 进行 copy</span></span><br><span class="line"> <span class="keyword">self</span>.demoBlock = myBlock;</span><br><span class="line"> <span class="built_in">NSLog</span>(<span class="string">@"%@"</span>, <span class="keyword">self</span>.demoBlock);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p><code>MRC</code>下输出结果：会执行<code>copy</code>操作，从栈区拷贝到堆区</p>
+<figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">2018-05-10 12:03:17.374375+0800 BlockDemo[1225:138257] &lt;__NSStackBlock__: 0x7ffee68509a8&gt;</span><br><span class="line">2018-05-10 12:03:17.374581+0800 BlockDemo[1225:138257] &lt;__NSMallocBlock__: 0x60000025dca0&gt;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code>ARC</code>下输出结果：不会执行<code>copy</code>操作,本身就在堆区</p>
+<figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">2018-05-10 12:04:42.891691+0800 BlockDemo[1308:145791] &lt;__NSMallocBlock__: 0x6040002471d0&gt;</span><br><span class="line">2018-05-10 12:04:42.891902+0800 BlockDemo[1308:145791] &lt;__NSMallocBlock__: 0x6040002471d0&gt;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<blockquote>
+<p><strong>注</strong> : 为了避免程序员的麻烦,在 ARC 中,定义了引用外部变量的 block,系统默认都是在堆区的!</p>
+</blockquote>
+<h2 id="copy关键字的探讨"><a href="#copy关键字的探讨" class="headerlink" title="copy关键字的探讨"></a>copy关键字的探讨</h2><h3 id="ARC-（为什么可以用copy-strong）"><a href="#ARC-（为什么可以用copy-strong）" class="headerlink" title="ARC （为什么可以用copy / strong）"></a>ARC （为什么可以用<code>copy / strong</code>）</h3><figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="keyword">void</span>)blockDemo</span><br><span class="line">&#123;</span><br><span class="line"> <span class="keyword">int</span> num = <span class="number">10</span>;</span><br><span class="line"> <span class="keyword">void</span> (^task)() = ^ &#123;</span><br><span class="line">   <span class="built_in">NSLog</span>(<span class="string">@"%d"</span>,num);</span><br><span class="line"> &#125;;</span><br><span class="line"> <span class="comment">// ARC : 堆区 ==&gt; __NSMallocBlock__</span></span><br><span class="line"> <span class="comment">// ARC环境下,属性也是强引用,同时会copy</span></span><br><span class="line"> <span class="comment">// self.task = task;</span></span><br><span class="line"> <span class="comment">// ARC环境下,成员变量也是强引用,同时会copy</span></span><br><span class="line"> `_task` = task;</span><br><span class="line"> <span class="built_in">NSLog</span>(<span class="string">@"%@ -- %@"</span>,task,`_task`);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>输出结果：</p>
+<figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">2018-05-09 23:14:43.139413+0800 BlockDemo[3468:994925] &lt;__NSMallocBlock__: 0x60400024ea60&gt; -- &lt;__NSMallocBlock__: 0x60400024ea60&gt;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>小结<br>在<code>ARC</code>环境下,上述block本来就保存在堆区,给属性赋值的时候,调用<code>setter</code>方法时,只会给一个引用.</p>
+<blockquote>
+<p><strong>注</strong> : 在<code>ARC</code>环境下,使用strong和copy的效果是一模一样的</p>
+</blockquote>
+</li>
+</ul>
+<h3 id="MRC（为什么必须用copy）"><a href="#MRC（为什么必须用copy）" class="headerlink" title="MRC（为什么必须用copy）"></a>MRC（为什么必须用<code>copy</code>）</h3><figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">-(<span class="keyword">void</span>)blockDemo</span><br><span class="line">&#123;</span><br><span class="line"> <span class="keyword">int</span> num = <span class="number">10</span>;</span><br><span class="line"> <span class="keyword">void</span> (^task)() = ^ &#123;</span><br><span class="line">   <span class="built_in">NSLog</span>(<span class="string">@"%d"</span>,num);</span><br><span class="line"> &#125;;</span><br><span class="line"> <span class="comment">// MRC : 栈区 ==&gt; __NSStackBlock__</span></span><br><span class="line"> <span class="comment">// 这个赋值过程会copy,也会引用计数+1</span></span><br><span class="line"> <span class="comment">//    self.task = task;</span></span><br><span class="line"> <span class="comment">// 这个赋值过程不会copy,仅仅是引用计数+1,内存依然在栈区</span></span><br><span class="line"> `_task` = task;</span><br><span class="line"> <span class="built_in">NSLog</span>(<span class="string">@"%@ -- %@"</span>,task,`_task`);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>输出结果：</p>
+<figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">2018-05-09 23:17:25.352415+0800 BlockDemo[3528:1006735] &lt;__NSStackBlock__: 0x7ffee98cc9a8&gt; -- &lt;__NSStackBlock__: 0x7ffee98cc9a8&gt;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>小结：<br>在<code>MRC</code>环境下,调用成员变量进行赋值,仅仅是引用计数加1;不会进行<code>copy</code>操作. 所以内存依然在栈区.</p>
+</li>
+</ul>
+<h2 id="面试时如何回答？"><a href="#面试时如何回答？" class="headerlink" title="面试时如何回答？"></a>面试时如何回答？</h2><p>当Block被引入到OC时 ，OC仍是MRC的管理内存模式 ，在MRC管理模式中，Block处于栈区，超出作用域就会被销毁 ，如果用一个属性来全局的记录这个Block，就必须满足两个条件：<br>1.这个属性必须对Block强引用<br>2.需要把Block拷贝到堆区<br>要满足以上两个条件就需要使用<code>copy</code>修饰符</p>
+<h1 id="Block的循环引用"><a href="#Block的循环引用" class="headerlink" title="Block的循环引用"></a>Block的循环引用</h1><h2 id="满足什么条件会出现循环应用"><a href="#满足什么条件会出现循环应用" class="headerlink" title="满足什么条件会出现循环应用"></a>满足什么条件会出现循环应用</h2><ul>
+<li>block和外部变量<code>互相强引用</code>导致出现循环引用,内存不能正常释放</li>
+<li><strong>坑</strong>：不要在Block的内部使用成员变量(<code>_name</code>)，而要尽量使用属性，因为看不到<code>self</code>字段，会造成如果出现循环引用不容易发现的问题.<blockquote>
+<p><strong>注</strong>：不是所有的 self. 都会出现循环引用 —— block 执行完毕就销毁，例如 UIView 的动画代码</p>
+</blockquote>
+</li>
+</ul>
+<h2 id="如何解决循环引用"><a href="#如何解决循环引用" class="headerlink" title="如何解决循环引用"></a>如何解决循环引用</h2><figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 使用 __weak 修饰符,定义一个弱引用的对象</span></span><br><span class="line">__<span class="keyword">weak</span> <span class="keyword">typeof</span>(<span class="keyword">self</span>) weakSelf = <span class="keyword">self</span>;</span><br></pre></td></tr></table></figure>
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/iOS，Objective-C/">iOS，Objective-C</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/iOS/">iOS</a><a href="/tags/Objective-C/">Objective-C</a><a href="/tags/Block/">Block</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="http://techbird.me/2018/05/10/oc-block/" data-title="Objective-C-Block | techbird&#39;s blog" data-tsina="6488657373" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+
+<div class="next">
+<a href="/2018/05/08/ios-uiwebview-and-jscontext-and-wkwebview/"  title="iOS-UIWebView&amp;JSContext&amp;WKWebView">
+ <strong>下一篇：</strong><br/> 
+ <span>iOS-UIWebView&amp;JSContext&amp;WKWebView
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+<section id="comments" class="comment">
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  </div>
+</section>
+
+
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#引言"><span class="toc-number">1.</span> <span class="toc-text">引言</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Block的简单使用"><span class="toc-number">2.</span> <span class="toc-text">Block的简单使用</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#定义Block"><span class="toc-number">2.1.</span> <span class="toc-text">定义Block</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#定义Block的快捷方式"><span class="toc-number">2.2.</span> <span class="toc-text">定义Block的快捷方式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Block定义成属性"><span class="toc-number">2.3.</span> <span class="toc-text">Block定义成属性</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Block作参数"><span class="toc-number">2.4.</span> <span class="toc-text">Block作参数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#typedef-定义Block"><span class="toc-number">2.5.</span> <span class="toc-text">typedef 定义Block</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Block与外部变量"><span class="toc-number">3.</span> <span class="toc-text">Block与外部变量</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Block内部访问-引用-外部变量"><span class="toc-number">3.1.</span> <span class="toc-text">Block内部访问/引用 外部变量</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Block内部修改外部变量"><span class="toc-number">3.2.</span> <span class="toc-text">Block内部修改外部变量</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#block内存管理（MRC-ARC）"><span class="toc-number">4.</span> <span class="toc-text">block内存管理（MRC/ARC）</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#函数体"><span class="toc-number">4.1.</span> <span class="toc-text">函数体</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#当函数体不变时"><span class="toc-number">4.1.1.</span> <span class="toc-text">当函数体不变时</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#当函数体可变时（即访问修改外部变量时）"><span class="toc-number">4.1.2.</span> <span class="toc-text">当函数体可变时（即访问修改外部变量时）</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Block属性"><span class="toc-number">4.2.</span> <span class="toc-text">Block属性</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#copy关键字的探讨"><span class="toc-number">4.3.</span> <span class="toc-text">copy关键字的探讨</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#ARC-（为什么可以用copy-strong）"><span class="toc-number">4.3.1.</span> <span class="toc-text">ARC （为什么可以用copy / strong）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#MRC（为什么必须用copy）"><span class="toc-number">4.3.2.</span> <span class="toc-text">MRC（为什么必须用copy）</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#面试时如何回答？"><span class="toc-number">4.4.</span> <span class="toc-text">面试时如何回答？</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Block的循环引用"><span class="toc-number">5.</span> <span class="toc-text">Block的循环引用</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#满足什么条件会出现循环应用"><span class="toc-number">5.1.</span> <span class="toc-text">满足什么条件会出现循环应用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#如何解决循环引用"><span class="toc-number">5.2.</span> <span class="toc-text">如何解决循环引用</span></a></li></ol></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+
+  
+<div class="github-card">
+<p class="asidetitle">Github Card</p>
+<div class="github-card" data-github="qiudengqiang" data-theme="medium"></div>
+<script type="text/javascript" src="//cdn.jsdelivr.net/github-cards/latest/widget.js" ></script>
+</div>
+
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="http://techbird.me/about" target="_blank" title="RESUME">RESUME</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="http://mood.techbird.me" target="_blank" title="MOOD">MOOD</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="weiboshow">
+  <p class="asidetitle">Weibo</p>
+    <iframe width="100%" height="119" class="share_self"  frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=119&fansRow=2&ptype=1&speed=0&skin=9&isTitle=1&noborder=1&isWeibo=0&isFans=0&uid=6488657373&verifier=f458bf46&dpc=1"></iframe>
+</div>
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">Categories</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/Xcode/" title="Xcode">Xcode<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/iOS/" title="iOS">iOS<sup>7</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/iOS，Objective-C/" title="iOS，Objective-C">iOS，Objective-C<sup>1</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/iOS/" title="iOS">iOS<sup>8</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Network/" title="Network">Network<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Thread/" title="Thread">Thread<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Xcode/" title="Xcode">Xcode<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/NSURLSession/" title="NSURLSession">NSURLSession<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/云标签/" title="云标签">云标签<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/分类/" title="分类">分类<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/NSOperation/" title="NSOperation">NSOperation<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Http/" title="Http">Http<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/NSURLRequest/" title="NSURLRequest">NSURLRequest<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/NSURLResponse/" title="NSURLResponse">NSURLResponse<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/GCD/" title="GCD">GCD<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/WebView/" title="WebView">WebView<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Objective-C/" title="Objective-C">Objective-C<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Block/" title="Block">Block<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Https/" title="Https">Https<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/NSThread/" title="NSThread">NSThread<sup>1</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> Stay hungry，stay foolish <br/>
+			Talk is cheap，show me the code.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		<a href="http://weibo.com/6488657373 for http://weibo.com/techbird" target="_blank" class="icon-weibo" title="微博"></a>
+		
+		
+		<a href="https://github.com/qiudengqiang" target="_blank" class="icon-github" title="github"></a>
+		
+		
+		
+		<a href="https://twitter.com/stephentalk" target="_blank" class="icon-twitter" title="twitter"></a>
+		
+		
+		
+		
+		
+		
+		
+		<a href="mailto:qiudengqiang@gmail.com" target="_blank" class="icon-email" title="Email Me"></a>
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2018 
+		
+		<a href="/about" target="_blank" title="techbird">techbird</a>
+		
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+<script type="text/javascript">
+
+var disqus_shortname = 'techbird-1';
+
+(function(){
+  var dsq = document.createElement('script');
+  dsq.type = 'text/javascript';
+  dsq.async = true;
+  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+}());
+(function(){
+  var dsq = document.createElement('script');
+  dsq.type = 'text/javascript';
+  dsq.async = true;
+  dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+}());
+</script>
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>
