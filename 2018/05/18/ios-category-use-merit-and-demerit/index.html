@@ -1,0 +1,655 @@
+
+ <!DOCTYPE HTML>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+  
+    <title>iOS-Category的使用和优缺点 | techbird&#39;s blog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="techbird">
+    
+
+    
+    <meta name="description" content="什么是Category?分类就是对一个类的功能进行扩展，让这个类能够适应不同情况的需求；在实际开发中我们都会对系统的一些常用类进行扩展，例如：NSString,Button,Label等；简单来说类别是一种为现有的类添加新方法的方式。利用OC的动态运行时分配机制，category提供了一种比继承更为简洁的方法来对类进行扩展，无需创建对象的子类就能为现有的类添加新的方法，category可以为任何已">
+<meta name="keywords" content="iOS,category">
+<meta property="og:type" content="article">
+<meta property="og:title" content="iOS-Category的使用和优缺点">
+<meta property="og:url" content="http://techbird.me/2018/05/18/ios-category-use-merit-and-demerit/index.html">
+<meta property="og:site_name" content="techbird&#39;s blog">
+<meta property="og:description" content="什么是Category?分类就是对一个类的功能进行扩展，让这个类能够适应不同情况的需求；在实际开发中我们都会对系统的一些常用类进行扩展，例如：NSString,Button,Label等；简单来说类别是一种为现有的类添加新方法的方式。利用OC的动态运行时分配机制，category提供了一种比继承更为简洁的方法来对类进行扩展，无需创建对象的子类就能为现有的类添加新的方法，category可以为任何已">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://p7xd6yrmx.bkt.clouddn.com/compile_last_one.png">
+<meta property="og:image" content="http://p7xd6yrmx.bkt.clouddn.com/compile_last_two.png">
+<meta property="og:updated_time" content="2018-05-18T12:19:59.111Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="iOS-Category的使用和优缺点">
+<meta name="twitter:description" content="什么是Category?分类就是对一个类的功能进行扩展，让这个类能够适应不同情况的需求；在实际开发中我们都会对系统的一些常用类进行扩展，例如：NSString,Button,Label等；简单来说类别是一种为现有的类添加新方法的方式。利用OC的动态运行时分配机制，category提供了一种比继承更为简洁的方法来对类进行扩展，无需创建对象的子类就能为现有的类添加新的方法，category可以为任何已">
+<meta name="twitter:image" content="http://p7xd6yrmx.bkt.clouddn.com/compile_last_one.png">
+<meta name="twitter:creator" content="@stephentalk">
+
+    
+    <link rel="alternative" href="/atom.xml" title="techbird&#39;s blog" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.png" alt="techbird&#39;s blog" title="techbird&#39;s blog"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="techbird&#39;s blog">techbird&#39;s blog</a></h1>
+				<h2 class="blog-motto">timeline of techology</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:techbird.me">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/05/18/ios-category-use-merit-and-demerit/" title="iOS-Category的使用和优缺点" itemprop="url">iOS-Category的使用和优缺点</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="techbird" target="_blank" itemprop="author">techbird</a>
+		
+  <p class="article-time">
+    <time datetime="2018-05-18T06:30:47.000Z" itemprop="datePublished"> Published 2018-05-18</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#什么是Category"><span class="toc-number">1.</span> <span class="toc-text">什么是Category?</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Category的优点："><span class="toc-number">2.</span> <span class="toc-text">Category的优点：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Category的局限性："><span class="toc-number">3.</span> <span class="toc-text">Category的局限性：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#调用优先级"><span class="toc-number">4.</span> <span class="toc-text">调用优先级</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#为什么Category不能添加成员变量？"><span class="toc-number">5.</span> <span class="toc-text">为什么Category不能添加成员变量？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Category中能添加属性吗？"><span class="toc-number">6.</span> <span class="toc-text">Category中能添加属性吗？</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#为什么网上很多人说Category不可以添加属性"><span class="toc-number">6.1.</span> <span class="toc-text">为什么网上很多人说Category不可以添加属性?</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#为什么不能为Category手动添加一个下划线开头的成员变量"><span class="toc-number">6.2.</span> <span class="toc-text">为什么不能为Category手动添加一个下划线开头的成员变量</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#两点注意："><span class="toc-number">7.</span> <span class="toc-text">两点注意：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#扩展：成员变量和属性的区别？"><span class="toc-number">8.</span> <span class="toc-text">扩展：成员变量和属性的区别？</span></a></li></ol>
+		
+		</div>
+		
+		<h2 id="什么是Category"><a href="#什么是Category" class="headerlink" title="什么是Category?"></a>什么是Category?</h2><p>分类就是对一个类的功能进行扩展，让这个类能够适应不同情况的需求；在实际开发中我们都会对系统的一些常用类进行扩展，例如：NSString,Button,Label等；简单来说类别是一种为现有的类添加新方法的方式。利用OC的动态运行时分配机制，category提供了一种比继承更为简洁的方法来对类进行扩展，无需创建对象的子类就能为现有的类添加新的方法，category可以为任何已经存在的类添加方法，包括系统的框架UIKit等。</p>
+<h2 id="Category的优点："><a href="#Category的优点：" class="headerlink" title="Category的优点："></a>Category的优点：</h2><ul>
+<li>可以将类的实现分散到多个不同的文件或者不同的框架中，方便代码的管理；也可以对框架提供类的扩展，把不同的功能组织到不同的category里，从而按需加载想要的category。</li>
+<li>创建对私有方法的前向引用：如果其他类中的方法未实现时，或者在访问该类私有方法时编译器报错时；在类别中声明这些方法（不必提供方法实现）从而绕过编译器不会再产生警告或者错误。</li>
+<li>向对象添加非正式协议：创建一个NSObject的类别成为“创建一个非正式协议”，因为可以作为任何类的委托对象使用（声明私有方法）。</li>
+</ul>
+<p>apple的SDK中就大面积的使用了category这一特性。比如UIKit中的UIView。apple把不同的功能API进行了分类，这些分类包括UIViewGeometry、UIViewHierarchy、UIViewRendering等。<br>不过除了apple推荐的使用场景，广大开发者脑洞大开，还衍生出了category的其他几个使用场景：</p>
+<pre><code>1. 模拟多继承（另外可以模拟多继承的还有protocol）
+2. 把framework的私有方法公开
+</code></pre><h2 id="Category的局限性："><a href="#Category的局限性：" class="headerlink" title="Category的局限性："></a>Category的局限性：</h2><ul>
+<li>category只能给某个已有的类扩充方法，不能扩充成员变量。</li>
+<li>category中也可以添加属性，只不过@property只会生成<code>setter</code>和<code>getter</code>的声明，不会生成实现以及成员变量。</li>
+<li>如果category中的方法和类中原有的方法同名，运行时会优先调用category中的方法。也就是，category中的方法会<code>覆盖</code>掉类中原有的方法。所以开发中尽量保证不要让分类中的方法和原有类中的方法名相同;避免出现这种情况的解决方案是给分类的方法名统一添加前缀。比如<code>category_xxx</code>。</li>
+<li>如果多个category中存在同名的方法，运行时到底调用那个方法由编译器决定，最后一个参与编译的方法会被调用。</li>
+</ul>
+<p>如下：给UIView添加两个category（one和two）并且给这两个分类都添加了名为log的方法</p>
+<ul>
+<li><p>UIView+One</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#import <span class="meta-string">"UIView+One.h"</span></span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">@implementation</span> <span class="title">UIView</span> (<span class="title">One</span>)</span></span><br><span class="line">- (<span class="keyword">void</span>)log &#123;</span><br><span class="line">    <span class="built_in">NSLog</span>(<span class="string">@"调用One分类的方法"</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">@end</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>UIView+Two</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#import <span class="meta-string">"UIView+Two.h"</span></span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">@implementation</span> <span class="title">UIView</span> (<span class="title">Two</span>)</span></span><br><span class="line">- (<span class="keyword">void</span>)log &#123;</span><br><span class="line">    <span class="built_in">NSLog</span>(<span class="string">@"调用One分类的方法"</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">@end</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>在UIViewController中引用这两个分类的头文件并调用log方法</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#import <span class="meta-string">"UIView+One.h"</span></span></span><br><span class="line"><span class="meta">#import <span class="meta-string">"UIView+Two.h"</span></span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">@implementation</span> <span class="title">ViewController</span></span></span><br><span class="line"></span><br><span class="line">- (<span class="keyword">void</span>)viewDidLoad &#123;</span><br><span class="line">    [<span class="keyword">super</span> viewDidLoad];</span><br><span class="line">    <span class="built_in">UIView</span> * view = [<span class="built_in">UIView</span> new];</span><br><span class="line">    [view log];</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">@end</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>当编译顺序如下图时输出：<br><img src="http://p7xd6yrmx.bkt.clouddn.com/compile_last_one.png" alt=""></p>
+<figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">2018-05-18 15:23:13.379081+0800 CategoryDemo[2373:700484] 调用One分类的方法</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>将UIView+One.m移动到UIView+Two.m上面，编译顺序如下图时输出：<br><img src="http://p7xd6yrmx.bkt.clouddn.com/compile_last_two.png" alt=""></p>
+<figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">2018-05-18 15:27:25.008682+0800 CategoryDemo[2441:715950] 调用Two分类的方法</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="调用优先级"><a href="#调用优先级" class="headerlink" title="调用优先级"></a>调用优先级</h2><p>Category-&gt;本类-&gt;父类</p>
+<h2 id="为什么Category不能添加成员变量？"><a href="#为什么Category不能添加成员变量？" class="headerlink" title="为什么Category不能添加成员变量？"></a>为什么Category不能添加成员变量？</h2><p>Objective-C的类是由<code>Class</code>类型来表示的，它实际上是一个指向<code>objc_class</code>结构体的指针<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">objc_class</span> * <span class="title">Class</span>;</span></span><br></pre></td></tr></table></figure></p>
+<p>objc_class结构体的定义如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">struct objc_class &#123;</span><br><span class="line">    Class isa  OBJC_ISA_AVAILABILITY;</span><br><span class="line">#if !__OBJC2__</span><br><span class="line">    Class super_class                       OBJC2_UNAVAILABLE;  // 父类</span><br><span class="line">    const char *name                        OBJC2_UNAVAILABLE;  // 类名</span><br><span class="line">    long version                            OBJC2_UNAVAILABLE;  // 类的版本信息，默认为0</span><br><span class="line">    long info                               OBJC2_UNAVAILABLE;  // 类信息，供运行期使用的一些位标识</span><br><span class="line">    long instance_size                      OBJC2_UNAVAILABLE;  // 该类的实例变量大小</span><br><span class="line">    struct objc_ivar_list *ivars            OBJC2_UNAVAILABLE;  // 该类的成员变量链表</span><br><span class="line">    struct objc_method_list **methodLists   OBJC2_UNAVAILABLE;  // 方法定义的链表</span><br><span class="line">    struct objc_cache *cache                OBJC2_UNAVAILABLE;  // 方法缓存</span><br><span class="line">    struct objc_protocol_list *protocols    OBJC2_UNAVAILABLE;  // 协议链表</span><br><span class="line">#endif</span><br><span class="line">&#125; OBJC2_UNAVAILABLE;</span><br></pre></td></tr></table></figure></p>
+<p>在上面的<code>objc_class</code>结构体中，<code>ivars</code>是<code>objc_ivar_list</code>（成员变量列表）指针；<code>methodLists</code>是指向<code>objc_method_list</code>指针的指针。<br>在<code>Runtime</code>中，<code>objc_class</code>的大小是<code>固定</code>的，不可能往这个结构体中添加数据，只能修改。所以<code>ivars</code>指向的是一个固定区域，只能修改成员变量的值，不能增加成员变量的个数。<br><code>methodLists</code>是一个<code>二维数组</code>，所以可以修改<code>*methodLists</code>的值来增加成员变量方法，虽然没办法扩展<code>methodLists</code>指向的内存区域，却可以改变这个内存区域的值（存储的是指针），因此可以动态添加方法，不能添加成员变量。</p>
+<h2 id="Category中能添加属性吗？"><a href="#Category中能添加属性吗？" class="headerlink" title="Category中能添加属性吗？"></a>Category中能添加属性吗？</h2><p>Category中不能直接添加成员变量，那么可以添加属性吗？<br>需要从Category的结构体开始分析：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">typedef struct category_t &#123;</span><br><span class="line">    const char *name;  //类的名字</span><br><span class="line">    classref_t cls;  //类</span><br><span class="line">    struct method_list_t *instanceMethods;  //category中所有给类添加的实例方法的列表</span><br><span class="line">    struct method_list_t *classMethods;  //category中所有添加的类方法的列表</span><br><span class="line">    struct protocol_list_t *protocols;  //category实现的所有协议的列表</span><br><span class="line">    struct property_list_t *instanceProperties;  //category中添加的所有属性</span><br><span class="line">&#125; category_t;</span><br></pre></td></tr></table></figure></p>
+<p>从Category的结构体定义<code>也</code>可以看出:Category可以添加<code>实例方法</code>、<code>类方法</code>、<code>协议</code>、<code>属性</code>，但不能添加<code>成员变量</code>（实例变量）</p>
+<h3 id="为什么网上很多人说Category不可以添加属性"><a href="#为什么网上很多人说Category不可以添加属性" class="headerlink" title="为什么网上很多人说Category不可以添加属性?"></a>为什么网上很多人说Category不可以添加属性?</h3><p>实际上，category是可以添加属性的，同样可以使用<code>@property</code>，但是不会生成带下划线的成员变量也不会生成属性getter和setter方法的实现。所以，尽管添加了属性，也无法使用点语法调用getter和setter方法（实际上，点语法是可以写的，只不过在运行时调用到这个方法的时候会报Unrecognised selector send to instance的错误），但可以使用Runtime去实现Category为已有的类添加新的属性并生成getter和setter方法</p>
+<h3 id="为什么不能为Category手动添加一个下划线开头的成员变量"><a href="#为什么不能为Category手动添加一个下划线开头的成员变量" class="headerlink" title="为什么不能为Category手动添加一个下划线开头的成员变量"></a>为什么不能为Category手动添加一个下划线开头的成员变量</h3><p>成员变量是一个类的东西，而分类本身就不是一个类，它并没有自己的isa指针，分类本来就是OC里通过运行时动态的为一个类添加属性和方法等，不是一个真正的类无法添加成员变量。</p>
+<blockquote>
+<p>可以使用Runtime技术中的关联对象可以为类别添加属性</p>
+</blockquote>
+<h2 id="两点注意："><a href="#两点注意：" class="headerlink" title="两点注意："></a>两点注意：</h2><ol>
+<li>当category中的方法和原类中的方法同名时，category中的方法并没有完全替换掉原类中的方法，也就是说如果category和原类中都有一个methodA方法，那么category附加完成之后，类的方法里面会有两个methodA，实际上category的方法只是被放到新方法列表的前面，而原来类的方法只是被放到了新方法列表的后面，这也就是通常说的<code>覆盖同名方法</code>；这是因为运行时在查找方法的时候是顺着方法列表顺序查找的，它只要已找到对应名字的方法，就直接调用不会再往后面找了。</li>
+<li>由于category的实现原理，和Objc的动态绑定有很强的关系，所以实际上类的扩展比较占用启动时间，因尽量合并一些在工程，架构上没有太大意义的扩展，会对启动有一定的优化作用。</li>
+</ol>
+<h2 id="扩展：成员变量和属性的区别？"><a href="#扩展：成员变量和属性的区别？" class="headerlink" title="扩展：成员变量和属性的区别？"></a>扩展：成员变量和属性的区别？</h2><p>@property声明的属性默认会生成一个以下划线开头的成员变量，同事也会生成getter/setter方法。但这仅仅是在iOS5之后，苹果才推出的一个机制。在一些比较老的项目经常可以看到一大括号里面定义了成员变量，同时用了@property声明，而且还在@implementation中使用了@synthesize方法。<br><figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">ViewController</span> ()</span></span><br><span class="line">&#123;</span><br><span class="line">   <span class="comment">// 1.声明成员变量</span></span><br><span class="line">    <span class="built_in">NSString</span> * myString;  </span><br><span class="line"> &#125;</span><br><span class="line"> <span class="comment">//2.在用@property</span></span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">nonatomic</span>, <span class="keyword">copy</span>) <span class="built_in">NSString</span> * myString;  </span><br><span class="line"><span class="keyword">@end</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">@implementation</span> <span class="title">ViewController</span></span></span><br><span class="line"><span class="comment">//3.最后在@implementation中用synthesize生成set方法</span></span><br><span class="line"><span class="keyword">@synthesize</span> myString;   </span><br><span class="line"><span class="keyword">@end</span></span><br></pre></td></tr></table></figure></p>
+<p>实际上，发生这种状况的根本原因是苹果将默认编译器从GCC转换为LLVM（low level virtual machine）后，才不再需要为属性声明实例变量了。<br>在没有更改之前，属性的正常写法需要 <code>成员变量 + @property + @synthesize成员变量</code>三个步骤<br>如果我们只写成员变量+@property<br><figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">GBViewController</span> :<span class="title">UIViewController</span></span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">NSString</span> * myString;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">strong</span>) <span class="built_in">NSString</span> * myString;</span><br><span class="line"><span class="keyword">@end</span></span><br></pre></td></tr></table></figure></p>
+<p>这时，编译器会警告：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Autosynthesized property <span class="string">'myString'</span> will use synthesized instance variable <span class="string">'_myString'</span>, not existing instance variable <span class="string">'myString'</span></span><br></pre></td></tr></table></figure></p>
+<p>但更换为<code>LLVM</code>之后，编译器在编译过程中发现没有生成实例变量时，就会生成一个下划线开头的实例变量。因此现在我们不必在声明一个实例变量（<strong>注意</strong>：是不必要，不是不可以）<br>对于<code>@synthesize</code>我们要明白，<code>@synthesize</code>不仅可以帮助生成setter/getter方法；同时还有一个作用就是可以指定与属性对应的实例变量<br><figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">@synthesize</span> myString = _xxx；</span><br></pre></td></tr></table></figure></p>
+<p>那么<code>self.myString</code>其实是操作的实例变量_xxx，而不是<code>_myString</code>了。</p>
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/iOS/">iOS</a>►<a class="article-category-link" href="/categories/iOS/Objective-C/">Objective-C</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/iOS/">iOS</a><a href="/tags/category/">category</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="http://techbird.me/2018/05/18/ios-category-use-merit-and-demerit/" data-title="iOS-Category的使用和优缺点 | techbird&#39;s blog" data-tsina="6488657373" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2018/05/18/ios-thread-use-pthread/" title="ios-pthread使用 &amp; __bridge">
+  <strong>上一篇：</strong><br/>
+  <span>
+  ios-pthread使用 &amp; __bridge</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2018/05/18/ios-keywors-of-strong-weak-copy-retain-assign/"  title="strong、weak、copy、retain和assign的区别">
+ <strong>下一篇：</strong><br/> 
+ <span>strong、weak、copy、retain和assign的区别
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+<section id="comments" class="comment">
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  </div>
+</section>
+
+
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#什么是Category"><span class="toc-number">1.</span> <span class="toc-text">什么是Category?</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Category的优点："><span class="toc-number">2.</span> <span class="toc-text">Category的优点：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Category的局限性："><span class="toc-number">3.</span> <span class="toc-text">Category的局限性：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#调用优先级"><span class="toc-number">4.</span> <span class="toc-text">调用优先级</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#为什么Category不能添加成员变量？"><span class="toc-number">5.</span> <span class="toc-text">为什么Category不能添加成员变量？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Category中能添加属性吗？"><span class="toc-number">6.</span> <span class="toc-text">Category中能添加属性吗？</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#为什么网上很多人说Category不可以添加属性"><span class="toc-number">6.1.</span> <span class="toc-text">为什么网上很多人说Category不可以添加属性?</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#为什么不能为Category手动添加一个下划线开头的成员变量"><span class="toc-number">6.2.</span> <span class="toc-text">为什么不能为Category手动添加一个下划线开头的成员变量</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#两点注意："><span class="toc-number">7.</span> <span class="toc-text">两点注意：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#扩展：成员变量和属性的区别？"><span class="toc-number">8.</span> <span class="toc-text">扩展：成员变量和属性的区别？</span></a></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+
+  
+<div class="github-card">
+<p class="asidetitle">Github Card</p>
+<div class="github-card" data-github="qiudengqiang" data-theme="medium"></div>
+<script type="text/javascript" src="//cdn.jsdelivr.net/github-cards/latest/widget.js" ></script>
+</div>
+
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="http://techbird.me/about" target="_blank" title="RESUME">RESUME</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="http://mood.techbird.me" target="_blank" title="MOOD">MOOD</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="weiboshow">
+  <p class="asidetitle">Weibo</p>
+    <iframe width="100%" height="119" class="share_self"  frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=119&fansRow=2&ptype=1&speed=0&skin=9&isTitle=1&noborder=1&isWeibo=0&isFans=0&uid=6488657373&verifier=f458bf46&dpc=1"></iframe>
+</div>
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">Categories</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/iOS/Objective-C/" title="Objective-C">Objective-C<sup>10</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Xcode/" title="Xcode">Xcode<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/iOS/" title="iOS">iOS<sup>13</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/iOS/" title="iOS">iOS<sup>13</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Objective-C/" title="Objective-C">Objective-C<sup>7</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Thread/" title="Thread">Thread<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Network/" title="Network">Network<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Xcode/" title="Xcode">Xcode<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/分类/" title="分类">分类<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Https/" title="Https">Https<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/keywords/" title="keywords">keywords<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/NSThread/" title="NSThread">NSThread<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/NSURLRequest/" title="NSURLRequest">NSURLRequest<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/category/" title="category">category<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/云标签/" title="云标签">云标签<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Http/" title="Http">Http<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/NSOperation/" title="NSOperation">NSOperation<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/NSURLSession/" title="NSURLSession">NSURLSession<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/GCD/" title="GCD">GCD<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/UITableView/" title="UITableView">UITableView<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/WebView/" title="WebView">WebView<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Block/" title="Block">Block<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/NSURLResponse/" title="NSURLResponse">NSURLResponse<sup>1</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> Stay hungry，stay foolish <br/>
+			Talk is cheap，show me the code.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		<a href="http://weibo.com/6488657373 for http://weibo.com/techbird" target="_blank" class="icon-weibo" title="微博"></a>
+		
+		
+		<a href="https://github.com/qiudengqiang" target="_blank" class="icon-github" title="github"></a>
+		
+		
+		
+		<a href="https://twitter.com/stephentalk" target="_blank" class="icon-twitter" title="twitter"></a>
+		
+		
+		
+		
+		
+		
+		
+		<a href="mailto:qiudengqiang@gmail.com" target="_blank" class="icon-email" title="Email Me"></a>
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2018 
+		
+		<a href="/about" target="_blank" title="techbird">techbird</a>
+		
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+<script type="text/javascript">
+
+var disqus_shortname = 'techbird-1';
+
+(function(){
+  var dsq = document.createElement('script');
+  dsq.type = 'text/javascript';
+  dsq.async = true;
+  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+}());
+(function(){
+  var dsq = document.createElement('script');
+  dsq.type = 'text/javascript';
+  dsq.async = true;
+  dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+}());
+</script>
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

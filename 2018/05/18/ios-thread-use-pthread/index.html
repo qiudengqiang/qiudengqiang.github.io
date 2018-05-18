@@ -4,25 +4,25 @@
 <head>
   <meta charset="UTF-8">
   
-    <title>iOS-多线程之NSOperation | techbird&#39;s blog</title>
+    <title>ios-pthread使用 &amp; __bridge | techbird&#39;s blog</title>
     <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
     
     <meta name="author" content="techbird">
     
 
     
-    <meta name="description" content="常规写法1234567891011- (void)demo&amp;#123;	//创建队列:默认就是并发队列  NSOperationQueue * queue = [NSOperationQueue new];	//创建操作:默认就是异步任务	NSBlockOperation * operation = [NSBlockOperation blockOperationWithBlock:^&amp;#123;">
-<meta name="keywords" content="iOS,Objective-C,Thread,NSOperation">
+    <meta name="description" content="pthread是POSIX thread的简写，跨平台多线程的C语言开发框架,pthread是实现多线程的技术方案之一，NSThread就是对它的封装。 pthread开启子线程的函数介绍123#import &amp;lt;pthread.h&amp;gt;int pthread_create(pthread_t * __restrict, const pthread_attr_t * __restrict,">
+<meta name="keywords" content="iOS,Objective-C,Thread">
 <meta property="og:type" content="article">
-<meta property="og:title" content="iOS-多线程之NSOperation">
-<meta property="og:url" content="http://techbird.me/2018/04/29/ios-thread-nsoperation/index.html">
+<meta property="og:title" content="ios-pthread使用 &amp; __bridge">
+<meta property="og:url" content="http://techbird.me/2018/05/18/ios-thread-use-pthread/index.html">
 <meta property="og:site_name" content="techbird&#39;s blog">
-<meta property="og:description" content="常规写法1234567891011- (void)demo&amp;#123;	//创建队列:默认就是并发队列  NSOperationQueue * queue = [NSOperationQueue new];	//创建操作:默认就是异步任务	NSBlockOperation * operation = [NSBlockOperation blockOperationWithBlock:^&amp;#123;">
+<meta property="og:description" content="pthread是POSIX thread的简写，跨平台多线程的C语言开发框架,pthread是实现多线程的技术方案之一，NSThread就是对它的封装。 pthread开启子线程的函数介绍123#import &amp;lt;pthread.h&amp;gt;int pthread_create(pthread_t * __restrict, const pthread_attr_t * __restrict,">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-05-18T03:25:32.457Z">
+<meta property="og:updated_time" content="2018-05-18T12:05:22.806Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="iOS-多线程之NSOperation">
-<meta name="twitter:description" content="常规写法1234567891011- (void)demo&amp;#123;	//创建队列:默认就是并发队列  NSOperationQueue * queue = [NSOperationQueue new];	//创建操作:默认就是异步任务	NSBlockOperation * operation = [NSBlockOperation blockOperationWithBlock:^&amp;#123;">
+<meta name="twitter:title" content="ios-pthread使用 &amp; __bridge">
+<meta name="twitter:description" content="pthread是POSIX thread的简写，跨平台多线程的C语言开发框架,pthread是实现多线程的技术方案之一，NSThread就是对它的封装。 pthread开启子线程的函数介绍123#import &amp;lt;pthread.h&amp;gt;int pthread_create(pthread_t * __restrict, const pthread_attr_t * __restrict,">
 <meta name="twitter:creator" content="@stephentalk">
 
     
@@ -83,14 +83,14 @@
 		<header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/04/29/ios-thread-nsoperation/" title="iOS-多线程之NSOperation" itemprop="url">iOS-多线程之NSOperation</a>
+      <a href="/2018/05/18/ios-thread-use-pthread/" title="ios-pthread使用 &amp; __bridge" itemprop="url">ios-pthread使用 &amp; __bridge</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="techbird" target="_blank" itemprop="author">techbird</a>
 		
   <p class="article-time">
-    <time datetime="2018-04-29T09:14:05.000Z" itemprop="datePublished"> Published 2018-04-29</time>
+    <time datetime="2018-05-18T11:41:58.000Z" itemprop="datePublished"> Published 2018-05-18</time>
     
   </p>
 </header>
@@ -99,13 +99,27 @@
 		<div id="toc" class="toc-article">
 			<strong class="toc-title">Contents</strong>
 		
-			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#常规写法"><span class="toc-number">1.</span> <span class="toc-text">常规写法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#简写"><span class="toc-number">2.</span> <span class="toc-text">简写</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#线程间通讯"><span class="toc-number">3.</span> <span class="toc-text">线程间通讯</span></a></li></ol>
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#pthread开启子线程的函数介绍"><span class="toc-number">1.</span> <span class="toc-text">pthread开启子线程的函数介绍</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#参数"><span class="toc-number">1.1.</span> <span class="toc-text">参数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#返回值"><span class="toc-number">1.2.</span> <span class="toc-text">返回值</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#pthread开启子线程的函数实现"><span class="toc-number">2.</span> <span class="toc-text">pthread开启子线程的函数实现</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#子线程异步执行的函数-任务"><span class="toc-number">3.</span> <span class="toc-text">子线程异步执行的函数/任务</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#小结"><span class="toc-number">4.</span> <span class="toc-text">小结</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#bridge"><span class="toc-number">5.</span> <span class="toc-text">__bridge</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#bridge-retained"><span class="toc-number">6.</span> <span class="toc-text">__bridge_retained</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#bridge-transfer"><span class="toc-number">7.</span> <span class="toc-text">__bridge_transfer</span></a></li></ol>
 		
 		</div>
 		
-		<h2 id="常规写法"><a href="#常规写法" class="headerlink" title="常规写法"></a>常规写法</h2><figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="keyword">void</span>)demo&#123;</span><br><span class="line">	<span class="comment">//创建队列:默认就是并发队列</span></span><br><span class="line">  <span class="built_in">NSOperationQueue</span> * queue = [<span class="built_in">NSOperationQueue</span> new];</span><br><span class="line">	<span class="comment">//创建操作:默认就是异步任务</span></span><br><span class="line">	<span class="built_in">NSBlockOperation</span> * operation = [<span class="built_in">NSBlockOperation</span> blockOperationWithBlock:^&#123;</span><br><span class="line">		<span class="built_in">NSLog</span>(<span class="string">@"%@"</span>,[<span class="built_in">NSThread</span> currentThread]);</span><br><span class="line"></span><br><span class="line">	&#125;];</span><br><span class="line">	<span class="comment">//将操作添加到队列</span></span><br><span class="line">	[queue addOperation:operation];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="简写"><a href="#简写" class="headerlink" title="简写"></a>简写</h2><figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="keyword">void</span>)demo2&#123;</span><br><span class="line">	[[<span class="built_in">NSOperationQueue</span> new] addOperationWithBlock:^&#123;</span><br><span class="line">		<span class="built_in">NSLog</span>(<span class="string">@"%@"</span>,[<span class="built_in">NSThread</span> currentThread]);</span><br><span class="line">	&#125;];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="线程间通讯"><a href="#线程间通讯" class="headerlink" title="线程间通讯"></a>线程间通讯</h2><figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="keyword">void</span>)demo3&#123;</span><br><span class="line">	[[<span class="built_in">NSOperationQueue</span> new] addOperationWithBlock:^&#123;</span><br><span class="line">		<span class="built_in">NSLog</span>(<span class="string">@"consuming time：%@"</span>,[<span class="built_in">NSThread</span> currentThread]);</span><br><span class="line">		<span class="comment">/// 回到主线程刷新UI</span></span><br><span class="line">		[[<span class="built_in">NSOperationQueue</span> mainQueue] addOperationWithBlock:^&#123;</span><br><span class="line">			<span class="built_in">NSLog</span>(<span class="string">@"refresh ui: %@"</span>,[<span class="built_in">NSThread</span> currentThread]);</span><br><span class="line">		&#125;];</span><br><span class="line">	&#125;];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+		<p>pthread是POSIX thread的简写，跨平台多线程的C语言开发框架,pthread是实现多线程的技术方案之一，NSThread就是对它的封装。</p>
+<h2 id="pthread开启子线程的函数介绍"><a href="#pthread开启子线程的函数介绍" class="headerlink" title="pthread开启子线程的函数介绍"></a>pthread开启子线程的函数介绍</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">#import &lt;pthread.h&gt;</span><br><span class="line">int pthread_create(pthread_t * __restrict, const pthread_attr_t * __restrict,</span><br><span class="line">				   void *(*)(void *), void * __restrict);</span><br></pre></td></tr></table></figure>
+<h3 id="参数"><a href="#参数" class="headerlink" title="参数"></a>参数</h3><p><code>pthread_t *</code> : 线程标示符，传入指向线程标示符的指针地址。<br><code>pthread_attr_t *</code> :线程属性，传入指向线程属性的指针地。<br><code>void*( * )(void * )</code> :新线程要执行的函数(任务)，传入函数地址，即函数名。<br><code>void *</code>:传入到函数的参数。</p>
+<h3 id="返回值"><a href="#返回值" class="headerlink" title="返回值"></a>返回值</h3><ul>
+<li>返回int类型的值,0表示创建新线程成功,反之,创建新线程失败,返回失败的编号。</li>
+<li>C语言框架里面并不是非零即真原则；因为他们认为成功的结果只有一个，但是失败的原因有很多。</li>
+</ul>
+<h2 id="pthread开启子线程的函数实现"><a href="#pthread开启子线程的函数实现" class="headerlink" title="pthread开启子线程的函数实现"></a>pthread开启子线程的函数实现</h2><figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="keyword">void</span>)pthreadDemo &#123;</span><br><span class="line">	<span class="comment">// 新线程的标示符</span></span><br><span class="line">	pthread_t ID;</span><br><span class="line">	<span class="comment">// 创建子线程</span></span><br><span class="line">	<span class="keyword">int</span> result = pthread_create(&amp;ID, <span class="literal">NULL</span>, demo, <span class="literal">NULL</span>);</span><br><span class="line">	<span class="comment">// 判断创建子线程是否成功</span></span><br><span class="line">	<span class="keyword">if</span> (result == <span class="number">0</span>) &#123;</span><br><span class="line">		<span class="built_in">NSLog</span>(@“success”);</span><br><span class="line">	&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">		<span class="built_in">NSLog</span>(@“failure”);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="子线程异步执行的函数-任务"><a href="#子线程异步执行的函数-任务" class="headerlink" title="子线程异步执行的函数/任务"></a>子线程异步执行的函数/任务</h2><figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> * demo(<span class="keyword">void</span> *param)</span><br><span class="line">&#123;</span><br><span class="line">	<span class="built_in">NSLog</span>(<span class="string">@"demo %@"</span>,[<span class="built_in">NSThread</span> currentThread]);</span><br><span class="line">	<span class="keyword">return</span> <span class="literal">NULL</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><ul>
+<li>C 语言中 <code>void *</code> 与 OC 中的 id 类似。</li>
+<li><code>void *(*)(void *)</code> 中的<code>(*)</code> 表示指向函数的指针，即函数指针，即函数名或者函数地址。</li>
+</ul>
+<h2 id="bridge"><a href="#bridge" class="headerlink" title="__bridge"></a><em>__bridge</em></h2><p>用作于普通的 C 指针与 OC 指针的转换，不做任何操作。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">void *p;</span><br><span class="line">NSObject *objc = [[NSObject alloc] init];</span><br><span class="line">p = (__bridge void*)objc;</span><br></pre></td></tr></table></figure></p>
+<p>这里的 <code>void * p</code> 指针直接指向了 <code>NSObject * objc</code> 这个 OC 类，p 指针并不拥有 OC 对象，跟普通的指针指向地址无疑。所以这个出现了一个问题，OC 对象被释放，p 指针也就释放了。</p>
+<h2 id="bridge-retained"><a href="#bridge-retained" class="headerlink" title="__bridge_retained"></a><em>__bridge_retained</em></h2><p>用作 C 指针与 OC 指针的转换，并且也用拥有着被转换对象的所有权</p>
+<h2 id="bridge-transfer"><a href="#bridge-transfer" class="headerlink" title="__bridge_transfer"></a><em>__bridge_transfer</em></h2><p>用作 C 指针与 OC 指针的转换，并在拥有对象所有权后将原先对象所有权释放。(只支持 C 指针转换 OC 对象指针)<br>其实可以理解为先将对象的引用计数器 +1，然后再将引用计数器 -1。</p>
   
 	</div>
 		<footer class="article-footer clearfix">
@@ -119,7 +133,7 @@
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/iOS/">iOS</a><a href="/tags/Objective-C/">Objective-C</a><a href="/tags/Thread/">Thread</a><a href="/tags/NSOperation/">NSOperation</a>
+  <span></span> <a href="/tags/iOS/">iOS</a><a href="/tags/Objective-C/">Objective-C</a><a href="/tags/Thread/">Thread</a>
   </div>
 
 </div>
@@ -128,7 +142,7 @@
 
 	<div class="article-share" id="share">
 	
-	  <div data-url="http://techbird.me/2018/04/29/ios-thread-nsoperation/" data-title="iOS-多线程之NSOperation | techbird&#39;s blog" data-tsina="6488657373" class="share clearfix">
+	  <div data-url="http://techbird.me/2018/05/18/ios-thread-use-pthread/" data-title="ios-pthread使用 &amp; __bridge | techbird&#39;s blog" data-tsina="6488657373" class="share clearfix">
 	  </div>
 	
 	</div>
@@ -142,18 +156,18 @@
 <nav class="article-nav clearfix">
  
  <div class="prev" >
- <a href="/2018/04/29/ios-networkbase-http-and-https/" title="iOS-网络基础&amp;Http和Https">
+ <a href="/2018/05/18/ios-uitableview-optimize/" title="iOS-TableView的重用机制及优化">
   <strong>上一篇：</strong><br/>
   <span>
-  iOS-网络基础&amp;Http和Https</span>
+  iOS-TableView的重用机制及优化</span>
 </a>
 </div>
 
 
 <div class="next">
-<a href="/2018/04/29/ios-thread-gcd/"  title="iOS-多线程之GCD">
+<a href="/2018/05/18/ios-category-use-merit-and-demerit/"  title="iOS-Category的使用和优缺点">
  <strong>下一篇：</strong><br/> 
- <span>iOS-多线程之GCD
+ <span>iOS-Category的使用和优缺点
 </span>
 </a>
 </div>
@@ -176,7 +190,7 @@
   <div id="toc" class="toc-aside">
   <strong class="toc-title">Contents</strong>
  
- <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#常规写法"><span class="toc-number">1.</span> <span class="toc-text">常规写法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#简写"><span class="toc-number">2.</span> <span class="toc-text">简写</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#线程间通讯"><span class="toc-number">3.</span> <span class="toc-text">线程间通讯</span></a></li></ol>
+ <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#pthread开启子线程的函数介绍"><span class="toc-number">1.</span> <span class="toc-text">pthread开启子线程的函数介绍</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#参数"><span class="toc-number">1.1.</span> <span class="toc-text">参数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#返回值"><span class="toc-number">1.2.</span> <span class="toc-text">返回值</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#pthread开启子线程的函数实现"><span class="toc-number">2.</span> <span class="toc-text">pthread开启子线程的函数实现</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#子线程异步执行的函数-任务"><span class="toc-number">3.</span> <span class="toc-text">子线程异步执行的函数/任务</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#小结"><span class="toc-number">4.</span> <span class="toc-text">小结</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#bridge"><span class="toc-number">5.</span> <span class="toc-text">__bridge</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#bridge-retained"><span class="toc-number">6.</span> <span class="toc-text">__bridge_retained</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#bridge-transfer"><span class="toc-number">7.</span> <span class="toc-text">__bridge_transfer</span></a></li></ol>
  
   </div>
 

@@ -4,25 +4,25 @@
 <head>
   <meta charset="UTF-8">
   
-    <title>iOS-多线程之NSOperation | techbird&#39;s blog</title>
+    <title>strong、weak、copy、retain和assign的区别 | techbird&#39;s blog</title>
     <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
     
     <meta name="author" content="techbird">
     
 
     
-    <meta name="description" content="常规写法1234567891011- (void)demo&amp;#123;	//创建队列:默认就是并发队列  NSOperationQueue * queue = [NSOperationQueue new];	//创建操作:默认就是异步任务	NSBlockOperation * operation = [NSBlockOperation blockOperationWithBlock:^&amp;#123;">
-<meta name="keywords" content="iOS,Objective-C,Thread,NSOperation">
+    <meta name="description" content="assign：assign一般用来修饰基本的数据类型，包括基础数据类型（NSInteger,CGFloat）和C语言数据类型（int,float,double,char）等等。因为assign声明的属性，是不会增加引用计数的，也就是说声明的属性释放后也就没有了，及时其他对象引用了它也不会保留，只会造成crash。但是及时被释放，指针却还在，成为了野指针，如果新的对象被分配到了这个内存地址上，又会造">
+<meta name="keywords" content="iOS,keywords">
 <meta property="og:type" content="article">
-<meta property="og:title" content="iOS-多线程之NSOperation">
-<meta property="og:url" content="http://techbird.me/2018/04/29/ios-thread-nsoperation/index.html">
+<meta property="og:title" content="strong、weak、copy、retain和assign的区别">
+<meta property="og:url" content="http://techbird.me/2018/05/18/ios-keywors-of-strong-weak-copy-retain-assign/index.html">
 <meta property="og:site_name" content="techbird&#39;s blog">
-<meta property="og:description" content="常规写法1234567891011- (void)demo&amp;#123;	//创建队列:默认就是并发队列  NSOperationQueue * queue = [NSOperationQueue new];	//创建操作:默认就是异步任务	NSBlockOperation * operation = [NSBlockOperation blockOperationWithBlock:^&amp;#123;">
+<meta property="og:description" content="assign：assign一般用来修饰基本的数据类型，包括基础数据类型（NSInteger,CGFloat）和C语言数据类型（int,float,double,char）等等。因为assign声明的属性，是不会增加引用计数的，也就是说声明的属性释放后也就没有了，及时其他对象引用了它也不会保留，只会造成crash。但是及时被释放，指针却还在，成为了野指针，如果新的对象被分配到了这个内存地址上，又会造">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-05-18T03:25:32.457Z">
+<meta property="og:updated_time" content="2018-05-18T06:25:11.780Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="iOS-多线程之NSOperation">
-<meta name="twitter:description" content="常规写法1234567891011- (void)demo&amp;#123;	//创建队列:默认就是并发队列  NSOperationQueue * queue = [NSOperationQueue new];	//创建操作:默认就是异步任务	NSBlockOperation * operation = [NSBlockOperation blockOperationWithBlock:^&amp;#123;">
+<meta name="twitter:title" content="strong、weak、copy、retain和assign的区别">
+<meta name="twitter:description" content="assign：assign一般用来修饰基本的数据类型，包括基础数据类型（NSInteger,CGFloat）和C语言数据类型（int,float,double,char）等等。因为assign声明的属性，是不会增加引用计数的，也就是说声明的属性释放后也就没有了，及时其他对象引用了它也不会保留，只会造成crash。但是及时被释放，指针却还在，成为了野指针，如果新的对象被分配到了这个内存地址上，又会造">
 <meta name="twitter:creator" content="@stephentalk">
 
     
@@ -83,14 +83,14 @@
 		<header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/04/29/ios-thread-nsoperation/" title="iOS-多线程之NSOperation" itemprop="url">iOS-多线程之NSOperation</a>
+      <a href="/2018/05/18/ios-keywors-of-strong-weak-copy-retain-assign/" title="strong、weak、copy、retain和assign的区别" itemprop="url">strong、weak、copy、retain和assign的区别</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="techbird" target="_blank" itemprop="author">techbird</a>
 		
   <p class="article-time">
-    <time datetime="2018-04-29T09:14:05.000Z" itemprop="datePublished"> Published 2018-04-29</time>
+    <time datetime="2018-05-18T06:12:00.000Z" itemprop="datePublished"> Published 2018-05-18</time>
     
   </p>
 </header>
@@ -99,13 +99,27 @@
 		<div id="toc" class="toc-article">
 			<strong class="toc-title">Contents</strong>
 		
-			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#常规写法"><span class="toc-number">1.</span> <span class="toc-text">常规写法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#简写"><span class="toc-number">2.</span> <span class="toc-text">简写</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#线程间通讯"><span class="toc-number">3.</span> <span class="toc-text">线程间通讯</span></a></li></ol>
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#assign："><span class="toc-number">1.</span> <span class="toc-text">assign：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#retain："><span class="toc-number">2.</span> <span class="toc-text">retain：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#copy："><span class="toc-number">3.</span> <span class="toc-text">copy：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#weak："><span class="toc-number">4.</span> <span class="toc-text">weak：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#strong："><span class="toc-number">5.</span> <span class="toc-text">strong：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#什么时候用stong-weak"><span class="toc-number">6.</span> <span class="toc-text">什么时候用stong/weak</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#strong-weak-unsafe-unretained-autoreleasing-的含义"><span class="toc-number">7.</span> <span class="toc-text">__strong,__weak,__unsafe_unretained,__autoreleasing 的含义</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#扩展："><span class="toc-number">8.</span> <span class="toc-text">扩展：</span></a></li></ol>
 		
 		</div>
 		
-		<h2 id="常规写法"><a href="#常规写法" class="headerlink" title="常规写法"></a>常规写法</h2><figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="keyword">void</span>)demo&#123;</span><br><span class="line">	<span class="comment">//创建队列:默认就是并发队列</span></span><br><span class="line">  <span class="built_in">NSOperationQueue</span> * queue = [<span class="built_in">NSOperationQueue</span> new];</span><br><span class="line">	<span class="comment">//创建操作:默认就是异步任务</span></span><br><span class="line">	<span class="built_in">NSBlockOperation</span> * operation = [<span class="built_in">NSBlockOperation</span> blockOperationWithBlock:^&#123;</span><br><span class="line">		<span class="built_in">NSLog</span>(<span class="string">@"%@"</span>,[<span class="built_in">NSThread</span> currentThread]);</span><br><span class="line"></span><br><span class="line">	&#125;];</span><br><span class="line">	<span class="comment">//将操作添加到队列</span></span><br><span class="line">	[queue addOperation:operation];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="简写"><a href="#简写" class="headerlink" title="简写"></a>简写</h2><figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="keyword">void</span>)demo2&#123;</span><br><span class="line">	[[<span class="built_in">NSOperationQueue</span> new] addOperationWithBlock:^&#123;</span><br><span class="line">		<span class="built_in">NSLog</span>(<span class="string">@"%@"</span>,[<span class="built_in">NSThread</span> currentThread]);</span><br><span class="line">	&#125;];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="线程间通讯"><a href="#线程间通讯" class="headerlink" title="线程间通讯"></a>线程间通讯</h2><figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="keyword">void</span>)demo3&#123;</span><br><span class="line">	[[<span class="built_in">NSOperationQueue</span> new] addOperationWithBlock:^&#123;</span><br><span class="line">		<span class="built_in">NSLog</span>(<span class="string">@"consuming time：%@"</span>,[<span class="built_in">NSThread</span> currentThread]);</span><br><span class="line">		<span class="comment">/// 回到主线程刷新UI</span></span><br><span class="line">		[[<span class="built_in">NSOperationQueue</span> mainQueue] addOperationWithBlock:^&#123;</span><br><span class="line">			<span class="built_in">NSLog</span>(<span class="string">@"refresh ui: %@"</span>,[<span class="built_in">NSThread</span> currentThread]);</span><br><span class="line">		&#125;];</span><br><span class="line">	&#125;];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+		<h2 id="assign："><a href="#assign：" class="headerlink" title="assign："></a>assign：</h2><p><code>assign</code>一般用来修饰基本的数据类型，包括基础数据类型（NSInteger,CGFloat）和C语言数据类型（int,float,double,char）等等。因为assign声明的属性，是不会增加引用计数的，也就是说声明的属性释放后也就没有了，及时其他对象引用了它也不会保留，只会造成crash。但是及时被释放，指针却还在，成为了<code>野指针</code>，如果新的对象被分配到了这个内存地址上，又会造成crash。所以一般只用来声明基本的数据类型，因为它们会被分配到<code>栈区</code>上，而栈取由系统<code>自动管理</code>，不会造成野指针。</p>
+<h2 id="retain："><a href="#retain：" class="headerlink" title="retain："></a>retain：</h2><p>与assign相对，我们要解决<code>对象</code>被其他对象引用后释放造成的问题，就需要用<code>retain</code>来声明。使用retain声明的对象会<code>更改引用计数</code>，每次被引用，引用计数都会<code>+1</code>，释放后就会<code>-1</code>。即使这个对象本身被释放了，只要还有对象在引用它，该对象就会<code>仍然持有</code>，不会出现任何问题。并且只有当引用<code>计数为0时</code>，就会被<code>dealloc</code>析构函数回收进内存。</p>
+<h2 id="copy："><a href="#copy：" class="headerlink" title="copy："></a>copy：</h2><p>最常见到的copy的声明使用是 NSString 等。copy与retain的<code>区别</code>在于：retain是拷贝内存指针地址，而copy是拷贝对象本身；也就是说retain是<code>浅复制</code>，copy是<code>深复制</code>；如果是浅复制，当修改对象值时，都会被修改，而深复制不会。之所以在<code>NSString</code>这一类有<code>可变类型对象</code>的身上使用<code>copy</code>关键字，是因为他们有可能和对应的可变类型如 <code>NSMutableString</code> 之间进行赋值操作，为了防止内容被改变，使用copy去深复制一份。copy工作由copy方法执行，此属性只对那些实现了 <code>NSCopying</code> 协议的<code>对象类型</code>有效。</p>
+<h2 id="weak："><a href="#weak：" class="headerlink" title="weak："></a>weak：</h2><p>weak是由ARC新引入的对象变量属性，weak类似于assign，叫<code>弱引用</code>，也是不增加引用计数，不同在于week指向对象类型时，当对象被释放会指向nil，而assign则会造成野指针。一般只有在防止循环引用时候使用；比如父类引用了子类，子类又引用父类；IBOutlet、Delegate等一般就是使用week，这是因为他们可能会在类外部被调用，防止循环应用。</p>
+<h2 id="strong："><a href="#strong：" class="headerlink" title="strong："></a>strong：</h2><p>strong也是由ARC新引入的对象变量属性，在ARC下,用strong代替了retain，叫<code>强引用</code>，会增加引用计数。，所有的局部变量代码中我们声明的变量默认都是强引用，不需要再额外使用<code>__strong</code>来修饰。</p>
+<h2 id="什么时候用stong-weak"><a href="#什么时候用stong-weak" class="headerlink" title="什么时候用stong/weak"></a>什么时候用<code>stong</code>/<code>weak</code></h2><ul>
+<li>根视图和父视图需要使用<code>strong</code>; 子视图使用<code>weak</code></li>
+<li>没有强指针指向的对象使用<code>strong</code>; 有强指针指向的可以可以<code>weak</code></li>
+</ul>
+<h2 id="strong-weak-unsafe-unretained-autoreleasing-的含义"><a href="#strong-weak-unsafe-unretained-autoreleasing-的含义" class="headerlink" title="__strong,__weak,__unsafe_unretained,__autoreleasing 的含义"></a><code>__strong,__weak,__unsafe_unretained,__autoreleasing</code> 的含义</h2><p>在ARC情况下，对象类型的变量将有所有权修饰符<br><code>__strong</code>: 是缺省的关键词。<br><code>__weak</code>: 声明了一个可以自动nil化的引用。<br><code>__unsafe_unretained</code>: 声明一个弱引用，但是不会自动nil化，也就是说，如果所指向的内存区域被释放了，这个指针就是一个野指针了。<br><code>__autoreleasing</code>: 用来修饰一个函数的参数，这个参数在函数返回的时候会被自动释放。</p>
+<p><code>ARC</code>声明属性时，对于<code>基本数据类型</code>默认关键字是 （atomic,readwrite,assign）<br><code>ARC</code>声明属性时，对于普通的<code>OC对象</code>默认关键字是 （atomic,readwrite,strong）</p>
+<ul>
+<li>示例<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>) <span class="keyword">int</span> supportOrientation;           默认是<span class="keyword">assign</span>，因为是基础数据类型，必须是<span class="keyword">assign</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">readonly</span>) <span class="built_in">UIImage</span>* rightImage;                                     默认是atomic</span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>) bolo_BasePlayerControlView* ctrlView;            默认是<span class="keyword">strong</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">weak</span>) <span class="keyword">id</span>&lt;WatchVideoDetailDelegate&gt; delegate;         代理使用<span class="keyword">weak</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="扩展："><a href="#扩展：" class="headerlink" title="扩展："></a>扩展：</h2><p>LLVM官网给出的一些示意，ARC里也可以使用retain等关键字<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">assign implies __unsafe_unretained ownership.</span><br><span class="line">copy implies __strong ownership, as well as the usual behavior of copy semantics on the setter.</span><br><span class="line">retain implies __strong ownership.</span><br><span class="line">strong implies __strong ownership.</span><br><span class="line">unsafe_unretained implies __unsafe_unretained ownership.</span><br><span class="line">weak implies __weak ownership.</span><br></pre></td></tr></table></figure></p>
+<p>assign 等同于unsafe_retained<br>copy的作用和MRC一样，同时又有strong的效果<br>retain等同于strong<br>weak和unsafe_unretained的区别在于：weak降被释放指针赋值为nil，而unsafe_unretained则会成为野指针</p>
   
 	</div>
 		<footer class="article-footer clearfix">
@@ -119,7 +133,7 @@
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/iOS/">iOS</a><a href="/tags/Objective-C/">Objective-C</a><a href="/tags/Thread/">Thread</a><a href="/tags/NSOperation/">NSOperation</a>
+  <span></span> <a href="/tags/iOS/">iOS</a><a href="/tags/keywords/">keywords</a>
   </div>
 
 </div>
@@ -128,7 +142,7 @@
 
 	<div class="article-share" id="share">
 	
-	  <div data-url="http://techbird.me/2018/04/29/ios-thread-nsoperation/" data-title="iOS-多线程之NSOperation | techbird&#39;s blog" data-tsina="6488657373" class="share clearfix">
+	  <div data-url="http://techbird.me/2018/05/18/ios-keywors-of-strong-weak-copy-retain-assign/" data-title="strong、weak、copy、retain和assign的区别 | techbird&#39;s blog" data-tsina="6488657373" class="share clearfix">
 	  </div>
 	
 	</div>
@@ -142,18 +156,18 @@
 <nav class="article-nav clearfix">
  
  <div class="prev" >
- <a href="/2018/04/29/ios-networkbase-http-and-https/" title="iOS-网络基础&amp;Http和Https">
+ <a href="/2018/05/18/ios-category-use-merit-and-demerit/" title="iOS-Category的使用和优缺点">
   <strong>上一篇：</strong><br/>
   <span>
-  iOS-网络基础&amp;Http和Https</span>
+  iOS-Category的使用和优缺点</span>
 </a>
 </div>
 
 
 <div class="next">
-<a href="/2018/04/29/ios-thread-gcd/"  title="iOS-多线程之GCD">
+<a href="/2018/05/18/ios-scatter-point-collect/"  title="iOS-零散的小知识点收集">
  <strong>下一篇：</strong><br/> 
- <span>iOS-多线程之GCD
+ <span>iOS-零散的小知识点收集
 </span>
 </a>
 </div>
@@ -176,7 +190,7 @@
   <div id="toc" class="toc-aside">
   <strong class="toc-title">Contents</strong>
  
- <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#常规写法"><span class="toc-number">1.</span> <span class="toc-text">常规写法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#简写"><span class="toc-number">2.</span> <span class="toc-text">简写</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#线程间通讯"><span class="toc-number">3.</span> <span class="toc-text">线程间通讯</span></a></li></ol>
+ <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#assign："><span class="toc-number">1.</span> <span class="toc-text">assign：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#retain："><span class="toc-number">2.</span> <span class="toc-text">retain：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#copy："><span class="toc-number">3.</span> <span class="toc-text">copy：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#weak："><span class="toc-number">4.</span> <span class="toc-text">weak：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#strong："><span class="toc-number">5.</span> <span class="toc-text">strong：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#什么时候用stong-weak"><span class="toc-number">6.</span> <span class="toc-text">什么时候用stong/weak</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#strong-weak-unsafe-unretained-autoreleasing-的含义"><span class="toc-number">7.</span> <span class="toc-text">__strong,__weak,__unsafe_unretained,__autoreleasing 的含义</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#扩展："><span class="toc-number">8.</span> <span class="toc-text">扩展：</span></a></li></ol>
  
   </div>
 
