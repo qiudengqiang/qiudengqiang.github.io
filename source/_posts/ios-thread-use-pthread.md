@@ -1,8 +1,8 @@
 ---
-title: iOS-pthread使用&__bridge
+title: iOS - pthread 使用和 __bridge
 date: 2018-05-18 19:41:58
-tags: [iOS,Thread,Objective-C]
-categories: [iOS,Objective-C]
+tags: [iOS,Thread,Objc]
+categories: [iOS,Objc]
 ---
 
 pthread是POSIX thread的简写，跨平台多线程的C语言开发框架,pthread是实现多线程的技术方案之一，NSThread就是对它的封装。

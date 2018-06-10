@@ -1,8 +1,8 @@
 ---
-title: iOS-NSURLRequest&NSURLResponse
+title: iOS - NSURLRequest & NSURLResponse
 date: 2018-05-02 22:30:51
-tags: [iOS,Objective-C,Network,NSURLRequest,NSURLResponse]
-categories: [iOS,Objective-C]
+tags: [iOS,Objc,Network,NSURLRequest,NSURLResponse]
+categories: [iOS,Objc]
 ---
 ![](http://p7xd6yrmx.bkt.clouddn.com/HTTP%E9%80%9A%E8%AE%AF%E8%BF%87%E7%A8%8B.png)
 ## NSURLRequest

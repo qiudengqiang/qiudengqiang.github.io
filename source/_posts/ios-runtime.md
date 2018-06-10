@@ -1,6 +1,6 @@
 ---
-title: iOS-Runtime
+title: iOS - Runtime
 date: 2018-05-24 09:32:23
-tags: [iOS,Runtime,Objective-C]
-categories: [iOS,Objective-C]
+tags: [iOS,Objc,Runtime]
+categories: [iOS,Objc]
 ---

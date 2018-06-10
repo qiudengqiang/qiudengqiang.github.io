@@ -1,6 +1,6 @@
 ---
-title:  iOS-Runloop&Autoreleasepool
+title: iOS - Runloop & Autoreleasepool
 date: 2018-05-24 09:30:51
-tags: [iOS,Runloop,Autoreleasepool,Objective-C,ARC]
-categories: [iOS,Objective-C]
+tags: [iOS,Objc,Runloop,Autoreleasepool,ARC]
+categories: [iOS,Objc]
 ---

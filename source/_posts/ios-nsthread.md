@@ -1,8 +1,8 @@
 ---
-title: iOS-多线程之NSThread
+title: iOS - 多线程之 NSThread
 date: 2018-04-29 14:56:59
-tags: [iOS,Objective-C,Thread,NSThread]
-categories: [iOS,Objective-C]
+tags: [iOS,Objc,Thread,NSThread]
+categories: [iOS,Objc]
 ---
 # 多线程基础（NSThread）
 

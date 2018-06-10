@@ -1,8 +1,8 @@
 ---
-title: iOS-Category的使用和优缺点
+title: iOS - Category 的使用和优缺点
 date: 2018-05-18 14:30:47
-tags: [iOS,category]
-categories: [iOS,Objective-C]
+tags: [iOS,Category]
+categories: [iOS,Objc]
 ---
 ## 什么是Category?
 分类就是对一个类的功能进行扩展，让这个类能够适应不同情况的需求；在实际开发中我们都会对系统的一些常用类进行扩展，例如：NSString,Button,Label等；简单来说类别是一种为现有的类添加新方法的方式。利用OC的动态运行时分配机制，category提供了一种比继承更为简洁的方法来对类进行扩展，无需创建对象的子类就能为现有的类添加新的方法，category可以为任何已经存在的类添加方法，包括系统的框架UIKit等。

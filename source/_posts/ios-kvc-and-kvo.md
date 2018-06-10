@@ -1,8 +1,8 @@
 ---
-title: iOS-KVC和KVO的使用和原理
+title: iOS - KVC 和 KVO 的使用和原理
 date: 2018-05-23 12:55:57
-tags: [iOS,Objective-C,KVC,KVO]
-categories: [iOS,Objective-C]
+tags: [iOS,Objc,KVC,KVO]
+categories: [iOS,Objc]
 ---
 # KVC
 KVC(键值编码)，即 Key-Value Coding，一个非正式的 Protocol，使用字符串(键)访问一个对象实例变量的机制。而不是通过调用 Setter、Getter 方法等显式的存取方式去访问。

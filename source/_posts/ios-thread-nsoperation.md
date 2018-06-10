@@ -1,8 +1,8 @@
 ---
-title: iOS-多线程之NSOperation
+title: iOS - 多线程之 NSOperation
 date: 2018-04-29 17:14:05
-tags: [iOS,Objective-C,Thread,NSOperation]
-categories: [iOS,Objective-C]
+tags: [iOS,Objc,Thread,NSOperation]
+categories: [iOS,Objc]
 ---
 
 # NSOperation

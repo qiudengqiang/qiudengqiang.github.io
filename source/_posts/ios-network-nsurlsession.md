@@ -1,8 +1,8 @@
 ---
-title: iOS-NSURLSession
+title: iOS - NSURLSession
 date: 2018-04-29 19:31:42
-tags: [iOS,Objective-C,Network,NSURLSession]
-categories: [iOS,Objective-C]
+tags: [iOS,Objc,Network,NSURLSession]
+categories: [iOS,Objc]
 ---
 
 Apple在 iOS9.0 之后已经放弃了 NSURLConnection，所以在现在的实际开发中，一般使用的是 iOS7.0 之后推出的 NSURLSession。NSURLSession 和 NSURLConnection 都提供了与各种协议，诸如 HTTP 和 HTTPS 进行交互的API。会话对象（NSURLSession 类对象）就是用于管理这种交互过程。它是一个高度可配置的容器，通过使用其提供的API，可进行细粒度的管理控制。它提供了在 NSURLConnection 中的所有特性，此外，它还可以实现 NSURLConnection 不能完成的任务，例如实现私密浏览。

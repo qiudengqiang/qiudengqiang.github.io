@@ -1,8 +1,8 @@
 ---
-title: iOS-零散的小知识点收集
+title: iOS - 零散的小知识点收集
 date: 2018-05-18 10:20:16
-tags: [iOS]
-categories: [iOS,Objective-C]
+tags: [iOS,Objc]
+categories: [iOS,Objc]
 ---
 ## APP启动程序执行过程
 ### main函数

@@ -1,8 +1,8 @@
 ---
-title: Objective-C-Block
+title: Objc - Block
 date: 2018-05-10 11:21:20
-tags: [iOS,Objective-C,Block]
-categories: [iOS,Objective-C]
+tags: [iOS,Objc,Block]
+categories: [iOS,Objc]
 ---
 # 引言
 Apple 在iOS4.0之后推出Block，它本身封装了一段代码并可以将这段代码当做变量，参数，属性，数据类型，函数（匿名），代码块（只有在被调用时才会执行）等等，使用方式灵活，功能十分强大。
