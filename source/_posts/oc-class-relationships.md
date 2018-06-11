@@ -5,7 +5,7 @@ categories: [iOS,Objc]
 date: 2018-06-09 08:12:45
 ---
 # Objc 中的类（Class）
-众所周知，在 Objc 中所有的对象都由类实例化而来，殊不知类本身也是一种对象。
+众所周知，在 Objc 中所有的对象都由类实例化而来，**殊不知类本身也是一种对象**。
 在 Objc 中几乎所有的类都是 NSObject 的子类，NSObject类定义如下(忽略方法声明)：
 ``` Objc
 @interface NSObject <NSObject> {
@@ -35,10 +35,10 @@ struct objc_class {
 
 ## 类对象（class object）
 ### 类对象的实质
-类对象是由编译器创建的；即在编译时所谓的类，就是指类对象。
+类对象是由编译器创建的；**即在编译时所谓的类，就是指类对象**。
 >官方文档中这样描述：The class object is the compiled version of the class.
 
-任何直接或间接继承了 NSObject 的类，它的实例对象(instance object)中都有一个`isa`指针，指向它的类对象(class object)。这个类对象(class object)中存储了关于这个实例对象(instance object)所属的类定义的一切：包括变量、方法、遵守的协议等。因此类对象(class object)能访问所有关于这个类的信息，利用这些信息可以产生一个新的实例对象(instance object)，但是类对象不能访问任何实力对象的内容。
+任何直接或间接继承了 NSObject 的类，它的实例对象(instance object)中都有一个`isa`指针，指向它的类对象(class object)。**这个类对象(class object)中存储了关于这个实例对象(instance object)所属的类定义的一切：包括变量、方法、遵守的协议等**。因此类对象(class object)能访问所有关于这个类的信息，利用这些信息可以产生一个新的实例对象(instance object)，但是类对象不能访问任何实力对象的内容。
 当调用一个类方法(class method)时，例如：`[NSObject alloc]`，事实上是发送了一个消息给它的类对象。
 
 ### 类对象和实例对象的区别
@@ -76,7 +76,7 @@ id pClazz = [Person class];
 `object_getClass`跟随实例的`isa`指针，返回此实例所属的类，对于实例对象(instance object)返回的是类(class)，而对于类(class)则返回的是元类(metacalss)
 
 ### class
-class方法对于实例对象(instance object)会返回类(class)，但对于类(class)则不会返回元类(metaclass)，而只会返回类本身，即`[@“instance” class]`则返回的是`__NSCFConstantString`；而`[NSString class]`则返回的是 `NSString`
+`class`方法对于实例对象(instance object)会返回类(class)，但对于类(class)则不会返回元类(metaclass)，而只会返回类本身，即`[@“instance” class]`则返回的是`__NSCFConstantString`；而`[NSString class]`则返回的是 `NSString`
 
 ### class_isMetaClass
 `class_isMetaClass`判断某类是否是元类
