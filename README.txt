@@ -10,3 +10,10 @@ git clone git@github.com:tangqiaoboy/qiudengqiang.github.com.git public
 mkdir themes
 cd themes
 git clone git@github.com:qiudengqiang/jacman.git
+
+# 操作Hexo
+hexo clean  
+hexo g
+hexo s
+hexo d
+
