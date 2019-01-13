@@ -1,12 +1,12 @@
 ---
 title: 环琼计划
 date: 2018-02-10 10:01:47
-tags: [Jurney]
-categories: Jurney
+tags: [Journey]
+categories: Journey
 ---
 
 ## 环琼计划  
-![](/images/jurney/hainan/DraggedImage.png)
+![](/images/journey/hainan/DraggedImage.png)
 - 海南岛成卵圆形，海口至三亚大致可分东中西三线，也即G223、G224、G225三条国道线路：其中东线G223全长323公里，因部分靠海，且风景更为清秀，骑行者最多，G225全长429公里，即环岛西线，由三亚经东方、儋州返回海口。
 - 建议使用百度地图的骑行功能：国道+县道+乡道结合风景更好，也远离过往车辆的噪音。
 - 车辆从海口捷安特租赁（提前从电话或网上联系：0898-88261164）
@@ -14,13 +14,13 @@ categories: Jurney
 ## 路线：
 ### D1：海口-三江镇-清澜镇 （41+54=95KM）
 
-![](/images/jurney/hainan/DraggedImage-1.png)
+![](/images/journey/hainan/DraggedImage-1.png)
 
 ### D2：清澜镇-长坡镇-博鳌镇（42+43=85KM）
-![](/images/jurney/hainan/DraggedImage-2.png)
+![](/images/journey/hainan/DraggedImage-2.png)
 
 ### D3：博鳌镇-万宁市-兴隆（59+26=85KM）
-![](/images/jurney/hainan/DraggedImage-3.png)
+![](/images/journey/hainan/DraggedImage-3.png)
 
 ### D4：兴隆-陵水-海棠湾-三亚（40+35+40=115KM）
 ### D5，D6：浪三亚。
@@ -38,7 +38,7 @@ categories: Jurney
 - 设备：相机（座充），手机（充电器）
 
 ## 美食：
-![](/images/jurney/hainan/DraggedImage-4.png)
+![](/images/journey/hainan/DraggedImage-4.png)
 
 - 经典菜式：除海鲜外，海南的文昌鸡、嘉积鸭、东山羊、和乐蟹并称海南四大名菜。顾名思义，这些以地名命名的美食，最好还是前往当地品尝。
 - 椰子八宝饭：又叫椰子船，是文昌、琼海一带的小吃，把糯米、椰浆装入原只椰肉蒸熟而成，食用时像切西瓜一样把椰子肉瓢切开，状如船形。
