@@ -168,7 +168,7 @@ apple提供的多线程解决方案`NSOperation`是一个表示与单个任务�
 
 
 # NSOperationQueue
-![](/images/nsopration_add_to_queue.png)
+![](/images/tech/nsopration_add_to_queue.png)
 ## 使用
 `NSOperationQueue`只有一种类型，就是并发队列。在开发使用到`NSOperationQueue`时，建议将其定义为`全局`队列。
 ```Objc
@@ -184,7 +184,7 @@ apple提供的多线程解决方案`NSOperation`是一个表示与单个任务�
 }
 ```
 ## 最大并发数
-![](/imagesnsopration_queue_maxium.png)
+![](/images/tech/nsopration_queue_maxium.png)
 `maxConcurrentOperationCount`是队列的一个属性，可以限制队列`同时执行`的任务数量，从而间接的控制了线程数量(线程可以复用)，但队列最大并发数不是线程数。如果队列最大并发数设置为`1`，那么队列实际上就是一个串行队列了。
 ```Objc
 	// 设置最大并发数 : 每次只能调度两个操作执行
@@ -419,7 +419,7 @@ NSLog(@"end");
 - 要将操作间的依赖建立好了之后,再添加到队列中（先建立操作依赖关系，再把操作添加到队列）
 
 # NSOperation和GCD的区别
-![](/images/gcd_and_nop_relationship.png)
+![](/images/tech/gcd_and_nop_relationship.png)
 ## GCD
 GCD `iOS 4.0` 推出，针对多核处理器的并发技术。GCD属于C语言的框架。将任务封装在block中，如果要停止已经加入 队列(queue) 的 任务(block) 需要写复杂的代码。只能设置队列的优先级不能设置任务的优先级。
 ### 高级功能

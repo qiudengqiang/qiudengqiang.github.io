@@ -60,12 +60,12 @@ apple的SDK中就大面积的使用了category这一特性。比如UIKit中的UI
 ```
 
 - 当编译顺序如下图时输出：
-![](/images/compile_last_one.png)
+![](/images/tech/compile_last_one.png)
 ``` console
 2018-05-18 15:23:13.379081+0800 CategoryDemo[2373:700484] 调用One分类的方法
 ```
 - 将UIView+One.m移动到UIView+Two.m上面，编译顺序如下图时输出：
-![](/images/compile_last_two.png)
+![](/images/tech/compile_last_two.png)
 ``` console
 2018-05-18 15:27:25.008682+0800 CategoryDemo[2441:715950] 调用Two分类的方法
 ```

@@ -4,7 +4,7 @@ date: 2018-05-02 22:30:51
 tags: [iOS,Objc,Network,NSURLRequest,NSURLResponse]
 categories: [iOS,Objc]
 ---
-![](/images/network_http_commute.png)
+![](/images/tech/network_http_commute.png)
 ## NSURLRequest
 ### 创建请求对象 (缓存策略和超时时长都是默认的)
 ``` Objc

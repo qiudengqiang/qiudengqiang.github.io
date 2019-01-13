@@ -27,7 +27,7 @@ tableView显示之初，reusableTableCells为空，假如一个界面显示5个C
 并非仅仅有拖动超出屏幕的时候才会更新reusableTableCells,`reloadData`和`reloadRowsAtIndex`时也会更新并操作reusableTableCells
 
 ## UITableViewCell的性能优化
-![](/images/uitableviewcell_optimize.png)
+![](/images/tech/uitableviewcell_optimize.png)
 ## 扩展：UITableView delegate/dataSource方法执行顺序
 ```Objc
 1.//有多少组
