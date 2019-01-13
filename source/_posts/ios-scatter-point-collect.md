@@ -27,7 +27,7 @@ categories: [iOS,Objc]
 
 
 ## ViewController的生命周期
-![](https://github.com/qiudengqiang/blog-images/blob/master/controller_life_circle.png)
+![](/images/controller_life_circle.png)
 - `loadView`：用于加载制定的根试图
 - `viewDidLoad`：试图加载完毕
 - `viewWillAppear`：界面即将显示在屏幕上

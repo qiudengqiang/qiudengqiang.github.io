@@ -31,7 +31,7 @@ struct objc_class {
 答：其实在 Objc 中任何类的定义都是一个对象。在编译的时候，编译器会给每一个类生成且只生成一个「描述其定义的对象」，也就是苹果公司所说的类对象（class object）；因为 Objc 和是一门动态语言，程序中所有的实例对象（instance object）是在运行时库生成的，而这个类对象（class object）就是运行时库用来创建实例对象（instance object）的依据。
 
 再回到之前的问题，为什么实例对象（instance object）的`isa`指针指向的类对象（class object）里面还有一个`isa`指针？而这个类对象（class object）的 `isa` 指向的仍然是一个`objc_class`，它就是元类对象（metaclass object）；那么实例对象（instance object）、类对象（class object）、元类对象（metaclass object）之间的关系是怎样的呢？如下图：
-![类关系图](https://github.com/qiudengqiang/blog-images/blob/master/objc_class_relationship.png)
+![类关系图](/images/objc_class_relationship.png)
 
 ## 类对象（class object）
 ### 类对象的实质

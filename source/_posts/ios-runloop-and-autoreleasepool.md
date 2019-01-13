@@ -28,7 +28,7 @@ OSX/iOS 系统中，提供了两个这样的对象：`NSRunLoop` 和 `CFRunLoopR
 线程和 RunLoop  之间是一一对应的，其关系是保存在一个全局的 Dictionary 里。线程刚创建时候并没有 RunLoop，如果你不主动获取，那么它一直不会有。RunLoop 的创建是发生在第一次获取时，RunLoop 的销毁是发生在线程结束时。所以只能在一个线程的内部获取 RunLoop(主线程除外)。
 
 下图中展现了 RunLoop 在线程中的作用：从 input source 和 timer source 接受事件，然后在线程中处理事件。
-![RunLoop](https://github.com/qiudengqiang/blog-images/blob/master/objc_runloop.jpg)
+![RunLoop](/images/objc_runloop.jpg)
 
 ### Warning
 >The NSRunLoop class is generally not considered to be thread-safe and its methods should only be called within the context of the current thread. You should never try to call the methods of an NSRunLoop object running in a different thread, as doing so might cause unexpected results.
@@ -47,7 +47,7 @@ RunLoop Observer 可以监听以下 RunLoop 事件：
 
 ## RunLoop Mode
 在监听与被监听中，RunLoop 要处理的事情非常复杂；为了让 RunLoop专注于处理特定事件而引入了 RunLoop Mode 概念
-![RunLoop Mode](https://github.com/qiudengqiang/blog-images/blob/master/objc_runloop_mode.png)
+![RunLoop Mode](/images/objc_runloop_mode.png)
 如果所示，RunLoop Mode 实际上是 Source、Timer、Observer 的集合，不同的 Mode 把不同组的 Source、Timer、Observer 隔绝开来；而 RunLoop 在某个时刻下只能跑在某一个 Mode 下，处理这一个 Mode 当中的Source、Timer 和 Observer。
 
 苹果文档中提到的 Mode 有五个，分别是：
@@ -111,7 +111,7 @@ RunLoop 在主线程和子线程中的 **区别** 在于：主线程的 RunLoop 
 这里就是添加了一个计时器，由于指定了 `NSRunLoopCommonModes`，所以不管 RunLoop 处于什么状态，都会执行这个计时器任务。
 
 # Runloop 和 Autoreleasepool 的关系图解
-![关系图解](https://github.com/qiudengqiang/blog-images/blob/master/objc_autoreleasepool.png)
+![关系图解](/images/objc_autoreleasepool.png)
 
 # Autorelease Pool
 Autorelase Pool 提供了一种可以允许你向一个对象延迟发送 `release` 消息的机制；当你想放弃对象的所有权，同时又不希望这个对象被立即释放掉（例如在一个方法中返回一个对象时），Autoreleasepool就可以发挥作用。所谓的延迟发送`release`消息是指，当我们把一个对象标记为autorelease时:

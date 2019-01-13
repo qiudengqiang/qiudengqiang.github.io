@@ -13,11 +13,11 @@ categories: Xcode
 <##> 作用是占位，## 之间可以输入提示文字。
 * 使用快捷键：command+option+0
 * 将上述代码片段拖拽到下图所示区域
-	![](https://github.com/qiudengqiang/blog-images/blob/master/code_snippets.png)
+	![](/images/code_snippets.png)
 	> **小技巧**：用鼠标选中代码块后把光标放在所选代码块上点击长按2-3秒(光标会由插入标变为小箭头状态)就可以拖拽了
 
 * 弹出下图
-	![](https://github.com/qiudengqiang/blog-images/blob/master/code_snippet_dialog.png)
+	![](/images/code_snippet_dialog.png)
 > Title：标题
 > Summary：描述
 > Platform：可以使用的平台 
