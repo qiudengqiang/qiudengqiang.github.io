@@ -14,7 +14,7 @@ categories: iOS
 
 ### 浏览器终端中演示JS代码删除网页中元素
 * 需要处理的网页
-![](/images/tech/webpage_demand_process.png)
+![](/images/tech/webpage_process_before.png)
 ---
 *  网页处理的步骤
 ``` javascript
