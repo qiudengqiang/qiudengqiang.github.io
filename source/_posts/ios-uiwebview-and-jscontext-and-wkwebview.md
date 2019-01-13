@@ -14,7 +14,7 @@ categories: iOS
 
 ### 浏览器终端中演示JS代码删除网页中元素
 * 需要处理的网页
-![](http://p7xd6yrmx.bkt.clouddn.com/WX20180508-174926.png)
+![](https://github.com/qiudengqiang/blog-images/blob/master/webpage_demand_process.png)
 ---
 *  网页处理的步骤
 ``` javascript
@@ -38,7 +38,7 @@ var footerBtnTag = document.getElementsByClassName('footer-btn-fix')[0]; footerB
 var footerTag = document.getElementsByClassName('footer')[0]; footerTag.parentNode.removeChild(footerTag);
 ```
 * 处理之后的网页
-![](http://p7xd6yrmx.bkt.clouddn.com/WX20180508-175123.png)
+![](https://github.com/qiudengqiang/blog-images/blob/master/webpage_process_after.png)
 
 ---
 ### OC调用JS 实现 JS注入

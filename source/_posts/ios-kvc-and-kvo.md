@@ -228,7 +228,7 @@ NS_CLASS_AVAILABLE_IOS(2_0) @interface UIPageControl : UIControl
 
 ### XIB/Storyboard
 在xib/Storyboard中，也可以使用KVC，例如下面是在xib中使用KVC把图片边框设置成圆角。
-![](http://p7xd6yrmx.bkt.clouddn.com/kvc_layer_cornerradius.png)
+![](https://github.com/qiudengqiang/blog-images/blob/master/kvc_layer_cornerradius.png)
 
 # KVO
 KVO(键值监听)，即 Key-Value Observing，它提供一种机制,当指定的对象的属性被修改后，对象就会接受到通知，前提是执行了 setter 方法、或者使用了 KVC 赋值。

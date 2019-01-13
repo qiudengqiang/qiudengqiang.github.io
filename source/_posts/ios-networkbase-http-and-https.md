@@ -104,7 +104,7 @@ Content-Type: text/html; charset=UTF-8
 
 
 ### 三次握手的描述
-- 图解：![](http://p7xd6yrmx.bkt.clouddn.com/DraggedImage.87a614095854472c81c8ac1a969ffa72.png)
+- 图解：![](https://github.com/qiudengqiang/blog-images/blob/master/network_three_time_hand.png)
 - 第一次握手：Client将标志位SYN置为1，随机产生一个值seq=J，并将该数据包发送给Server，Client进入SYN_SENT状态，等待Server确认。
 - 第二次握手：Server收到数据包后由标志位SYN=1知道Client请求建立连接，Server将标志位SYN和ACK都置为1，ack=J+1，随机产生一个值seq=K，并将该数据包发送给Client以确认连接请求，Server进入SYN_RCVD状态。
 - 第三次握手：Client收到确认后，检查ack是否为J+1，ACK是否为1，如果正确则将标志位ACK置为1，ack=K+1，并将该数据包发送给Server，Server检查ack是否为K+1，ACK是否为1，如果正确则连接建立成功，Client和Server进入ESTABLISHED状态，完成三次握手，随后Client与Server之间可以开始传输数据了
@@ -116,11 +116,11 @@ Content-Type: text/html; charset=UTF-8
 
 ## TCP/IP网络参考模型
 ### 网络模型（理论）
-![](http://p7xd6yrmx.bkt.clouddn.com/DraggedImage.2ea00009b0c74a25b976747621d72639.png)
+![](https://github.com/qiudengqiang/blog-images/blob/master/network_theory_model.png)
 ### 网络参考模型（现实）
-![](http://p7xd6yrmx.bkt.clouddn.com/DraggedImage.aea23a46d7d24e29a2571d783d322731.png)
+![](https://github.com/qiudengqiang/blog-images/blob/master/network_real_model.png)
 ### 通信过程
-![](http://p7xd6yrmx.bkt.clouddn.com/DraggedImage.0d002381b3764feb871651ff7c1cb40e.png)
+![](https://github.com/qiudengqiang/blog-images/blob/master/network_commute_progress.png)
 - 应用层 : APP
 - 传输层 : TCP,确定数据如何传输
 - 网络层 : 确定目标计算机的IP地址
@@ -132,10 +132,10 @@ Content-Type: text/html; charset=UTF-8
 - SSL : Secure Sockets Layer,表示安全套接层.
 - TLS : Transport Layer Security,是SSL的继任者,表示传输层安全.
 - SSL与TLS是为网络通信提供安全及数据完整性的一种安全协议。TLS与SSL在传输层对网络连接进行加密.
-![](http://p7xd6yrmx.bkt.clouddn.com/DraggedImage.83f8b9a805764efbb13d72ef85ddf51a.png)
+![](https://github.com/qiudengqiang/blog-images/blob/master/network_http_and_https_diff.png)
 
 ## HTTPS加密原理
-![](http://p7xd6yrmx.bkt.clouddn.com/DraggedImage.99e36c340e94445f87a441f0f2c85f97.png)
+![](https://github.com/qiudengqiang/blog-images/blob/master/network_encode_principle.png)
 
 ## 加密科普（对称，非对称，散列 ）
 HTTPS一般使用的加密与HASH算法如下：
