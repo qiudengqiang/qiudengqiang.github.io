@@ -1,3 +1,7 @@
+# 准备工作
+homebrew
+nvm
+npm
 # 初使化
 npm install -g hexo-cli
 cd <blog folder>
