@@ -8,7 +8,7 @@ date: 2018-04-23 10:15:17
 
 ``` swift
 Programmer{
-    name = "仇邓强"
+    name = "dengqiangqiu"
     gender = "Male"
     born = "1994"
     hobby = "Read，Run，Code"
