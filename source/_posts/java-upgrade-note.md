@@ -14,6 +14,7 @@ JDK1.7之前，创建集合对象必须把前后的泛型都写上；JDK1.7之�
 
 ## 哈希表
 JDK1.8之前是哈希表=数组+链表结构。从JDK1.8开始，哈希表=数组+链表/红黑树（提高查询的速度），如果链表的长度超过了8位，就会把链表转换为红黑树结构。
+![hashtable-structure](/images/tech/java_hashtable_structure.png)
 
 ## Objects类
 在JDK1.7添加了一个`Objects`工具类，它提供了一些方法来操作对象，它由一些静态的使用方法组成。
