@@ -2,7 +2,7 @@
 title: Objc - 对象之类对象和元类对象
 tags: [iOS,Objc]
 categories: [iOS,Objc]
-date: 2018-06-09 08:12:45
+date: 2016-06-09 08:12:45
 ---
 # Objc 中的类（Class）
 众所周知，在 Objc 中所有的对象都由类实例化而来，**殊不知类本身也是一种对象**。

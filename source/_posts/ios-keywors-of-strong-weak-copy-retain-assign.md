@@ -1,6 +1,6 @@
 ---
 title: strong、weak、copy、retain和assign的区别
-date: 2018-05-18 14:12:00
+date: 2016-02-18 14:12:00
 tags: [iOS,keywords]
 categories: [iOS,Objc]
 ---

@@ -1,6 +1,6 @@
 ---
 title: iOS - KVC 和 KVO 的使用和原理
-date: 2018-05-23 12:55:57
+date: 2016-03-23 12:55:57
 tags: [iOS,Objc,KVC,KVO]
 categories: [iOS,Objc]
 ---
