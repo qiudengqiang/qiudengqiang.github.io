@@ -44,3 +44,4 @@ categories: IDEA
             
         }*/
     ```
+6. `iter`同`foreach`的功能一样，底层其实都是封装了迭代器
