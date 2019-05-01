@@ -1,5 +1,5 @@
 ---
-title: 平凡的世界
+title: 以怎样的态度面对生活 - 读《平凡的世界》
 date: 2018-01-09 10:01:47
 tags: [Readed]
 categories: Readed

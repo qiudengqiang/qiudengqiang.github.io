@@ -1,5 +1,5 @@
 ---
-title: 突然就走到了西藏
+title: 陈坤在世间行走的旁白 - 读《突然就走到了西藏》
 date: 2016-05-24 10:01:47
 tags: [Readed]
 categories: Readed

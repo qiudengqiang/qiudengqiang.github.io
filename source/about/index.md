@@ -1,24 +1,24 @@
 ---
 title: 关于博主
-date: 2018-04-23 10:15:17
+date: 2016-04-23 10:15:17
 ---
 
 
 ## 简介
 
-``` swift
+```swift
 Programmer{
     name = "dengqiangqiu"
     gender = "Male"
     born = "1994"
-    hobby = "Read，Run，Code"
-    skills = "iOS，Android"
+    hobby = "Read、Run、Code"
+    skills = "Java、Objective-C、Swift"
 }
 ```
 
 ## 更多信息
 
-``` swift
+```swift
 extention{
     description = "
     欢迎来到我的站 :)

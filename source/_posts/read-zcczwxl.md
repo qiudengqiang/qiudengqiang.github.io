@@ -1,5 +1,5 @@
 ---
-title: 早晨从中午醒来
+title: 路遥以怎样的态度对待写作 - 读《早晨从中午醒来》
 date: 2018-01-15 10:01:47
 tags: [Readed]
 categories: Readed

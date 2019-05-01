@@ -1,5 +1,5 @@
 ---
-title: 看见
+title: 柴静十年成长的个人告白 - 读《看见》
 date: 2016-06-01 10:01:47
 tags: [Readed]
 categories: Readed
