@@ -2,7 +2,7 @@
 title: MySQL 的基本使用
 date: 2019-05-09 10:01:47
 tags: [MySQL]
-categories: MySQL
+categories: DataBase
 ---
 
 ## SQL的分类
