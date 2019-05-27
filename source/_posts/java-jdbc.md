@@ -74,7 +74,7 @@ PreparedStatement prepareStatement(String sql)
 ### ResultSet
 结果集对象
 `boolean next()`:游标向下移动一行，判断当前行是否是末尾（是否有数据），如果是则返回false，如果不是则返回true
-`getXxx(参数)`:获取数据，Xxx代表数据类型，如：getString()、getInt()
+`getXxx(参数)`:获取数据，Xxx代表数据类型，如：getString()、getInt()；参数可以使用列编号也可以使用列名
 ```java
 while(rs.next()){
     int id = rs.getInt(1);
