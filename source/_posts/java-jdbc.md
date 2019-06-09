@@ -1,5 +1,5 @@
 ---
-title: JDBC 的基本使用
+title: JDBC 基本使用
 date: 2019-05-25 10:01:47
 tags: [Java,JDBC]
 categories: DataBase
