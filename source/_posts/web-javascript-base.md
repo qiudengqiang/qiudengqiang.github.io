@@ -1,5 +1,5 @@
 ---
-title: JavaScript 基础知识
+title: JavaScript 基础
 date: 2019-06-8 10:01:47
 tags: [Web,JavaScript]
 categories: Web
