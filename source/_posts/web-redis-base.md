@@ -1,8 +1,8 @@
 ---
 title: Redis 基本使用
 date: 2019-08-13 10:01:47
-tags: [Web,Redis]
-categories: Web
+tags: [Web,Redis,DataBase]
+categories: DataBase
 ---
 
 # 概念
@@ -261,8 +261,8 @@ redis是一个内存数据库，当redis服务器重启，或者电脑重启，�
     save 60 10000
 ```
     
-2. 重新启动redis服务器
-    
+2. 重新启动redis服务器并制定配置文件
+   redis-server /usr/local/etc/redis.conf
 ## AOF
 日志记录的方式，可以记录每一条命令的操作。可以每一次命令操作后，持久化数据
 打开`/usr/local/etc` 编辑`redis.conf`文件
@@ -463,8 +463,8 @@ linkedlist格式。支持重复元素
         }
     
         /**
-            * 获取连接方法
-            */
+        * 获取连接方法
+        */
         public static Jedis getJedis(){
             return jedisPool.getResource();
         }
