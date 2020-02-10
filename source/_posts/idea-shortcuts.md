@@ -11,6 +11,7 @@ categories: IDEA
 3. `Cmd+F12` 显示当前类的方法和变量列表
 4. `Shift+F6` 重构名称
 5. `Cmd+Shift+/` 利用`/*注释*/`方式选中的代码
+6. `Command+Option+t` 选中代码添加try/catch
 
 ### Debug
 1. `F8`：逐行执行程序
