@@ -1,0 +1,3 @@
+[submodule "jacman"]
+	path = jacman
+	url = https://github.com/qiudengqiang/jacman.git

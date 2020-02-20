@@ -79,5 +79,7 @@ theme: jacman
 ## Docs: https://hexo.io/docs/deployment.html
 deploy:
   type: git
-  repository: git@github.com:qiudengqiang/qiudengqiang.github.io.git
+  message: "Site updated: {{ now('YYYY-MM-DD HH:mm') }}"
+  repo: 
+    github: git@github.com:qiudengqiang/qiudengqiang.github.io.git
   branch: master
