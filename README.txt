@@ -4,7 +4,7 @@ cd <blog folder>
 npm install
 
 # 设置发布
-git clone git@github.com:tangqiaoboy/qiudengqiang.github.com.git public
+git clone git@github.com:qiudengqiang/qiudengqiang.github.com.git public
 
 # 设置皮肤
 mkdir themes
