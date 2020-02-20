@@ -17,16 +17,17 @@ cache:
   directories:
     - node_modules
 before_install:
-  - npm install -g hexo highlight.js@9.14.2
+  - npm install -g hexo-cli
 install:
   - npm install
 script:
   - echo "$GITHUB_TOKEN"
-  - hexo clean && hexo generate
+  
 after_success:
   - git config --global user.name 'techbird'
   - git config --global user.email 'qiudengqiang@gmail.com'
   - sed -in-place -e "s/git@/https:\/\/${GITHUB_TOKEN}@/" _config.yml
   - sed -in-place -e "s/github.com:qiudengqiang/github.io\/qiudengqiang/" _config.yml
   - cat _config.yml
+  - hexo generate
   - hexo deploy
