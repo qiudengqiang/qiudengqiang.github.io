@@ -32,14 +32,17 @@ Class cls3p.getClass();
 
 ### Class类中的常用方法
 ```java
-static Class<?>	forName​(Module module, String name)
-Annotation[]	getAnnotations()
-ClassLoader	getClassLoader()
-String	getName()
-T	newInstance()
+static Class<?>	    forName​(Module module, String name)
+Annotation[]	    getAnnotations()
+ClassLoader	        getClassLoader()
+String	            getName()
+T	                newInstance()
 Class<? super T>	getSuperclass()
-String	getSimpleName()
+String	            getSimpleName()
+boolean             isPrimitive()//是否是基本类型
+
 ```
+注意：字节码文件作比较时候建议使用`==`而不是`equels`，因为字节码在内存中只有一份。
 ### Field
 `Field	getField​(String name)`:获取所有public修饰的成员变量
 `Field[]	getFields()`:获取指定名称的public修饰的成员变量
@@ -53,6 +56,7 @@ String	getSimpleName()
 Constructor con1 = cls.getConstructor(String.class,int.class);
 //不填参数是即为获取空构造方法
 Constructor con2s = cls.getConstructor();
+//拿到构造方法之后便可以调用constructor.newInstance(...)方法来构造对象
 ```
 `Constructor<?>[]	getConstructors()`:获取所有构造方法
 `Constructor<T>	getDeclaredConstructor​(Class<?>... parameterTypes)	`
@@ -76,6 +80,61 @@ Method method2 = cls.getMethod("show");
 `Package	getPackage()`	:获取当前类的包对象
 `String	getPackageName()`   :获取当前类的包字符串
 
+### 数组的反射
+``` java
+int [] a1 = new int[]{1,2,3};
+int [] a2 = new int[4];
+int[][] a3 = new int[2][3];
+String [] a4 = new String[]{"a","b","c"};
+```
+具有相同维数和元素类型的数组属于同一个类型，即具有相同得Class实例对象.
+``` java
+System.out.println(a1.getClass() == a2.getClass());
+System.out.println(a1.getClass() == a4.getClass());
+System.out.println(a1.getClass() == a3.getClass());
+```
+代表数组的Class实例对象的`getSuperclass()`方法返回的是Object类对应的Class.
+``` java
+System.out.println(a1.getClass().getName());
+System.out.println(a1.getClass().getSuperclass().getName());
+System.out.println(a4.getClass().getSuperclass().getName());
+```
+基本类型的一维数组可以被当做`Object`类型使用，不能当做`Object[]`类型使用；非基本类型的一维数组，既可以当做`Object`类型使用，又可以当做`Object[]`类型使用.
+``` java
+Object aObj1 = a1;
+Object aObj2 = a4;
+//Object[] aObj3 = a1; //不成立
+Object[] aObj4 = a3;
+Object[] aObj5 = a4;
+```
+Arrays.asList()方法处理`int[]`和`String[]`时候的差异.
+``` java
+System.out.println(a1);
+System.out.println(a4);
+System.out.println(Arrays.asList(a1));
+System.out.println(Arrays.asList(a4));	
+```
+利用`java.util.reflect.Array`类完成对数组的反射操作.
+``` java
+//可以打印一个obj和一个obj数组的方法
+private static void printObject(Object obj) {
+		Class clazz = obj.getClass();
+		if(clazz.isArray()){
+			int len = Array.getLength(obj);
+			for(int i=0;i<len;i++){
+				System.out.println(Array.get(obj, i));
+			}
+		}else{
+			System.out.println(obj);
+		}
+}
+```
+如何获取数组中的元素的类型
+``` java
+Object[] objs = new Object[]("a",1);
+a[0].getClass().getName();
+
+```
 ### 暴力反射
 如果想要获取`非public`类型的`Field`、`Constructor`、`Method`等，需要在执行`Declared`方法前设置以下代码：
 ```java
@@ -92,3 +151,4 @@ methodMain.invoke(null, (Object)new String[]{"123","456","789"});
 //方式二：将数组打包，编译器拆包后就是一个String[]类型的整体     
 methodMain.invoke(null, new Object[]{new String[]{"123","456","789"}});   
 ```
+
