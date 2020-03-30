@@ -20,7 +20,7 @@ before_install:
   - npm install -g hexo-cli
 install:
   - npm install -g npm@latest
-  - npm i cjs
+  - npm i core-util-is
 script:
   - echo "$GITHUB_TOKEN"
   - hexo clean
