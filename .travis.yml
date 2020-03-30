@@ -17,9 +17,10 @@ cache:
   directories:
     - node_modules
 before_install:
+  - npm uninstall -g nodemon
   - npm install -g hexo-cli
 install:
-  - npm install
+  - npm install -g
 script:
   - echo "$GITHUB_TOKEN"
   - hexo clean
