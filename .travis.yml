@@ -22,7 +22,8 @@ install:
   - npm install
 script:
   - echo "$GITHUB_TOKEN"
-  - hexo generate
+  - hexo clean
+  - hexo g
 after_success:
   - git config --global user.name 'techbird'
   - git config --global user.email 'qiudengqiang@gmail.com'
