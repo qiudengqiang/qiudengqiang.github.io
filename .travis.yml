@@ -20,13 +20,12 @@ before_install:
   - npm install -g hexo-cli
 install:
   - npm install -g npm@latest
-  - npm i core-util-is
 script:
   #- echo "$GITHUB_TOKEN"
   - hexo clean
   - hexo generate
 after_success:
-  - git config --global user.name 'techbird'
+  - git config --global user.name 'qiudengqiang'
   - git config --global user.email 'qiudengqiang@gmail.com'
   - sed -in-place -e "s/git@/https:\/\/${GITHUB_TOKEN}@/" _config.yml
   - sed -in-place -e "s/github.com:qiudengqiang/github.io\/qiudengqiang/" _config.yml
