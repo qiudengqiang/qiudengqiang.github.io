@@ -17,9 +17,12 @@ cache:
   directories:
     - node_modules
 before_install:
-  - npm install -g hexo-cli
+
 install:
   - npm install
+  - npm install hexo-cli -g
+  - npm install hexo-generator-feed --save
+  - npm install hexo-deployer-git --save
 script:
   - echo "$GITHUB_TOKEN"
   - hexo clean
