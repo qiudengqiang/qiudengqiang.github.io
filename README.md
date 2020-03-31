@@ -30,9 +30,9 @@ brew install 安装的 node 有问题，需要自己去 [Nodejs 官网](https://
 重新安装的时候，git clone 下来，执行 npm install.
 
 如果要修改 archive 的每页文章条数：
-/Users/tangqiao/work/git/hexo/node_modules/hexo-generator-archive/index.js:
-/Users/tangqiao/work/git/hexo/node_modules/hexo-generator-category/index.js
-/Users/tangqiao/work/git/hexo/node_modules/hexo-generator-tag/index.js
+/Users/qiudengqiang/work/git/hexo/node_modules/hexo-generator-archive/index.js:
+/Users/qiudengqiang/work/git/hexo/node_modules/hexo-generator-category/index.js
+/Users/qiudengqiang/work/git/hexo/node_modules/hexo-generator-tag/index.js
 
 ## 初使化
 ```
