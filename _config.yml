@@ -4,7 +4,7 @@
 
 # Site
 title: techbird blog
-subtitle: timeline of technology
+subtitle: timeline of growth
 description: Hi，Welcome to the blog of a programer. 
 keywords: iOS,Android,Java
 author: techbird
@@ -104,6 +104,5 @@ stylus:
 deploy:
   type: git
   message: "Site updated: {{ now('YYYY-MM-DD HH:mm') }}"
-  repo:
-    github: git@github.com:qiudengqiang/qiudengqiang.github.io.git
+  repo: git@github.com:qiudengqiang/qiudengqiang.github.io.git
   branch: master

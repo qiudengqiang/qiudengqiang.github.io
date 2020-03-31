@@ -1,7 +1,6 @@
 sudo: false
 language: node_js
-node_js:
-  - 10 # use nodejs v10 LTS
+node_js: stable # use nodejs v10 LTS
 cache: npm
 branches:
   only:
@@ -18,15 +17,17 @@ cache:
     - node_modules
 before_install:
   - npm install -g hexo-cli
+  
 install:
   - npm install
+  - npm install -g npm-install-peers
 script:
   - echo "$GITHUB_TOKEN"
   - hexo generate
 after_success:
-  - git config --global user.name 'qiudengqiang'
+  - git config --global user.name 'techbird'
   - git config --global user.email 'qiudengqiang@gmail.com'
   - sed -in-place -e "s/git@/https:\/\/${GITHUB_TOKEN}@/" _config.yml
   - sed -in-place -e "s/github.com:qiudengqiang/github.io\/qiudengqiang/" _config.yml
-  - cat _config.yml
+#  - cat _config.yml
   - hexo deploy
