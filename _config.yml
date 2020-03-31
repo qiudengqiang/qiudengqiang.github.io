@@ -31,7 +31,7 @@ i18n_dir: :lang
 skip_render: 
 
 # Writing
-new_post_name: :title.md # File name of new posts
+new_post_name: :year-:month-:day-:title.md # File name of new posts
 default_layout: post
 titlecase: false # Transform title into titlecase
 external_link:
@@ -45,7 +45,7 @@ relative_link: false
 future: true
 highlight:
   enable: true
-  line_number: true
+  line_number: false
   auto_detect: false
   tab_replace: ''
   wrap: true
@@ -76,7 +76,7 @@ meta_generator: true
 ## Hexo uses Moment.js to parse and display date
 ## You can customize the date format as defined in
 ## http://momentjs.com/docs/#/displaying/format/
-date_format: YYYY-MM-DD
+date_format: YYYY-MM-DD HH:mm
 time_format: HH:mm:ss
 ## Use post's date for updated date unless set in front-matter
 use_date_for_updated: false
@@ -104,5 +104,6 @@ stylus:
 deploy:
   type: git
   message: "Site updated: {{ now('YYYY-MM-DD HH:mm') }}"
-  repo: git@github.com:qiudengqiang/qiudengqiang.github.io.git
+  repo: 
+    github: git@github.com:qiudengqiang/qiudengqiang.github.io.git
   branch: master
