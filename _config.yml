@@ -105,5 +105,5 @@ deploy:
   type: git
   message: "Site updated: {{ now('YYYY-MM-DD HH:mm') }}"
   repo: 
-    github: git@github.com:qiudengqiang/qiudengqiang.github.io.git
+    github: https://github.com:qiudengqiang/qiudengqiang.github.io.git
   branch: master
