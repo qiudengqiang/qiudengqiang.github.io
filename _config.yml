@@ -104,5 +104,6 @@ stylus:
 deploy:
   type: git
   message: "Site updated: {{ now('YYYY-MM-DD HH:mm') }}"
-  repo: git@github.com:qiudengqiang/qiudengqiang.github.io.git
+  repo:
+    github: git@github.com:qiudengqiang/qiudengqiang.github.io.git
   branch: master
