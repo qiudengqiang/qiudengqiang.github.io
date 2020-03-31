@@ -1,7 +1,7 @@
 sudo: false
 language: node_js
 node_js:
-  - 10 # use nodejs v10 LTS
+  - 'stable' # use nodejs v10 LTS
 #cache: npm
 branches:
   only:
@@ -19,9 +19,10 @@ cache:
 before_install:
   - npm install -g hexo-cli
 install:
-  - npm install
+  - npm install -g npm@latest
 script:
   - echo "$GITHUB_TOKEN"
+  - hexo clean
   - hexo generate
 after_success:
   - git config --global user.name 'qiudengqiang'
