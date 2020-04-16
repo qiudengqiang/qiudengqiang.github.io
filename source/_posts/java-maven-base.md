@@ -1,5 +1,5 @@
 ---
-title: Maven 基本使用
+title: Maven 使用快速入门
 date: 2019-08-15 10:02:47
 tags: [Web,Java,Maven]
 categories: Java

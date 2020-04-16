@@ -1,5 +1,5 @@
 ---
-title: Redis 基本使用
+title: Redis 使用快速入门
 date: 2019-08-13 10:01:47
 tags: [Web,Redis,DataBase]
 categories: DataBase

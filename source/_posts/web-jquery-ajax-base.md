@@ -1,5 +1,5 @@
 ---
-title: jQuery & Ajax 基础
+title: jQuery & Ajax 快速入门
 date: 2019-08-12 10:01:47
 tags: [Web，jQuery，Ajax]
 categories: Web

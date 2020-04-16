@@ -1,5 +1,5 @@
 ---
-title: JSP/EL/JSTL 基础
+title: JSP/EL/JSTL 快速入门
 date: 2019-07-08 10:01:47
 tags: [Web,JSP,EL,JSTL]
 categories: Web

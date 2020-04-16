@@ -1,5 +1,5 @@
 ---
-title: VSCode 基本使用(一)
+title: VSCode 使用技巧(一)
 date: 2019-05-04 10:01:47
 tags: [VSCode]
 categories: VSCode
