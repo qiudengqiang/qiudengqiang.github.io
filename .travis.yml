@@ -12,10 +12,7 @@ git:
 env:
   global:
     - GITHUB_TOKEN: "${GITHUB_TOKEN}"
-cache:
-  apt: true
-  directories:
-    - node_modules
+
 before_install:
   - npm install -g hexo-cli
   
@@ -23,7 +20,6 @@ install:
   - npm install
 script:
   - echo "$GITHUB_TOKEN"
-  # - hexo clean
   - hexo generate
 after_success:
   - git config --global user.name 'techbird'
