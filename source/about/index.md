@@ -11,6 +11,7 @@ Programmer{
     name = "dengqiangqiu"
     gender = "Male"
     born = "1994"
+    hobby = "Read、Code、Run、Cook"
     skills = "Java、Python、iOS、Android"
 }
 ```
@@ -30,7 +31,6 @@ extention{
     是别样的思绪万千
     只因这里真实的记录了我的生活，我的成长...
     "
-    more = "编程、跑步、写作、烹饪、做产品，这是目前的几个爱好"
 }
 ```
 
