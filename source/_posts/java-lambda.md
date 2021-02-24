@@ -11,9 +11,12 @@ lambda 表达式是一个可传递的代码块，可以在以后执行一次或�
 
 表达式形式：参数，箭头(->)，以及一个表达式。例如：
 
-(String first, String second) -> first.length() - second.length()
+```java
 
-如果代码要完成的计算无法放在一个表达式中，就可以像写方法一样，把这些代码放在{}中，并包含显示的return语句。例如：
+(String first, String second) -> first.length() - second.length()
+```
+
+如果代码要完成的计算无法放在一个表达式中，就可以像写方法一样，把这些代码放在`{}`中，并包含显示的`return`语句。例如：
 
 ```java
 （String first, String second）-> {
@@ -83,7 +86,7 @@ Arrays.sort(words,(first, second) -> first.length() - second.length());
 
 `java.util.function` 包中定义了很多非常通用的函数式接口。例如：
 
-Predicate：
+`Predicate`：
 
 ```java
 public interface Predicate<T> {
@@ -97,21 +100,24 @@ public interface Predicate<T> {
 
 
 
-ArrayList类中有一个removeIf方法，它的参数就是一个Predicate。这个接口专门用来传递lambda表达式。例如，下面的语句将从一个数组列表中删除所欲的null值：
+ArrayList类中有一个`removeIf`方法，它的参数就是一个`Predicate`。这个接口专门用来传递lambda表达式。例如，下面的语句将从一个数组列表中删除所有的null值：
 
 ```java
 list.removeIf(e -> e == null);
 
-Supplier：
+```
 
+`Supplier`：
+
+```java
 public interface Supplier<T> {
 
   T get();
 
 }
-```
 
-供应者（supplier）没有参数，调用时会生成一个T类型的值。供应者用于实现懒计算：例如：
+```
+供应者（supplier）没有参数，调用时会生成一个`T`类型的值。供应者用于实现`懒`计算：例如：
 
 ```java
 LocalDate hireDay = Objects.requireNonNullOrElse(day, new LocalDate(1970,1,1));
@@ -125,7 +131,7 @@ LocalDate hireDay = Objects.requireNonNullOrElse(day, new LocalDate(1970,1,1));
 LocalDate hireDay = Objects.requireNonNullOrElseGet(day, () -> new LocalDate(1970,1,1));
 ```
 
-requireNonNullOrElseGet 方法只在需要值时才调用供应者。
+`requireNonNullOrElseGet` 方法只在需要值时才调用供应者。
 
 ## 方法引用
 
@@ -135,7 +141,7 @@ requireNonNullOrElseGet 方法只在需要值时才调用供应者。
 var timer = new Timer(1000, event -> System.out.println(event));
 ```
 
-但是，如果直接把println方法传递到Timer构造器就更好了。具体做法如下：
+但是，如果直接把`println`方法传递到Timer构造器就更好了。具体做法如下：
 
 ```java
 var timer = new Timer(1000,System.out::println);
@@ -143,33 +149,33 @@ var timer = new Timer(1000,System.out::println);
 
 
 
-表达式System.out::println是一个方法引用（method reference），他只是编译器生成一个函数式接口的实例，覆盖整个接口的抽象方法来调用给定的方法。在这个例子中，会生成一个ActionListener，它的actionPerformed(ActionEvent e) 方法要调用 System.out.println(e)。
+表达式`System.out::println`是一个方法引用（method reference），他只是编译器生成一个函数式接口的实例，覆盖整个接口的抽象方法来调用给定的方法。在这个例子中，会生成一个 ActionListener，它的 actionPerformed(ActionEvent e) 方法要调用 System.out.println(e)。
 
 注释：类似于lambda表达式，方法引用也不是一个对象。不过，为一个类型为函数式接口的变量赋值时会生成一个对象。
 
-再来看一个例子，假设相对字符串进行排序，而不考虑字母的大小写，可以传递以下方法表达式：
+再来看一个例子，假设想对字符串进行排序，而不考虑字母的大小写，可以传递以下方法表达式：
 
 ```java
-Arrays.sort(strings,String:compareToIgnoreCase)
+Arrays.sort(strings,String::compareToIgnoreCase)
 ```
 
 
 
-小结：要用 :: 运算符分割方法与对象或者类名。主要有3种情况：
+小结：要用`:: `运算符分割方法与对象或者类名。主要有3种情况：
 
 1. object::instanceMethod
 2. Class::instanceMethod
 3. Class::staticMethod
 
-在第1种情况下，方法引用等价于向方法传递参数的lambda表达式。对于System.out::println，对象是System.out，所以方法表达式等价于 x -> System.out.println(x)。
+在第1种情况下，方法引用等价于向方法传递参数的lambda表达式。对于` System.out::println`，对象是 System.out，所以方法表达式等价于 `x -> System.out.println(x)`。
 
-对于第2种情况，第1个参数会成为方法的隐式参数。例如，String::compareToIgnoreCase
+对于第2种情况，第1个参数会成为方法的隐式参数。例如，`String::compareToIgnoreCase`
 
-等同于(x, y) -> x.compareToIgnoreCase(y)。
+等同于`(x, y) -> x.compareToIgnoreCase(y)`。
 
-在第3种情况下，所有参数都会传递到静态方法：Math::pow等价于(x, y) -> Math.pow(x, y)
+在第3种情况下，所有参数都会传递到静态方法：`Math::pow`等价于`(x, y) -> Math.pow(x, y)`
 
-注意，只有当lambda表达式的体只调用一个方法而不做其他操作时，才能把lambda表达式重写为方法引用。考虑以下表达式：
+`注`：只有当lambda表达式的体只调用一个方法而不做其他操作时，才能把lambda表达式重写为方法引用。考虑以下表达式：
 
 ```java
 s -> s.length == 0
@@ -181,13 +187,15 @@ s -> s.length == 0
 
 ## 构造器引用
 
-构造器引用与方法引用很类似，只不过方法名为new。例如，Person::new是Person构造器的一个引用。
+构造器引用与方法引用很类似，只不过方法名为new。例如，`Person::new` 是 Person 构造器的一个引用。
 
-可以用数组类型简历构造器引用。例如，int[]::new是一个构造器引用，他有一个参数：即数组的长度。这等价于lambda表达式x -> new int[x]。
+可以用数组类型简历构造器引用。例如，`int[]::new`是一个构造器引用，他有一个参数：即数组的长度。这等价于lambda表达式`x -> new int[x]`。
 
-Java有一个限制，无法构造泛型类型T的数组。但是利用数组构造器可以克服这个限制，例如：
+Java有一个限制，无法构造泛型类型`T`的数组。但是利用数组构造器可以克服这个限制，例如：
 
-Person[ ] people = stream.toArray(Person[ ]::new);
+```java
+Person[] people = stream.toArray(Person[]::new);
+```
 
 toArray方法调用这个构造器来得到一个有正确类型的数组。然后填充并返回这个数组。
 
@@ -208,13 +216,12 @@ public static void repeatMessage(String text){
   ActionListener listener = event -> {
 		   System.out.println(text);
    }
-
 }
 ```
 
 
 
-在lambda表达式中，只能引用值不会改变的变量，（因为，如果在lambda表达式中更改变量，并发执行多个动作是就会不安全）下面这种做法是不合法的：
+在lambda表达式中，只能引用值不会改变的变量（因为，如果在lambda表达式中更改变量，并发执行多个动作是就会不安全），下面这种做法是不合法的：
 
 ```java
 public static void countDown(int start){
@@ -225,8 +232,6 @@ public static void countDown(int start){
   }
 }
 ```
-
-
 
 如果在lambda表达式中引用一个变量，而这个变量可能在外部改变，这也是不合法的。例如：
 
@@ -258,14 +263,14 @@ public class Application{
 }
 ```
 
-表达式this.toString()会调用Application对象的toString方法，而不是ActionListener实例的方法。
+表达式`this.toString()`会调用Application对象的toString方法，而不是ActionListener实例的方法。
 
 ## 处理lambda表达式
 
 如何编写方法处理lambda表达式?，使用lambda表达式的重点是延迟执行
 
 1. 需要选择一个合适的函数式接口
-2. 可以选择自定义函数式接口，建议使用@FunctionalInterface注解标记这个接口，这样如果无意中增加了另一个抽象方法，编译器就会产生一个错误消息
+2. 可以选择自定义函数式接口，建议使用`@FunctionalInterface`注解标记这个接口，这样如果无意中增加了另一个抽象方法，编译器就会产生一个错误消息
 
 
 
