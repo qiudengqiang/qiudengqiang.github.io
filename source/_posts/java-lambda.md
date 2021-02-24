@@ -1,11 +1,11 @@
 ---
-title: lambda表达式详解
+title: Java Lambda 表达式详解
 date: 2021-02-24 19:01:47
 tags: [Java,lambda]
 categories: Java
 ---
 
-lambda 表达式是一个可传递的代码块，可以在以后执行一次或多次。
+Lambda 表达式是一个可传递的代码块，可以在以后执行一次或多次。
 
 ## 语法
 
