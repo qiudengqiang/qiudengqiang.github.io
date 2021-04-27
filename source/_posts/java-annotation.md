@@ -94,14 +94,23 @@ public class Test{}
 
 ## 元注解
 用于描述注解的注解成为元注解。
-### @Target
-描述注解能够作用的位置(TYPE,FIELD,METHOD)
-`@Target(ElementType.TYPE)`:表示注解只能作用于类或接口上
-`@Target(ElementType.FIELD)`:表示注解只能作用于成员变量上
-`@Target(ElementType.METHOD)`:表示注解只能作用于方法上
-`@Target(ElementType.CONSTRUCTOR)`:构造方式
 
-**注意**：如果没有指定Target，说明任意位置都可以使用
+### @Target
+@Target(ElementType)注解标记另外的注解用于限制此注解可以应用哪种Java元素类型
+
+`ElementType.TYPE`:接口、类、枚举
+`ElementType.FIELD`:字段、枚举的常量
+`ElementType.METHOD`:方法
+`ElementType.PARAMETER`:方法参数
+`ElementType.CONSTRUCTOR`:构造函数
+`ElementType.LOCAL_VARIABLE`:构造函数
+`ElementType.ANNOTATION_TYPE`:注解
+`ElementType.PACKAGE`:包
+`ElementType.TYPE_PARAMETER`:Java8 引进，类型参数声明，可以应用于类的泛型声明之处
+`ElementType.TYPE_USE`:Java8 引进，此类型包括类型声明和类型参数声明，是为了方便设计者进行类型检查，ElementType.TYPE_USE包含了ElementType.TYPE和ElementType.TYPE_PARAMETER
+
+**注意**：如果一个注解没有指定@Target注解，则此注解可以用于除了TYPE_PARAMETER和TYPE_USE以外的任何地方。
+
 ```java
 @Target(value={ElementType.TYPE,ElementType.METHOD,ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)
@@ -109,14 +118,17 @@ public @interface MyAnno{
 }
 ```
 ### @Retention
-描述注解被保留的阶段(SOURCE,CLASS,RUNTIME)
-`@Retention(RetentionPolicy.SOURCE)`：修饰的注解存在于源文件，提供给编译器使用。
-`@Retention(RetentionPolicy.CLASS)` ：修饰的注解存在于字节码文件，提供JVM使用
-`@Retention(RetentionPolicy.RUNTIME)`：修饰的注解存在于内存，提供给程序(自己)
+@Retention(RetentionPolicy) 注解标记其他的注解用于指明标记的注解保留策略
+
+`@Retention(RetentionPolicy.SOURCE)`：表示注解会在编译时被丢弃。
+`@Retention(RetentionPolicy.CLASS)` ：默认策略，表示注解会在编译后的class文件中存在，但是在运行时，不会被VM保留
+`@Retention(RetentionPolicy.RUNTIME)`：表示不仅会在编译后的class文件中存在，而且在运行时保留，因此它们主要用于反射场景，可以通过getAnnotation方法获取。
+
 ### @Documented
-在使用javadoc生成api时，将被修饰的注解添加上
+在使用javadoc生成api时，将被修饰的注解添加上。
+
 ### @Inherited
-被修饰的注解，所使用的类的所有子类，都继承当前注解
+@Inherited 所修饰的注解，表示使用到该注解所标记的注解的类的所有子类，都继承当前注解。
 
 ## 使用(在程序中解析注解)
 1. 获取注解定义的位置的对象`(Class,Field,Method)`
