@@ -19,6 +19,7 @@ categories: [Linux]
 
 - `/`：根目录
 - `~`：用户的家目录
+- `.`：当前目录
 - `/home` ：系统默认的用户home目录，存放普通用户相关文件
 - `/root`：管理员的home目录，存放root用户相关文件
 - `/bin`：存放linux常用命令的目录，如ls、vi、cat等
@@ -237,7 +238,8 @@ command [-opitons] [parameter]
   - `l`：listen
   - `p`：port
   - `a`：all
-
+- 跨系统复制文件
+  - `scp -r 源文件路径 用户名@远程ip地址:目标路径`
 # Reference
 
 [1] https://zh.wikipedia.org/wiki/Linux
