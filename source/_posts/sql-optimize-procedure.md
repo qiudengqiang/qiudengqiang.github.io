@@ -237,7 +237,7 @@ select * from tab_user where name like '%z'
 
 这条带有 like 查询的 SQL 语句，没有用到 tab_user 表中的 index_name 索引。
 
-![explain-sql2](/iamges/tech/image-20210402080934143.png)
+![explain-sql2](/images/tech/image-20210402080934143.png)
 
 我们结合普通索引的B+Tree结构来分析一下索引失效的原因：当MySQL优化器根据name like '%z'这个条件，到索引index_name的B+Tree结构上去查询评估时，发现当前节点的左右子节点的值都有可能符合'%z'这个条件，于是优化器判定当前索引需要扫描整个索引，而且还要回表查询，不如直接全表扫描。
 
