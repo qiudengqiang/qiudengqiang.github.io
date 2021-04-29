@@ -18,6 +18,7 @@ categories: [Linux]
 # linux 下常用的目录结构
 
 - `/`：根目录
+- `~`：用户的家目录
 - `/home` ：系统默认的用户home目录，存放普通用户相关文件
 - `/root`：管理员的home目录，存放root用户相关文件
 - `/bin`：存放linux常用命令的目录，如ls、vi、cat等
