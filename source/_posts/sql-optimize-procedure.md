@@ -237,7 +237,7 @@ select * from tab_user where name like '%z'
 
 这条带有 like 查询的 SQL 语句，没有用到 tab_user 表中的 index_name 索引。
 
-![image-20210402080934143](/Users/qiudengqiang/Library/Application Support/typora-user-images/image-20210402080934143.png)
+![image](/iamges/tech/image-20210402080934143.png)
 
 我们结合普通索引的B+Tree结构来分析一下索引失效的原因：当MySQL优化器根据name like '%z'这个条件，到索引index_name的B+Tree结构上去查询评估时，发现当前节点的左右子节点的值都有可能符合'%z'这个条件，于是优化器判定当前索引需要扫描整个索引，而且还要回表查询，不如直接全表扫描。
 
@@ -270,16 +270,13 @@ select * from tab_user where name like '%z'
 
   - **联合索引时，存在最左匹配原则，也就是按照最左优先的方式进行索引的匹配。**
   - 建立联合索引时的字段顺序，对索引效率也有很大影响。越靠前的字段被用于索引过滤的概率越高，实际开发工作中建立联合索引时，要把区分度大的字段排在前面，这样区分度大的字段越有可能被更多的 SQL 使用到。
-  - <img src="/Users/qiudengqiang/Library/Application Support/typora-user-images/image-20210401174931790.png" alt="image-20210401174931790" style="zoom:50%;" />
+  - ![distinct](/images/tech/image-20210401174931790.png)
   - 区分度就是某个字段 column 不同值的个数除以表的总行数，比如性别的区分度就很小，不适合建立索引或不适合排在联合索引列的靠前的位置，而 uuid 这类字段就比较适合做索引或排在联合索引列的靠前的位置。
 
 
 
 ### 小结
-
-
-
-<img src="/Users/qiudengqiang/Library/Application Support/typora-user-images/image-20210401175722407.png" alt="image-20210401175722407" style="zoom:50%;" />
+![summary](/images/tech/image-20210401175722407.png)
 
 ## 参考资料
 
