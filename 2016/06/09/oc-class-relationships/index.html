@@ -1,0 +1,655 @@
+
+ <!DOCTYPE HTML>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+  
+    <title>Objc - 对象之类对象和元类对象 | techbird blog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="techbird">
+    
+
+    
+    <meta name="description" content="Objc 中的类（Class）众所周知，在 Objc 中所有的对象都由类实例化而来，殊不知类本身也是一种对象。在 Objc 中几乎所有的类都是 NSObject 的子类，NSObject类定义如下(忽略方法声明)： @interface NSObject &lt;NSObject&gt; &amp;#123;    Class  isa  OBJC_ISA_AVAILABILITY;&amp;#125;@end">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Objc - 对象之类对象和元类对象">
+<meta property="og:url" content="https://hashcode.cn/2016/06/09/oc-class-relationships/index.html">
+<meta property="og:site_name" content="techbird blog">
+<meta property="og:description" content="Objc 中的类（Class）众所周知，在 Objc 中所有的对象都由类实例化而来，殊不知类本身也是一种对象。在 Objc 中几乎所有的类都是 NSObject 的子类，NSObject类定义如下(忽略方法声明)： @interface NSObject &lt;NSObject&gt; &amp;#123;    Class  isa  OBJC_ISA_AVAILABILITY;&amp;#125;@end">
+<meta property="og:image" content="https://hashcode.cn/images/tech/objc_class_relationship.png">
+<meta property="article:published_time" content="2016-06-09T00:12:45.000Z">
+<meta property="article:modified_time" content="2020-11-20T06:12:25.805Z">
+<meta property="article:author" content="techbird">
+<meta property="article:tag" content="iOS">
+<meta property="article:tag" content="Objc">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://hashcode.cn/images/tech/objc_class_relationship.png">
+<meta name="twitter:creator" content="@murendless">
+
+    
+    <link rel="alternative" href="/atom.xml" title="techbird blog" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    
+<link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="/%02.css">
+<link rel="stylesheet" href="/.css">
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.png" alt="techbird blog" title="techbird blog"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="techbird blog">techbird blog</a></h1>
+				<h2 class="blog-motto">timeline of growth</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives/">Archives</a></li>
+					
+						<li><a href="/about/">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:hashcode.cn">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2016/06/09/oc-class-relationships/" title="Objc - 对象之类对象和元类对象" itemprop="url">Objc - 对象之类对象和元类对象</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="techbird" target="_blank" itemprop="author">techbird</a>
+		
+  <p class="article-time">
+    <time datetime="2016-06-09T00:12:45.000Z" itemprop="datePublished"> Published 2016-06-09 08:12</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Objc-中的类（Class）"><span class="toc-number">1.</span> <span class="toc-text">Objc 中的类（Class）</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#类对象（class-object）"><span class="toc-number">1.1.</span> <span class="toc-text">类对象（class object）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#类对象的实质"><span class="toc-number">1.1.1.</span> <span class="toc-text">类对象的实质</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#类对象和实例对象的区别"><span class="toc-number">1.1.2.</span> <span class="toc-text">类对象和实例对象的区别</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#类对象与类名"><span class="toc-number">1.1.3.</span> <span class="toc-text">类对象与类名</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#元类对象（metaclass-object）"><span class="toc-number">1.2.</span> <span class="toc-text">元类对象（metaclass object）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#元类对象的实质"><span class="toc-number">1.2.1.</span> <span class="toc-text">元类对象的实质</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#类对象和元类对象的相关方法"><span class="toc-number">1.3.</span> <span class="toc-text">类对象和元类对象的相关方法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#object-getClass"><span class="toc-number">1.3.1.</span> <span class="toc-text">object_getClass</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#class"><span class="toc-number">1.3.2.</span> <span class="toc-text">class</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#class-isMetaClass"><span class="toc-number">1.3.3.</span> <span class="toc-text">class_isMetaClass</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#objc-allocateClassPair"><span class="toc-number">1.3.4.</span> <span class="toc-text">objc_allocateClassPair</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#参考资料"><span class="toc-number">2.</span> <span class="toc-text">参考资料</span></a></li></ol>
+		
+		</div>
+		
+		<h1 id="Objc-中的类（Class）"><a href="#Objc-中的类（Class）" class="headerlink" title="Objc 中的类（Class）"></a>Objc 中的类（Class）</h1><p>众所周知，在 Objc 中所有的对象都由类实例化而来，<strong>殊不知类本身也是一种对象</strong>。<br>在 Objc 中几乎所有的类都是 NSObject 的子类，NSObject类定义如下(忽略方法声明)：</p>
+<figure class="highlight objc"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">NSObject</span> &lt;<span class="title">NSObject</span>&gt; </span>&#123;</span><br><span class="line">    Class  isa  OBJC_ISA_AVAILABILITY;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">@end</span></span><br></pre></td></tr></table></figure>
+<p>这个<code>isa</code>是什么呢？在 <code>objc.h</code> 中我们发现它仅仅是一个 typedef 的结构体(struct)定义，如下:</p>
+<figure class="highlight objc"><table><tr><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="keyword">struct</span> objc_class *Class;</span><br></pre></td></tr></table></figure>
+<p>同样的<code>objc_class</code>又是什么呢？在 Objc2.0 中 <code>objc_class</code>定义如下：</p>
+<figure class="highlight objc"><table><tr><td class="code"><pre><span class="line"><span class="keyword">struct</span> objc_class &#123;</span><br><span class="line">    Class  isa  OBJC_ISA_AVAILABILITY;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">if</span> !__OBJC2__</span></span><br><span class="line">    Class  super_class  OBJC2_UNAVAILABLE;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line">&#125; OBJC2_UNAVAILABLE;</span><br></pre></td></tr></table></figure>
+<p>这里又出现了一个<code>isa</code>指针，这个 <code>isa</code>和上一个有什么区别和联系？</p>
+<p>答：其实在 Objc 中任何类的定义都是一个对象。在编译的时候，编译器会给每一个类生成且只生成一个「描述其定义的对象」，也就是苹果公司所说的类对象（class object）；因为 Objc 和是一门动态语言，程序中所有的实例对象（instance object）是在运行时库生成的，而这个类对象（class object）就是运行时库用来创建实例对象（instance object）的依据。</p>
+<p>再回到之前的问题，为什么实例对象（instance object）的<code>isa</code>指针指向的类对象（class object）里面还有一个<code>isa</code>指针？而这个类对象（class object）的 <code>isa</code> 指向的仍然是一个<code>objc_class</code>，它就是元类对象（metaclass object）；那么实例对象（instance object）、类对象（class object）、元类对象（metaclass object）之间的关系是怎样的呢？如下图：<br><img src="/images/tech/objc_class_relationship.png" alt="类关系图"></p>
+<h2 id="类对象（class-object）"><a href="#类对象（class-object）" class="headerlink" title="类对象（class object）"></a>类对象（class object）</h2><h3 id="类对象的实质"><a href="#类对象的实质" class="headerlink" title="类对象的实质"></a>类对象的实质</h3><p>类对象是由编译器创建的；<strong>即在编译时所谓的类，就是指类对象</strong>。</p>
+<blockquote>
+<p>官方文档中这样描述：The class object is the compiled version of the class.</p>
+</blockquote>
+<p>任何直接或间接继承了 NSObject 的类，它的实例对象(instance object)中都有一个<code>isa</code>指针，指向它的类对象(class object)。<strong>这个类对象(class object)中存储了关于这个实例对象(instance object)所属的类定义的一切：包括变量、方法、遵守的协议等</strong>。因此类对象(class object)能访问所有关于这个类的信息，利用这些信息可以产生一个新的实例对象(instance object)，但是类对象不能访问任何实力对象的内容。<br>当调用一个类方法(class method)时，例如：<code>[NSObject alloc]</code>，事实上是发送了一个消息给它的类对象。</p>
+<h3 id="类对象和实例对象的区别"><a href="#类对象和实例对象的区别" class="headerlink" title="类对象和实例对象的区别"></a>类对象和实例对象的区别</h3><p>尽管类对象保留了一个类实例的原型，但它并不是实例本身；它没有自己的实例变量，也不能执行那些类的实例方法</p>
+<h3 id="类对象与类名"><a href="#类对象与类名" class="headerlink" title="类对象与类名"></a>类对象与类名</h3><p>在代码中，类对象由类名表示。</p>
+<p>举个例子：定义类 Person 继承 NSObject</p>
+<figure class="highlight objc"><table><tr><td class="code"><pre><span class="line"><span class="keyword">int</span> versionNumber = [Person version];</span><br></pre></td></tr></table></figure>
+<p>在上面的例子中，Person 类从 NSObject 继承 <code>version</code>方法来返回类的版本号；只有在消息表达式中作为接受者时，类名才代表类对象。</p>
+<p>另外，类对象和其他对象一样也是<code>id</code>类型，例如：</p>
+<figure class="highlight objc"><table><tr><td class="code"><pre><span class="line"><span class="keyword">id</span> clazz = [anyObject <span class="keyword">class</span>];</span><br><span class="line"><span class="keyword">id</span> pClazz = [Person <span class="keyword">class</span>];</span><br></pre></td></tr></table></figure>
+<p>总之，类对象是一个功能完整的对象，所以也能被动态识别(dynamically typed)接收消息，从其他类继承方法。特殊之处在于它们是由编译器创建的，缺少它们自己的数据结构(实例变量)，只是在运行时产生实例的代理。</p>
+<h2 id="元类对象（metaclass-object）"><a href="#元类对象（metaclass-object）" class="headerlink" title="元类对象（metaclass object）"></a>元类对象（metaclass object）</h2><h3 id="元类对象的实质"><a href="#元类对象的实质" class="headerlink" title="元类对象的实质"></a>元类对象的实质</h3><p>实际上，<strong>类对象是元类对象的一个实例</strong>，元类对象描述了一个类对象，就像类对象描述了普通的实例对象一样。不同的是元类的方法列表是类方法的集合，由类对象的选择器来响应；当一个类发送消息时候，<code>objc_msgSend</code>会通过类对象的<code>isa</code>指针定位到元类，并检查元类的方法列表（包括父类）来决定调用哪个方法。元类代替了类对象描述了类方法，就像类对象代替实例对象描述了实例化方法。</p>
+<p>很显然，<strong>元类也是对象，也应该是其他类的实例</strong>，实际上元类是根元类(root class’s metaclass)的实例，而根元类是其自身的实例，即根元类的 <code>isa</code> 指针指向自身。</p>
+<p>类的<code>super_class</code>指向其父类，而元类的 <code>super_class</code> 则指向父类的元类；元类的 <code>super_class</code> 链与类的<code>super_class</code>链平行，所以类方法的继承与实例方法的继承也是平行的。而根元类(root class’s metaclass)的 <code>super_class</code>指向根类(root class)，这样整个指针链就链起来了。</p>
+<p>综上所述: 类对象(class object)保存的是关于实例对象的信息(ivar，实例方法等)，而元类对象(metaclass object)存储的是关于类的信息（类的版本，名字，类方法等）<br>要注意的是，类对象和元类对象的定义都是<code>objc_class</code>结构。其不同仅仅是在用途上，比如其中的方法列表在类对象(class object)中保存的是实例方法(instance method)，而在元类对象(metaclass object)中保存的则是类方法(class method)</p>
+<h2 id="类对象和元类对象的相关方法"><a href="#类对象和元类对象的相关方法" class="headerlink" title="类对象和元类对象的相关方法"></a>类对象和元类对象的相关方法</h2><h3 id="object-getClass"><a href="#object-getClass" class="headerlink" title="object_getClass"></a>object_getClass</h3><p><code>object_getClass</code>跟随实例的<code>isa</code>指针，返回此实例所属的类，对于实例对象(instance object)返回的是类(class)，而对于类(class)则返回的是元类(metacalss)</p>
+<h3 id="class"><a href="#class" class="headerlink" title="class"></a>class</h3><p><code>class</code>方法对于实例对象(instance object)会返回类(class)，但对于类(class)则不会返回元类(metaclass)，而只会返回类本身，即<code>[@“instance” class]</code>则返回的是<code>__NSCFConstantString</code>；而<code>[NSString class]</code>则返回的是 <code>NSString</code></p>
+<h3 id="class-isMetaClass"><a href="#class-isMetaClass" class="headerlink" title="class_isMetaClass"></a>class_isMetaClass</h3><p><code>class_isMetaClass</code>判断某类是否是元类</p>
+<h3 id="objc-allocateClassPair"><a href="#objc-allocateClassPair" class="headerlink" title="objc_allocateClassPair"></a>objc_allocateClassPair</h3><p>使用<code>objc_allocateClassPair</code>可在运行时创建新的类对与元类对，使用<code>class_addMethod</code>和<code>class_addIvar</code>可向类中增加方法和实例变量，最后使用<code>objc_registerClassPair</code>注册后，就可以使用此类了。</p>
+<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><ul>
+<li><a href="https://blog.csdn.net/wzzvictory/article/details/8592492" target="_blank" rel="noopener">https://blog.csdn.net/wzzvictory/article/details/8592492</a></li>
+</ul>
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/iOS/">iOS</a>►<a class="article-category-link" href="/categories/iOS/Objc/">Objc</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/iOS/">iOS</a><a href="/tags/Objc/">Objc</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="https://hashcode.cn/2016/06/09/oc-class-relationships/" data-title="Objc - 对象之类对象和元类对象 | techbird blog" data-tsina="6488657373" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2017/02/21/daily-2017-0221/" title="群哥结婚了">
+  <strong>上一篇：</strong><br/>
+  <span>
+  群哥结婚了</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2016/06/01/read-kj/"  title="柴静十年成长的个人告白 - 读《看见》">
+ <strong>下一篇：</strong><br/> 
+ <span>柴静十年成长的个人告白 - 读《看见》
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+<section id="comments" class="comment">
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript" target="_blank" rel="noopener">comments powered by Disqus.</a></noscript>
+  </div>
+</section>
+
+
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Objc-中的类（Class）"><span class="toc-number">1.</span> <span class="toc-text">Objc 中的类（Class）</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#类对象（class-object）"><span class="toc-number">1.1.</span> <span class="toc-text">类对象（class object）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#类对象的实质"><span class="toc-number">1.1.1.</span> <span class="toc-text">类对象的实质</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#类对象和实例对象的区别"><span class="toc-number">1.1.2.</span> <span class="toc-text">类对象和实例对象的区别</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#类对象与类名"><span class="toc-number">1.1.3.</span> <span class="toc-text">类对象与类名</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#元类对象（metaclass-object）"><span class="toc-number">1.2.</span> <span class="toc-text">元类对象（metaclass object）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#元类对象的实质"><span class="toc-number">1.2.1.</span> <span class="toc-text">元类对象的实质</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#类对象和元类对象的相关方法"><span class="toc-number">1.3.</span> <span class="toc-text">类对象和元类对象的相关方法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#object-getClass"><span class="toc-number">1.3.1.</span> <span class="toc-text">object_getClass</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#class"><span class="toc-number">1.3.2.</span> <span class="toc-text">class</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#class-isMetaClass"><span class="toc-number">1.3.3.</span> <span class="toc-text">class_isMetaClass</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#objc-allocateClassPair"><span class="toc-number">1.3.4.</span> <span class="toc-text">objc_allocateClassPair</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#参考资料"><span class="toc-number">2.</span> <span class="toc-text">参考资料</span></a></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+
+  
+<div class="github-card">
+<p class="asidetitle">Github Card</p>
+<div class="github-card" data-github="qiudengqiang" data-theme="medium"></div>
+<script type="text/javascript" src="//cdn.jsdelivr.net/github-cards/latest/widget.js" ></script>
+</div>
+
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">Categories</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/Daily/" title="Daily">Daily<sup>14</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/DataBase/" title="DataBase">DataBase<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Java/" title="Java">Java<sup>9</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Journey/" title="Journey">Journey<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Linux/" title="Linux">Linux<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/MySQL/" title="MySQL">MySQL<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/iOS/Objc/" title="Objc">Objc<sup>13</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Readed/" title="Readed">Readed<sup>5</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/VSCode/" title="VSCode">VSCode<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Web/" title="Web">Web<sup>5</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Xcode/" title="Xcode">Xcode<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/iOS/" title="iOS">iOS<sup>16</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/iOS/" title="iOS">iOS<sup>16</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Daily/" title="Daily">Daily<sup>14</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Objc/" title="Objc">Objc<sup>11</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Java/" title="Java">Java<sup>9</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Readed/" title="Readed">Readed<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Web/" title="Web">Web<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Thread/" title="Thread">Thread<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Network/" title="Network">Network<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Journey/" title="Journey">Journey<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/MySQL/" title="MySQL">MySQL<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Xcode/" title="Xcode">Xcode<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Category/" title="Category">Category<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/keywords/" title="keywords">keywords<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Idea/" title="Idea">Idea<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/KVC/" title="KVC">KVC<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/KVO/" title="KVO">KVO<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/NSThread/" title="NSThread">NSThread<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/NSURLRequest/" title="NSURLRequest">NSURLRequest<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/NSURLResponse/" title="NSURLResponse">NSURLResponse<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/NSURLSession/" title="NSURLSession">NSURLSession<sup>1</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+  <div class="weiboshow">
+  <p class="asidetitle">Weibo</p>
+    <iframe width="100%" height="120" class="share_self"  frameborder="0" scrolling="no" src="https://widget.weibo.com/weiboshow/index.php?language=&width=0&height=120&fansRow=2&ptype=1&speed=0&skin=9&isTitle=1&noborder=1&isWeibo=0&isFans=0&uid=6488657373&verifier=f458bf46&dpc=1"></iframe>
+</div>
+
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> You can&#39;t connect the dots looking forward <br/>
+			You can only connect them looking backwards.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		<a href="http://weibo.com/6488657373" target="_blank" class="icon-weibo" title="微博"></a>
+		
+		
+		<a href="https://github.com/qiudengqiang" target="_blank" class="icon-github" title="github"></a>
+		
+		
+		
+		<a href="https://twitter.com/murendless" target="_blank" class="icon-twitter" title="twitter"></a>
+		
+		
+		
+		
+		
+		
+		
+		<a href="mailto:qiudengqiang@gmail.com" target="_blank" class="icon-email" title="Email Me"></a>
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2022 
+		
+		<a href="/about" target="_blank" title="techbird">techbird</a>
+		
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+<script type="text/javascript">
+
+var disqus_shortname = 'techbird-1';
+
+(function(){
+  var dsq = document.createElement('script');
+  dsq.type = 'text/javascript';
+  dsq.async = true;
+  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+}());
+(function(){
+  var dsq = document.createElement('script');
+  dsq.type = 'text/javascript';
+  dsq.async = true;
+  dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+}());
+</script>
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

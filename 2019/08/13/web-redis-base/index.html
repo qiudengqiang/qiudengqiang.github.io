@@ -1,0 +1,763 @@
+
+ <!DOCTYPE HTML>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+  
+    <title>Redis 使用快速入门 | techbird blog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="techbird">
+    
+
+    
+    <meta name="description" content="概念redis是一款高性能的NOSQL系列的非关系型数据库 什么是NOSQLNoSQL(NoSQL &#x3D; Not Only SQL)，意即“不仅仅是SQL”，是一项全新的数据库理念，泛指非关系型的数据库。随着互联网web2.0网站的兴起，传统的关系数据库在应付web2.0网站，特别是超大规模和高并发的SNS类型的web2.0纯动态网站已经显得力不从心，暴露了很多难以克服的问题，而非关系型的数据库则由">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Redis 使用快速入门">
+<meta property="og:url" content="https://hashcode.cn/2019/08/13/web-redis-base/index.html">
+<meta property="og:site_name" content="techbird blog">
+<meta property="og:description" content="概念redis是一款高性能的NOSQL系列的非关系型数据库 什么是NOSQLNoSQL(NoSQL &#x3D; Not Only SQL)，意即“不仅仅是SQL”，是一项全新的数据库理念，泛指非关系型的数据库。随着互联网web2.0网站的兴起，传统的关系数据库在应付web2.0网站，特别是超大规模和高并发的SNS类型的web2.0纯动态网站已经显得力不从心，暴露了很多难以克服的问题，而非关系型的数据库则由">
+<meta property="og:image" content="https://hashcode.cn/images/tech/web-redis-value-data-structure.bmp">
+<meta property="article:published_time" content="2019-08-13T02:01:47.000Z">
+<meta property="article:modified_time" content="2020-11-20T06:12:25.808Z">
+<meta property="article:author" content="techbird">
+<meta property="article:tag" content="Web">
+<meta property="article:tag" content="Redis">
+<meta property="article:tag" content="DataBase">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://hashcode.cn/images/tech/web-redis-value-data-structure.bmp">
+<meta name="twitter:creator" content="@murendless">
+
+    
+    <link rel="alternative" href="/atom.xml" title="techbird blog" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    
+<link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="/%02.css">
+<link rel="stylesheet" href="/.css">
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.png" alt="techbird blog" title="techbird blog"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="techbird blog">techbird blog</a></h1>
+				<h2 class="blog-motto">timeline of growth</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives/">Archives</a></li>
+					
+						<li><a href="/about/">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:hashcode.cn">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2019/08/13/web-redis-base/" title="Redis 使用快速入门" itemprop="url">Redis 使用快速入门</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="techbird" target="_blank" itemprop="author">techbird</a>
+		
+  <p class="article-time">
+    <time datetime="2019-08-13T02:01:47.000Z" itemprop="datePublished"> Published 2019-08-13 10:01</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#概念"><span class="toc-number">1.</span> <span class="toc-text">概念</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#什么是NOSQL"><span class="toc-number">1.1.</span> <span class="toc-text">什么是NOSQL</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#NOSQL和关系型数据库比较"><span class="toc-number">1.1.1.</span> <span class="toc-text">NOSQL和关系型数据库比较</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#非关系型数据库的优势"><span class="toc-number">1.1.2.</span> <span class="toc-text">非关系型数据库的优势</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#关系型数据库的优势"><span class="toc-number">1.1.3.</span> <span class="toc-text">关系型数据库的优势</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#小结"><span class="toc-number">1.1.4.</span> <span class="toc-text">小结</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#主流的NOSQL产品"><span class="toc-number">1.2.</span> <span class="toc-text">主流的NOSQL产品</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#键值-Key-Value-存储数据库"><span class="toc-number">1.2.1.</span> <span class="toc-text">键值(Key-Value)存储数据库</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#列存储数据库"><span class="toc-number">1.2.2.</span> <span class="toc-text">列存储数据库</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#文档型数据库"><span class="toc-number">1.2.3.</span> <span class="toc-text">文档型数据库</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#图形-Graph-数据库"><span class="toc-number">1.2.4.</span> <span class="toc-text">图形(Graph)数据库</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#什么是Redis"><span class="toc-number">1.3.</span> <span class="toc-text">什么是Redis</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#redis的应用场景"><span class="toc-number">1.3.1.</span> <span class="toc-text">redis的应用场景</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#下载安装"><span class="toc-number">2.</span> <span class="toc-text">下载安装</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#操作"><span class="toc-number">2.1.</span> <span class="toc-text">操作</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#命令操作"><span class="toc-number">3.</span> <span class="toc-text">命令操作</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#redis的数据结构："><span class="toc-number">3.1.</span> <span class="toc-text">redis的数据结构：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#字符串类型-string"><span class="toc-number">3.2.</span> <span class="toc-text">字符串类型 string</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#存储"><span class="toc-number">3.2.1.</span> <span class="toc-text">存储</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#获取"><span class="toc-number">3.2.2.</span> <span class="toc-text">获取</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#删除"><span class="toc-number">3.2.3.</span> <span class="toc-text">删除</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#哈希类型-hash"><span class="toc-number">3.3.</span> <span class="toc-text">哈希类型 hash</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#存储-1"><span class="toc-number">3.3.1.</span> <span class="toc-text">存储</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#获取-1"><span class="toc-number">3.3.2.</span> <span class="toc-text">获取</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#删除-1"><span class="toc-number">3.3.3.</span> <span class="toc-text">删除</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#列表类型-list"><span class="toc-number">3.4.</span> <span class="toc-text">列表类型 list</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#添加"><span class="toc-number">3.4.1.</span> <span class="toc-text">添加</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#获取-2"><span class="toc-number">3.4.2.</span> <span class="toc-text">获取</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#删除-2"><span class="toc-number">3.4.3.</span> <span class="toc-text">删除</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#集合类型-set"><span class="toc-number">3.5.</span> <span class="toc-text">集合类型 set</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#存储-2"><span class="toc-number">3.5.1.</span> <span class="toc-text">存储</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#获取-3"><span class="toc-number">3.5.2.</span> <span class="toc-text">获取</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#删除-3"><span class="toc-number">3.5.3.</span> <span class="toc-text">删除</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#有序集合类型-sortedset"><span class="toc-number">3.6.</span> <span class="toc-text">有序集合类型 sortedset</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#存储-3"><span class="toc-number">3.6.1.</span> <span class="toc-text">存储</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#获取-4"><span class="toc-number">3.6.2.</span> <span class="toc-text">获取</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#删除-4"><span class="toc-number">3.6.3.</span> <span class="toc-text">删除</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#通用命令"><span class="toc-number">3.7.</span> <span class="toc-text">通用命令</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#持久化机制"><span class="toc-number">4.</span> <span class="toc-text">持久化机制</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#RDB"><span class="toc-number">4.1.</span> <span class="toc-text">RDB</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#AOF"><span class="toc-number">4.2.</span> <span class="toc-text">AOF</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#使用Java操作redis"><span class="toc-number">5.</span> <span class="toc-text">使用Java操作redis</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#使用步骤"><span class="toc-number">5.1.</span> <span class="toc-text">使用步骤</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Jedis操作各种redis中的数据结构"><span class="toc-number">5.2.</span> <span class="toc-text">Jedis操作各种redis中的数据结构</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#字符串类型-string-1"><span class="toc-number">5.2.1.</span> <span class="toc-text">字符串类型 string</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#哈希类型-hash-1"><span class="toc-number">5.2.2.</span> <span class="toc-text">哈希类型 hash</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#列表类型-list-1"><span class="toc-number">5.2.3.</span> <span class="toc-text">列表类型 list</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#集合类型-set-1"><span class="toc-number">5.2.4.</span> <span class="toc-text">集合类型 set</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#有序集合类型-sortedset-1"><span class="toc-number">5.2.5.</span> <span class="toc-text">有序集合类型 sortedset</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Jedis连接池-JedisPool"><span class="toc-number">5.3.</span> <span class="toc-text">Jedis连接池 JedisPool</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#使用"><span class="toc-number">5.3.1.</span> <span class="toc-text">使用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#连接池工具类"><span class="toc-number">5.3.2.</span> <span class="toc-text">连接池工具类</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#小结-1"><span class="toc-number">6.</span> <span class="toc-text">小结</span></a></li></ol>
+		
+		</div>
+		
+		<h1 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h1><p>redis是一款高性能的NOSQL系列的非关系型数据库</p>
+<h2 id="什么是NOSQL"><a href="#什么是NOSQL" class="headerlink" title="什么是NOSQL"></a>什么是NOSQL</h2><p>NoSQL(NoSQL = Not Only SQL)，意即“不仅仅是SQL”，是一项全新的数据库理念，泛指非关系型的数据库。<br>随着互联网web2.0网站的兴起，传统的关系数据库在应付web2.0网站，特别是超大规模和高并发的SNS类型的web2.0纯动态网站已经显得力不从心，暴露了很多难以克服的问题，而非关系型的数据库则由于其本身的特点得到了非常迅速的发展。NoSQL数据库的产生就是为了解决大规模数据集合多重数据种类带来的挑战，尤其是大数据应用难题。</p>
+<h3 id="NOSQL和关系型数据库比较"><a href="#NOSQL和关系型数据库比较" class="headerlink" title="NOSQL和关系型数据库比较"></a>NOSQL和关系型数据库比较</h3><ul>
+<li>优点：</li>
+</ul>
+<ol>
+<li>成本：nosql数据库简单易部署，基本都是开源软件，不需要像使用oracle那样花费大量成本购买使用，相比关系型数据库价格便宜。</li>
+<li>查询速度：nosql数据库将数据存储于缓存之中，关系型数据库将数据存储在硬盘中，自然查询速度远不及nosql数据库。</li>
+<li>存储数据的格式：nosql的存储格式是key,value形式、文档形式、图片形式等等，所以可以存储基础类型以及对象或者是集合等各种格式，而数据库则只支持基础类型。</li>
+<li>扩展性：关系型数据库有类似join这样的多表查询机制的限制导致扩展很艰难。</li>
+</ol>
+<ul>
+<li>缺点：</li>
+</ul>
+<ol>
+<li>维护的工具和资料有限，因为nosql是属于新的技术，不能和关系型数据库10几年的技术同日而语。</li>
+<li>不提供对sql的支持，如果不支持sql这样的工业标准，将产生一定用户的学习和使用成本。</li>
+<li>不提供关系型数据库对事务的处理。</li>
+</ol>
+<h3 id="非关系型数据库的优势"><a href="#非关系型数据库的优势" class="headerlink" title="非关系型数据库的优势"></a>非关系型数据库的优势</h3><ol>
+<li>性能NOSQL是基于键值对的，可以想象成表中的主键和值的对应关系，而且不需要经过SQL层的解析，所以性能非常高。</li>
+<li>可扩展性同样也是因为基于键值对，数据之间没有耦合性，所以非常容易水平扩展。</li>
+</ol>
+<h3 id="关系型数据库的优势"><a href="#关系型数据库的优势" class="headerlink" title="关系型数据库的优势"></a>关系型数据库的优势</h3><ol>
+<li>复杂查询可以用SQL语句方便的在一个表以及多个表之间做非常复杂的数据查询。</li>
+<li>事务支持使得对于安全性能很高的数据访问要求得以实现。对于这两类数据库，对方的优势就是自己的弱势，反之亦然。</li>
+</ol>
+<h3 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h3><p>关系型数据库与NoSQL数据库并非对立而是互补的关系，即通常情况下使用关系型数据库，在适合使用NoSQL的时候使用NoSQL数据库，<br>让NoSQL数据库对关系型数据库的不足进行弥补。<br>一般会将数据存储在关系型数据库中，在nosql数据库中备份存储关系型数据库的数据</p>
+<h2 id="主流的NOSQL产品"><a href="#主流的NOSQL产品" class="headerlink" title="主流的NOSQL产品"></a>主流的NOSQL产品</h2><h3 id="键值-Key-Value-存储数据库"><a href="#键值-Key-Value-存储数据库" class="headerlink" title="键值(Key-Value)存储数据库"></a>键值(Key-Value)存储数据库</h3><p>相关产品： Tokyo Cabinet/Tyrant、Redis、Voldemort、Berkeley DB<br>典型应用： 内容缓存，主要用于处理大量数据的高访问负载。<br>数据模型： 一系列键值对<br>优势： 快速查询<br>劣势： 存储的数据缺少结构化</p>
+<h3 id="列存储数据库"><a href="#列存储数据库" class="headerlink" title="列存储数据库"></a>列存储数据库</h3><p>相关产品：Cassandra, HBase, Riak<br>典型应用：分布式的文件系统<br>数据模型：以列簇式存储，将同一列数据存在一起<br>优势：查找速度快，可扩展性强，更容易进行分布式扩展<br>劣势：功能相对局限</p>
+<h3 id="文档型数据库"><a href="#文档型数据库" class="headerlink" title="文档型数据库"></a>文档型数据库</h3><p>相关产品：CouchDB、MongoDB<br>典型应用：Web应用（与Key-Value类似，Value是结构化的）<br>数据模型： 一系列键值对<br>优势：数据结构要求不严格<br>劣势： 查询性能不高，而且缺乏统一的查询语法</p>
+<h3 id="图形-Graph-数据库"><a href="#图形-Graph-数据库" class="headerlink" title="图形(Graph)数据库"></a>图形(Graph)数据库</h3><p>相关数据库：Neo4J、InfoGrid、Infinite Graph<br>典型应用：社交网络<br>数据模型：图结构<br>优势：利用图结构相关算法。<br>劣势：需要对整个图做计算才能得出结果，不容易做分布式的集群方案。</p>
+<h2 id="什么是Redis"><a href="#什么是Redis" class="headerlink" title="什么是Redis"></a>什么是Redis</h2><p>Redis是用C语言开发的一个开源的高性能键值对（key-value）数据库，官方提供测试数据，50个并发执行100000个请求，读的速度是110000次/s，写的速度是81000次/s ，且Redis通过提供多种键值数据类型来适应不同场景下的存储需求，目前为止Redis支持的键值数据类型如下：</p>
+<ol>
+<li>字符串类型 string</li>
+<li>哈希类型 hash</li>
+<li>列表类型 list</li>
+<li>集合类型 set</li>
+<li>有序集合类型 sortedset</li>
+</ol>
+<h3 id="redis的应用场景"><a href="#redis的应用场景" class="headerlink" title="redis的应用场景"></a>redis的应用场景</h3><p>•    缓存（数据查询、短连接、新闻内容、商品内容等等）<br>•    聊天室的在线好友列表<br>•    任务队列。（秒杀、抢购、12306等等）<br>•    应用排行榜<br>•    网站访问统计<br>•    数据过期处理（可以精确到毫秒<br>•    分布式集群架构中的session分离</p>
+<h1 id="下载安装"><a href="#下载安装" class="headerlink" title="下载安装"></a>下载安装</h1><p>官网：<a href="https://redis.io/download" target="_blank" rel="noopener">https://redis.io/download</a><br>中文网：<a href="http://www.redis.net.cn/" target="_blank" rel="noopener">http://www.redis.net.cn/</a><br><a href="https://www.jianshu.com/p/3bdfda703552" target="_blank" rel="noopener">mac os下配置redis参考</a></p>
+<h2 id="操作"><a href="#操作" class="headerlink" title="操作"></a>操作</h2><ol>
+<li>进入redis安装目录<br>cd /usr/local/Cellar/redis/5.0.5/bin </li>
+<li>redis配置文件目录<br>cd /usr/local/etc/redis.conf</li>
+<li>启动redis服务<br>redis-server</li>
+<li>关闭redis服务<br>control+c 或者 找到redis对应的pid服务 kill -9 Pid 杀死服务进程即可</li>
+<li>可以在终端窗口使用 redis-cli 来操作redis服务</li>
+</ol>
+<h1 id="命令操作"><a href="#命令操作" class="headerlink" title="命令操作"></a>命令操作</h1><h2 id="redis的数据结构："><a href="#redis的数据结构：" class="headerlink" title="redis的数据结构："></a>redis的数据结构：</h2><p>redis存储的是：key,value 格式的数据，其中key都是字符串，value有5种不同的数据结构<br>value的数据结构：<br>    1) 字符串类型 string<br>    2) 哈希类型 hash ： map格式<br>    3) 列表类型 list ： linkedlist格式。支持重复元素<br>    4) 集合类型 set  ： 不允许重复元素<br>    5) 有序集合类型 sortedset：不允许重复元素，且元素有顺序<br><img src="/images/tech/web-redis-value-data-structure.bmp" alt="数据结构"></p>
+<h2 id="字符串类型-string"><a href="#字符串类型-string" class="headerlink" title="字符串类型 string"></a>字符串类型 string</h2><h3 id="存储"><a href="#存储" class="headerlink" title="存储"></a>存储</h3><p><code>set key value</code></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">127.0.0.1:6379&gt; <span class="built_in">set</span> username zhangsan</span><br><span class="line">OK</span><br></pre></td></tr></table></figure>
+<h3 id="获取"><a href="#获取" class="headerlink" title="获取"></a>获取</h3><p><code>get key</code></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">127.0.0.1:6379&gt; get username</span><br><span class="line"><span class="string">"zhangsan"</span></span><br></pre></td></tr></table></figure>
+<h3 id="删除"><a href="#删除" class="headerlink" title="删除"></a>删除</h3><p><code>del key</code></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">127.0.0.1:6379&gt; del age</span><br><span class="line">(<span class="built_in">integer</span>) 1</span><br></pre></td></tr></table></figure>
+<h2 id="哈希类型-hash"><a href="#哈希类型-hash" class="headerlink" title="哈希类型 hash"></a>哈希类型 hash</h2><h3 id="存储-1"><a href="#存储-1" class="headerlink" title="存储"></a>存储</h3><p><code>hset key field value</code></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">127.0.0.1:6379&gt; hset myhash username lisi</span><br><span class="line">(<span class="built_in">integer</span>) 1</span><br><span class="line">127.0.0.1:6379&gt; hset myhash password 123</span><br><span class="line">(<span class="built_in">integer</span>) 1</span><br></pre></td></tr></table></figure>
+<h3 id="获取-1"><a href="#获取-1" class="headerlink" title="获取"></a>获取</h3><ul>
+<li><code>hget key field</code>: 获取指定的field对应的值<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">127.0.0.1:6379&gt; hget myhash username</span><br><span class="line"><span class="string">"lisi"</span></span><br></pre></td></tr></table></figure></li>
+<li><code>hgetall key</code>：获取所有的field和value<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">127.0.0.1:6379&gt; hgetall myhash</span><br><span class="line">1) <span class="string">"username"</span></span><br><span class="line">2) <span class="string">"lisi"</span></span><br><span class="line">3) <span class="string">"password"</span></span><br><span class="line">4) <span class="string">"123"</span></span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h3 id="删除-1"><a href="#删除-1" class="headerlink" title="删除"></a>删除</h3><p><code>hdel key field</code></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">127.0.0.1:6379&gt; hdel myhash username</span><br><span class="line">(<span class="built_in">integer</span>) 1</span><br></pre></td></tr></table></figure>
+
+<h2 id="列表类型-list"><a href="#列表类型-list" class="headerlink" title="列表类型 list"></a>列表类型 list</h2><p>可以添加一个元素到列表的头部（左边）或者尾部（右边）</p>
+<h3 id="添加"><a href="#添加" class="headerlink" title="添加"></a>添加</h3><ol>
+<li><code>lpush key value</code>: 将元素加入列表左表</li>
+<li><code>rpush key value</code>: 将元素加入列表右边<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">127.0.0.1:6379&gt; lpush myList a</span><br><span class="line">(<span class="built_in">integer</span>) 1</span><br><span class="line">127.0.0.1:6379&gt; lpush myList b</span><br><span class="line">(<span class="built_in">integer</span>) 2</span><br><span class="line">127.0.0.1:6379&gt; rpush myList c</span><br><span class="line">(<span class="built_in">integer</span>) 3</span><br></pre></td></tr></table></figure>
+<h3 id="获取-2"><a href="#获取-2" class="headerlink" title="获取"></a>获取</h3></li>
+</ol>
+<ul>
+<li><code>lrange key start end</code> ：范围获取<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">127.0.0.1:6379&gt; lrange myList 0 -1</span><br><span class="line">1) <span class="string">"b"</span></span><br><span class="line">2) <span class="string">"a"</span></span><br><span class="line">3) <span class="string">"c"</span></span><br></pre></td></tr></table></figure>
+<h3 id="删除-2"><a href="#删除-2" class="headerlink" title="删除"></a>删除</h3></li>
+<li><code>lpop key</code> ： 删除列表最左边的元素，并将元素返回</li>
+<li><code>rpop key</code> ： 删除列表最右边的元素，并将元素返回</li>
+</ul>
+<h2 id="集合类型-set"><a href="#集合类型-set" class="headerlink" title="集合类型 set"></a>集合类型 set</h2><p>不允许重复元素</p>
+<h3 id="存储-2"><a href="#存储-2" class="headerlink" title="存储"></a>存储</h3><p><code>sadd key value</code></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">127.0.0.1:6379&gt; sadd myset a</span><br><span class="line">(<span class="built_in">integer</span>) 1</span><br><span class="line">127.0.0.1:6379&gt; sadd myset a</span><br><span class="line">(<span class="built_in">integer</span>) 0</span><br></pre></td></tr></table></figure>
+<h3 id="获取-3"><a href="#获取-3" class="headerlink" title="获取"></a>获取</h3><p><code>smembers key</code>:获取set集合中所有元素</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">127.0.0.1:6379&gt; smembers myset</span><br><span class="line">1) <span class="string">"a"</span></span><br></pre></td></tr></table></figure>
+<h3 id="删除-3"><a href="#删除-3" class="headerlink" title="删除"></a>删除</h3><p><code>srem key value</code>:删除set集合中的某个元素    </p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">127.0.0.1:6379&gt; srem myset a</span><br><span class="line">(<span class="built_in">integer</span>) 1</span><br></pre></td></tr></table></figure>
+<h2 id="有序集合类型-sortedset"><a href="#有序集合类型-sortedset" class="headerlink" title="有序集合类型 sortedset"></a>有序集合类型 sortedset</h2><p>不允许重复元素，且元素有顺序.每个元素都会关联一个double类型的分数。redis正是通过分数来为集合中的成员进行从小到大的排序。</p>
+<h3 id="存储-3"><a href="#存储-3" class="headerlink" title="存储"></a>存储</h3><p><code>zadd key score value</code></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">127.0.0.1:6379&gt; zadd mysort 60 zhangsan</span><br><span class="line">(<span class="built_in">integer</span>) 1</span><br><span class="line">127.0.0.1:6379&gt; zadd mysort 50 lisi</span><br><span class="line">(<span class="built_in">integer</span>) 1</span><br><span class="line">127.0.0.1:6379&gt; zadd mysort 80 wangwu</span><br><span class="line">(<span class="built_in">integer</span>) 1</span><br></pre></td></tr></table></figure>
+<h3 id="获取-4"><a href="#获取-4" class="headerlink" title="获取"></a>获取</h3><p><code>zrange key start end [withscores]</code></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">127.0.0.1:6379&gt; zrange mysort 0 -1</span><br><span class="line">1) <span class="string">"lisi"</span></span><br><span class="line">2) <span class="string">"zhangsan"</span></span><br><span class="line">3) <span class="string">"wangwu"</span></span><br><span class="line"></span><br><span class="line">127.0.0.1:6379&gt; zrange mysort 0 -1 withscores</span><br><span class="line">1) <span class="string">"zhangsan"</span></span><br><span class="line">2) <span class="string">"60"</span></span><br><span class="line">3) <span class="string">"wangwu"</span></span><br><span class="line">4) <span class="string">"80"</span></span><br><span class="line">5) <span class="string">"lisi"</span></span><br><span class="line">6) <span class="string">"500"</span></span><br></pre></td></tr></table></figure>
+<h3 id="删除-4"><a href="#删除-4" class="headerlink" title="删除"></a>删除</h3><p><code>zrem key value</code></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">127.0.0.1:6379&gt; zrem mysort lisi</span><br><span class="line">(<span class="built_in">integer</span>) 1</span><br></pre></td></tr></table></figure>
+
+<h2 id="通用命令"><a href="#通用命令" class="headerlink" title="通用命令"></a>通用命令</h2><ol>
+<li><code>keys *</code> : 查询所有的键</li>
+<li><code>type key</code> : 获取键对应的value的类型</li>
+<li><code>del key</code> : 删除指定的key value</li>
+</ol>
+<h1 id="持久化机制"><a href="#持久化机制" class="headerlink" title="持久化机制"></a>持久化机制</h1><p>redis是一个内存数据库，当redis服务器重启，或者电脑重启，数据会丢失，我们可以将redis内存中的数据持久化保存到硬盘的文件中。</p>
+<h2 id="RDB"><a href="#RDB" class="headerlink" title="RDB"></a>RDB</h2><p>默认方式，不需要进行配置，默认就使用这种机制；在一定的间隔时间中，检测key的变化情况，然后持久化数据</p>
+<p>1.打开<code>/usr/local/etc</code> 编辑<code>redis.conf</code>文件</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#   after 900 sec (15 min) if at least 1 key changed</span></span><br><span class="line">save 900 1</span><br><span class="line"><span class="comment">#   after 300 sec (5 min) if at least 10 keys changed</span></span><br><span class="line">save 300 10</span><br><span class="line"><span class="comment">#   after 60 sec if at least 10000 keys changed</span></span><br><span class="line">save 60 10000</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>重新启动redis服务器并制定配置文件<br>redis-server /usr/local/etc/redis.conf<h2 id="AOF"><a href="#AOF" class="headerlink" title="AOF"></a>AOF</h2>日志记录的方式，可以记录每一条命令的操作。可以每一次命令操作后，持久化数据<br>打开<code>/usr/local/etc</code> 编辑<code>redis.conf</code>文件<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">appendonly no（关闭aof） --&gt; appendonly yes （开启aof）</span><br><span class="line"><span class="comment"># appendfsync always ： 每一次操作都进行持久化</span></span><br><span class="line">appendfsync everysec ： 每隔一秒进行一次持久化</span><br><span class="line"><span class="comment"># appendfsync no	 ： 不进行持久化</span></span><br></pre></td></tr></table></figure>
+<h1 id="使用Java操作redis"><a href="#使用Java操作redis" class="headerlink" title="使用Java操作redis"></a>使用Java操作redis</h1>Jedis: 一款java操作redis数据库的工具.<h2 id="使用步骤"><a href="#使用步骤" class="headerlink" title="使用步骤"></a>使用步骤</h2></li>
+<li>下载jedis的jar包</li>
+<li>使用<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//1. 获取连接</span></span><br><span class="line">Jedis jedis = <span class="keyword">new</span> Jedis(<span class="string">"localhost"</span>,<span class="number">6379</span>);</span><br><span class="line"><span class="comment">//2. 操作</span></span><br><span class="line">jedis.set(<span class="string">"username"</span>,<span class="string">"zhangsan"</span>);</span><br><span class="line"><span class="comment">//3. 关闭连接</span></span><br><span class="line">jedis.close();</span><br></pre></td></tr></table></figure>
+
+
+</li>
+</ol>
+<h2 id="Jedis操作各种redis中的数据结构"><a href="#Jedis操作各种redis中的数据结构" class="headerlink" title="Jedis操作各种redis中的数据结构"></a>Jedis操作各种redis中的数据结构</h2><h3 id="字符串类型-string-1"><a href="#字符串类型-string-1" class="headerlink" title="字符串类型 string"></a>字符串类型 string</h3><p><code>set</code>/<code>get</code></p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//1. 获取连接</span></span><br><span class="line">Jedis jedis = <span class="keyword">new</span> Jedis();<span class="comment">//如果使用空参构造，默认值 "localhost",6379端口</span></span><br><span class="line"><span class="comment">//2. 操作</span></span><br><span class="line"><span class="comment">//存储</span></span><br><span class="line">jedis.set(<span class="string">"username"</span>,<span class="string">"zhangsan"</span>);</span><br><span class="line"><span class="comment">//获取</span></span><br><span class="line">String username = jedis.get(<span class="string">"username"</span>);</span><br><span class="line">System.out.println(username);</span><br><span class="line"></span><br><span class="line"><span class="comment">//可以使用setex()方法存储可以指定过期时间的 key value</span></span><br><span class="line">jedis.setex(<span class="string">"activecode"</span>,<span class="number">20</span>,<span class="string">"hehe"</span>);<span class="comment">//将activecode：hehe键值对存入redis，并且20秒后自动删除该键值对</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//3. 关闭连接</span></span><br><span class="line">jedis.close();</span><br></pre></td></tr></table></figure>
+
+<h3 id="哈希类型-hash-1"><a href="#哈希类型-hash-1" class="headerlink" title="哈希类型 hash"></a>哈希类型 hash</h3><p> map格式<br><code>hset</code>/<code>hget</code>/<code>hgetAll</code></p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//1. 获取连接</span></span><br><span class="line">Jedis jedis = <span class="keyword">new</span> Jedis();<span class="comment">//如果使用空参构造，默认值 "localhost",6379端口</span></span><br><span class="line"><span class="comment">//2. 操作</span></span><br><span class="line"><span class="comment">// 存储hash</span></span><br><span class="line">jedis.hset(<span class="string">"user"</span>,<span class="string">"name"</span>,<span class="string">"lisi"</span>);</span><br><span class="line">jedis.hset(<span class="string">"user"</span>,<span class="string">"age"</span>,<span class="string">"23"</span>);</span><br><span class="line">jedis.hset(<span class="string">"user"</span>,<span class="string">"gender"</span>,<span class="string">"female"</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 获取hash</span></span><br><span class="line">String name = jedis.hget(<span class="string">"user"</span>, <span class="string">"name"</span>);</span><br><span class="line">System.out.println(name);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">// 获取hash的所有map中的数据</span></span><br><span class="line">Map&lt;String, String&gt; user = jedis.hgetAll(<span class="string">"user"</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// keyset</span></span><br><span class="line">Set&lt;String&gt; keySet = user.keySet();</span><br><span class="line"><span class="keyword">for</span> (String key : keySet) &#123;</span><br><span class="line">    <span class="comment">//获取value</span></span><br><span class="line">    String value = user.get(key);</span><br><span class="line">    System.out.println(key + <span class="string">":"</span> + value);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//3. 关闭连接</span></span><br><span class="line">jedis.close();</span><br></pre></td></tr></table></figure>
+
+<h3 id="列表类型-list-1"><a href="#列表类型-list-1" class="headerlink" title="列表类型 list"></a>列表类型 list</h3><p>linkedlist格式。支持重复元素<br><code>lpush / rpush</code><br><code>lpop / rpop</code><br><code>lrange start end</code>: 范围获取</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//1. 获取连接</span></span><br><span class="line">Jedis jedis = <span class="keyword">new</span> Jedis();<span class="comment">//如果使用空参构造，默认值 "localhost",6379端口</span></span><br><span class="line"><span class="comment">//2. 操作</span></span><br><span class="line"><span class="comment">// list 存储</span></span><br><span class="line">jedis.lpush(<span class="string">"mylist"</span>,<span class="string">"a"</span>,<span class="string">"b"</span>,<span class="string">"c"</span>);<span class="comment">//从左边存</span></span><br><span class="line">jedis.rpush(<span class="string">"mylist"</span>,<span class="string">"a"</span>,<span class="string">"b"</span>,<span class="string">"c"</span>);<span class="comment">//从右边存</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// list 范围获取</span></span><br><span class="line">List&lt;String&gt; mylist = jedis.lrange(<span class="string">"mylist"</span>, <span class="number">0</span>, -<span class="number">1</span>);</span><br><span class="line">System.out.println(mylist);</span><br><span class="line"></span><br><span class="line"><span class="comment">// list 弹出</span></span><br><span class="line">String element1 = jedis.lpop(<span class="string">"mylist"</span>);<span class="comment">//c</span></span><br><span class="line">System.out.println(element1);</span><br><span class="line"></span><br><span class="line">String element2 = jedis.rpop(<span class="string">"mylist"</span>);<span class="comment">//c</span></span><br><span class="line">System.out.println(element2);</span><br><span class="line"></span><br><span class="line"><span class="comment">// list 范围获取</span></span><br><span class="line">List&lt;String&gt; mylist2 = jedis.lrange(<span class="string">"mylist"</span>, <span class="number">0</span>, -<span class="number">1</span>);</span><br><span class="line">System.out.println(mylist2);</span><br><span class="line"></span><br><span class="line"><span class="comment">//3. 关闭连接</span></span><br><span class="line">jedis.close();</span><br></pre></td></tr></table></figure>
+
+<h3 id="集合类型-set-1"><a href="#集合类型-set-1" class="headerlink" title="集合类型 set"></a>集合类型 set</h3><p>不允许重复元素<br><code>sadd</code><br><code>smembers</code>:获取所有元素</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//1. 获取连接</span></span><br><span class="line">Jedis jedis = <span class="keyword">new</span> Jedis();<span class="comment">//如果使用空参构造，默认值 "localhost",6379端口</span></span><br><span class="line"><span class="comment">//2. 操作</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">// set 存储</span></span><br><span class="line">jedis.sadd(<span class="string">"myset"</span>,<span class="string">"java"</span>,<span class="string">"php"</span>,<span class="string">"c++"</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// set 获取</span></span><br><span class="line">Set&lt;String&gt; myset = jedis.smembers(<span class="string">"myset"</span>);</span><br><span class="line">System.out.println(myset);</span><br><span class="line"></span><br><span class="line"><span class="comment">//3. 关闭连接</span></span><br><span class="line">jedis.close();</span><br></pre></td></tr></table></figure>
+
+<h3 id="有序集合类型-sortedset-1"><a href="#有序集合类型-sortedset-1" class="headerlink" title="有序集合类型 sortedset"></a>有序集合类型 sortedset</h3><p>不允许重复元素，且元素有顺序<br><code>zadd</code><br><code>zrange</code></p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//1. 获取连接</span></span><br><span class="line">Jedis jedis = <span class="keyword">new</span> Jedis();<span class="comment">//如果使用空参构造，默认值 "localhost",6379端口</span></span><br><span class="line"><span class="comment">//2. 操作</span></span><br><span class="line"><span class="comment">// sortedset 存储</span></span><br><span class="line">jedis.zadd(<span class="string">"mysortedset"</span>,<span class="number">3</span>,<span class="string">"亚瑟"</span>);</span><br><span class="line">jedis.zadd(<span class="string">"mysortedset"</span>,<span class="number">30</span>,<span class="string">"后裔"</span>);</span><br><span class="line">jedis.zadd(<span class="string">"mysortedset"</span>,<span class="number">55</span>,<span class="string">"孙悟空"</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// sortedset 获取</span></span><br><span class="line">Set&lt;String&gt; mysortedset = jedis.zrange(<span class="string">"mysortedset"</span>, <span class="number">0</span>, -<span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">System.out.println(mysortedset);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">//3. 关闭连接</span></span><br><span class="line">jedis.close();</span><br></pre></td></tr></table></figure>
+
+<h2 id="Jedis连接池-JedisPool"><a href="#Jedis连接池-JedisPool" class="headerlink" title="Jedis连接池 JedisPool"></a>Jedis连接池 JedisPool</h2><h3 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h3><ol>
+<li>创建JedisPool连接池对象</li>
+<li>调用方法 <code>getResource()</code>方法获取Jedis连接<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//0.创建一个配置对象</span></span><br><span class="line">JedisPoolConfig config = <span class="keyword">new</span> JedisPoolConfig();</span><br><span class="line">config.setMaxTotal(<span class="number">50</span>);</span><br><span class="line">config.setMaxIdle(<span class="number">10</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">//1.创建Jedis连接池对象</span></span><br><span class="line">JedisPool jedisPool = <span class="keyword">new</span> JedisPool(config,<span class="string">"localhost"</span>,<span class="number">6379</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">//2.获取连接</span></span><br><span class="line">Jedis jedis = jedisPool.getResource();</span><br><span class="line"><span class="comment">//3. 使用</span></span><br><span class="line">jedis.set(<span class="string">"hehe"</span>,<span class="string">"heihei"</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">//4. 关闭 归还到连接池中</span></span><br><span class="line">jedis.close();</span><br></pre></td></tr></table></figure>
+<h3 id="连接池工具类"><a href="#连接池工具类" class="headerlink" title="连接池工具类"></a>连接池工具类</h3><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">JedisPoolUtils</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> JedisPool jedisPool;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">static</span>&#123;</span><br><span class="line">        <span class="comment">//读取配置文件</span></span><br><span class="line">        InputStream is = JedisPoolUtils.class.getClassLoader().getResourceAsStream("jedis.properties");</span><br><span class="line">        <span class="comment">//创建Properties对象</span></span><br><span class="line">        Properties pro = <span class="keyword">new</span> Properties();</span><br><span class="line">        <span class="comment">//关联文件</span></span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            pro.load(is);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//获取数据，设置到JedisPoolConfig中</span></span><br><span class="line">        JedisPoolConfig config = <span class="keyword">new</span> JedisPoolConfig();</span><br><span class="line">        config.setMaxTotal(Integer.parseInt(pro.getProperty(<span class="string">"maxTotal"</span>)));</span><br><span class="line">        config.setMaxIdle(Integer.parseInt(pro.getProperty(<span class="string">"maxIdle"</span>)));</span><br><span class="line"></span><br><span class="line">        <span class="comment">//初始化JedisPool</span></span><br><span class="line">        jedisPool = <span class="keyword">new</span> JedisPool(config,pro.getProperty(<span class="string">"host"</span>),Integer.parseInt(pro.getProperty(<span class="string">"port"</span>)));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">    * 获取连接方法</span></span><br><span class="line"><span class="comment">    */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Jedis <span class="title">getJedis</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> jedisPool.getResource();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="小结-1"><a href="#小结-1" class="headerlink" title="小结"></a>小结</h1></li>
+</ol>
+<p><strong>「注意」</strong>：使用redis缓存一些不经常发生变化的数据。</p>
+<ul>
+<li>数据库的数据一旦发生改变，则需要更新缓存。</li>
+<li>数据库的表执行增删改的相关操作，需要将redis缓存数据清空，再次存入</li>
+<li>在service层对应的增删改方法中，将redis数据删除。</li>
+</ul>
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/DataBase/">DataBase</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/Web/">Web</a><a href="/tags/Redis/">Redis</a><a href="/tags/DataBase/">DataBase</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="https://hashcode.cn/2019/08/13/web-redis-base/" data-title="Redis 使用快速入门 | techbird blog" data-tsina="6488657373" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2019/08/15/java-maven-base/" title="Maven 使用快速入门">
+  <strong>上一篇：</strong><br/>
+  <span>
+  Maven 使用快速入门</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2019/08/12/web-jquery-ajax-base/"  title="jQuery &amp; Ajax 快速入门">
+ <strong>下一篇：</strong><br/> 
+ <span>jQuery &amp; Ajax 快速入门
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+<section id="comments" class="comment">
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript" target="_blank" rel="noopener">comments powered by Disqus.</a></noscript>
+  </div>
+</section>
+
+
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#概念"><span class="toc-number">1.</span> <span class="toc-text">概念</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#什么是NOSQL"><span class="toc-number">1.1.</span> <span class="toc-text">什么是NOSQL</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#NOSQL和关系型数据库比较"><span class="toc-number">1.1.1.</span> <span class="toc-text">NOSQL和关系型数据库比较</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#非关系型数据库的优势"><span class="toc-number">1.1.2.</span> <span class="toc-text">非关系型数据库的优势</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#关系型数据库的优势"><span class="toc-number">1.1.3.</span> <span class="toc-text">关系型数据库的优势</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#小结"><span class="toc-number">1.1.4.</span> <span class="toc-text">小结</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#主流的NOSQL产品"><span class="toc-number">1.2.</span> <span class="toc-text">主流的NOSQL产品</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#键值-Key-Value-存储数据库"><span class="toc-number">1.2.1.</span> <span class="toc-text">键值(Key-Value)存储数据库</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#列存储数据库"><span class="toc-number">1.2.2.</span> <span class="toc-text">列存储数据库</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#文档型数据库"><span class="toc-number">1.2.3.</span> <span class="toc-text">文档型数据库</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#图形-Graph-数据库"><span class="toc-number">1.2.4.</span> <span class="toc-text">图形(Graph)数据库</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#什么是Redis"><span class="toc-number">1.3.</span> <span class="toc-text">什么是Redis</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#redis的应用场景"><span class="toc-number">1.3.1.</span> <span class="toc-text">redis的应用场景</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#下载安装"><span class="toc-number">2.</span> <span class="toc-text">下载安装</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#操作"><span class="toc-number">2.1.</span> <span class="toc-text">操作</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#命令操作"><span class="toc-number">3.</span> <span class="toc-text">命令操作</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#redis的数据结构："><span class="toc-number">3.1.</span> <span class="toc-text">redis的数据结构：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#字符串类型-string"><span class="toc-number">3.2.</span> <span class="toc-text">字符串类型 string</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#存储"><span class="toc-number">3.2.1.</span> <span class="toc-text">存储</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#获取"><span class="toc-number">3.2.2.</span> <span class="toc-text">获取</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#删除"><span class="toc-number">3.2.3.</span> <span class="toc-text">删除</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#哈希类型-hash"><span class="toc-number">3.3.</span> <span class="toc-text">哈希类型 hash</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#存储-1"><span class="toc-number">3.3.1.</span> <span class="toc-text">存储</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#获取-1"><span class="toc-number">3.3.2.</span> <span class="toc-text">获取</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#删除-1"><span class="toc-number">3.3.3.</span> <span class="toc-text">删除</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#列表类型-list"><span class="toc-number">3.4.</span> <span class="toc-text">列表类型 list</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#添加"><span class="toc-number">3.4.1.</span> <span class="toc-text">添加</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#获取-2"><span class="toc-number">3.4.2.</span> <span class="toc-text">获取</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#删除-2"><span class="toc-number">3.4.3.</span> <span class="toc-text">删除</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#集合类型-set"><span class="toc-number">3.5.</span> <span class="toc-text">集合类型 set</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#存储-2"><span class="toc-number">3.5.1.</span> <span class="toc-text">存储</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#获取-3"><span class="toc-number">3.5.2.</span> <span class="toc-text">获取</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#删除-3"><span class="toc-number">3.5.3.</span> <span class="toc-text">删除</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#有序集合类型-sortedset"><span class="toc-number">3.6.</span> <span class="toc-text">有序集合类型 sortedset</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#存储-3"><span class="toc-number">3.6.1.</span> <span class="toc-text">存储</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#获取-4"><span class="toc-number">3.6.2.</span> <span class="toc-text">获取</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#删除-4"><span class="toc-number">3.6.3.</span> <span class="toc-text">删除</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#通用命令"><span class="toc-number">3.7.</span> <span class="toc-text">通用命令</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#持久化机制"><span class="toc-number">4.</span> <span class="toc-text">持久化机制</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#RDB"><span class="toc-number">4.1.</span> <span class="toc-text">RDB</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#AOF"><span class="toc-number">4.2.</span> <span class="toc-text">AOF</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#使用Java操作redis"><span class="toc-number">5.</span> <span class="toc-text">使用Java操作redis</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#使用步骤"><span class="toc-number">5.1.</span> <span class="toc-text">使用步骤</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Jedis操作各种redis中的数据结构"><span class="toc-number">5.2.</span> <span class="toc-text">Jedis操作各种redis中的数据结构</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#字符串类型-string-1"><span class="toc-number">5.2.1.</span> <span class="toc-text">字符串类型 string</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#哈希类型-hash-1"><span class="toc-number">5.2.2.</span> <span class="toc-text">哈希类型 hash</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#列表类型-list-1"><span class="toc-number">5.2.3.</span> <span class="toc-text">列表类型 list</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#集合类型-set-1"><span class="toc-number">5.2.4.</span> <span class="toc-text">集合类型 set</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#有序集合类型-sortedset-1"><span class="toc-number">5.2.5.</span> <span class="toc-text">有序集合类型 sortedset</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Jedis连接池-JedisPool"><span class="toc-number">5.3.</span> <span class="toc-text">Jedis连接池 JedisPool</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#使用"><span class="toc-number">5.3.1.</span> <span class="toc-text">使用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#连接池工具类"><span class="toc-number">5.3.2.</span> <span class="toc-text">连接池工具类</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#小结-1"><span class="toc-number">6.</span> <span class="toc-text">小结</span></a></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+
+  
+<div class="github-card">
+<p class="asidetitle">Github Card</p>
+<div class="github-card" data-github="qiudengqiang" data-theme="medium"></div>
+<script type="text/javascript" src="//cdn.jsdelivr.net/github-cards/latest/widget.js" ></script>
+</div>
+
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">Categories</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/Daily/" title="Daily">Daily<sup>14</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/DataBase/" title="DataBase">DataBase<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Java/" title="Java">Java<sup>9</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Journey/" title="Journey">Journey<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Linux/" title="Linux">Linux<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/MySQL/" title="MySQL">MySQL<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/iOS/Objc/" title="Objc">Objc<sup>13</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Readed/" title="Readed">Readed<sup>5</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/VSCode/" title="VSCode">VSCode<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Web/" title="Web">Web<sup>5</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Xcode/" title="Xcode">Xcode<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/iOS/" title="iOS">iOS<sup>16</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/iOS/" title="iOS">iOS<sup>16</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Daily/" title="Daily">Daily<sup>14</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Objc/" title="Objc">Objc<sup>11</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Java/" title="Java">Java<sup>9</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Readed/" title="Readed">Readed<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Web/" title="Web">Web<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Thread/" title="Thread">Thread<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Network/" title="Network">Network<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Journey/" title="Journey">Journey<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/MySQL/" title="MySQL">MySQL<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Xcode/" title="Xcode">Xcode<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Category/" title="Category">Category<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/keywords/" title="keywords">keywords<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Idea/" title="Idea">Idea<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/KVC/" title="KVC">KVC<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/KVO/" title="KVO">KVO<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/NSThread/" title="NSThread">NSThread<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/NSURLRequest/" title="NSURLRequest">NSURLRequest<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/NSURLResponse/" title="NSURLResponse">NSURLResponse<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/NSURLSession/" title="NSURLSession">NSURLSession<sup>1</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+  <div class="weiboshow">
+  <p class="asidetitle">Weibo</p>
+    <iframe width="100%" height="120" class="share_self"  frameborder="0" scrolling="no" src="https://widget.weibo.com/weiboshow/index.php?language=&width=0&height=120&fansRow=2&ptype=1&speed=0&skin=9&isTitle=1&noborder=1&isWeibo=0&isFans=0&uid=6488657373&verifier=f458bf46&dpc=1"></iframe>
+</div>
+
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> You can&#39;t connect the dots looking forward <br/>
+			You can only connect them looking backwards.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		<a href="http://weibo.com/6488657373" target="_blank" class="icon-weibo" title="微博"></a>
+		
+		
+		<a href="https://github.com/qiudengqiang" target="_blank" class="icon-github" title="github"></a>
+		
+		
+		
+		<a href="https://twitter.com/murendless" target="_blank" class="icon-twitter" title="twitter"></a>
+		
+		
+		
+		
+		
+		
+		
+		<a href="mailto:qiudengqiang@gmail.com" target="_blank" class="icon-email" title="Email Me"></a>
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2022 
+		
+		<a href="/about" target="_blank" title="techbird">techbird</a>
+		
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+<script type="text/javascript">
+
+var disqus_shortname = 'techbird-1';
+
+(function(){
+  var dsq = document.createElement('script');
+  dsq.type = 'text/javascript';
+  dsq.async = true;
+  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+}());
+(function(){
+  var dsq = document.createElement('script');
+  dsq.type = 'text/javascript';
+  dsq.async = true;
+  dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+}());
+</script>
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

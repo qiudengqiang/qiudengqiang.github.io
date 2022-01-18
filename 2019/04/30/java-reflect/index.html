@@ -1,0 +1,666 @@
+
+ <!DOCTYPE HTML>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+  
+    <title>Java - 反射(Reflect) | techbird blog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="techbird">
+    
+
+    
+    <meta name="description" content="定义反射是框架设计的灵魂。Java反射机制是在运行状态中，对于任意一个类，都能够知道这个类中的所有属性和方法；对于任意一个对象，都能够调用它的任意一个方法和属性；这种动态获取的信息以及动态调用对象的方法的功能称为java语言的反射机制。 Class一个Java类中用一个Class类的对象来表示，一个类中的组成部分：成员变量(Field)，方法(Method)，构造方法(Constructor)，包">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java - 反射(Reflect)">
+<meta property="og:url" content="https://hashcode.cn/2019/04/30/java-reflect/index.html">
+<meta property="og:site_name" content="techbird blog">
+<meta property="og:description" content="定义反射是框架设计的灵魂。Java反射机制是在运行状态中，对于任意一个类，都能够知道这个类中的所有属性和方法；对于任意一个对象，都能够调用它的任意一个方法和属性；这种动态获取的信息以及动态调用对象的方法的功能称为java语言的反射机制。 Class一个Java类中用一个Class类的对象来表示，一个类中的组成部分：成员变量(Field)，方法(Method)，构造方法(Constructor)，包">
+<meta property="article:published_time" content="2019-04-30T02:01:47.000Z">
+<meta property="article:modified_time" content="2020-11-20T06:12:25.803Z">
+<meta property="article:author" content="techbird">
+<meta property="article:tag" content="Java">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:creator" content="@murendless">
+
+    
+    <link rel="alternative" href="/atom.xml" title="techbird blog" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    
+<link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="/%02.css">
+<link rel="stylesheet" href="/.css">
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.png" alt="techbird blog" title="techbird blog"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="techbird blog">techbird blog</a></h1>
+				<h2 class="blog-motto">timeline of growth</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives/">Archives</a></li>
+					
+						<li><a href="/about/">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:hashcode.cn">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2019/04/30/java-reflect/" title="Java - 反射(Reflect)" itemprop="url">Java - 反射(Reflect)</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="techbird" target="_blank" itemprop="author">techbird</a>
+		
+  <p class="article-time">
+    <time datetime="2019-04-30T02:01:47.000Z" itemprop="datePublished"> Published 2019-04-30 10:01</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#定义"><span class="toc-number">1.</span> <span class="toc-text">定义</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Class"><span class="toc-number">2.</span> <span class="toc-text">Class</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Class类中的常用方法"><span class="toc-number">2.1.</span> <span class="toc-text">Class类中的常用方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Field"><span class="toc-number">2.2.</span> <span class="toc-text">Field</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Constructor"><span class="toc-number">2.3.</span> <span class="toc-text">Constructor</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Method"><span class="toc-number">2.4.</span> <span class="toc-text">Method</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Package"><span class="toc-number">2.5.</span> <span class="toc-text">Package</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#数组的反射"><span class="toc-number">2.6.</span> <span class="toc-text">数组的反射</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#暴力反射"><span class="toc-number">2.7.</span> <span class="toc-text">暴力反射</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#用反射技术执行某个main方法"><span class="toc-number">3.</span> <span class="toc-text">用反射技术执行某个main方法</span></a></li></ol>
+		
+		</div>
+		
+		<h2 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h2><p>反射是框架设计的灵魂。Java反射机制是在运行状态中，对于任意一个类，都能够知道这个类中的所有属性和方法；对于任意一个对象，都能够调用它的任意一个方法和属性；这种动态获取的信息以及动态调用对象的方法的功能称为java语言的反射机制。</p>
+<h2 id="Class"><a href="#Class" class="headerlink" title="Class"></a>Class</h2><p>一个Java类中用一个<code>Class</code>类的对象来表示，一个类中的组成部分：成员变量(<code>Field</code>)，方法(<code>Method</code>)，构造方法(<code>Constructor</code>)，包(<code>Package</code>)等等信息也用一个个的Java类来表示</p>
+<ul>
+<li>获取<code>Class</code>对象的三种方式：<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//Class.forName(“全类名”)，多用于配置文件中</span></span><br><span class="line">Class cls1 = Class.forName(<span class="string">"me.techbird.base.Person"</span>);</span><br><span class="line"><span class="comment">//类名.class，多用于参数的传递</span></span><br><span class="line">Class cls2 = Person<span class="class">.<span class="keyword">class</span></span>;</span><br><span class="line"><span class="comment">//对象.getClass()，多用于拥有对象的情况下获取字节码</span></span><br><span class="line">Person p = <span class="keyword">new</span> Person();</span><br><span class="line">Class cls3p.getClass();</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<p><strong>结论</strong>：同一个字节码文件（*.class）在一次程序运行过程中，只会被加载一次，无论使用哪一种方式获取的对象都是同一个。</p>
+<ul>
+<li><p>九个预定义的<code>Class</code>：</p>
+<ol>
+<li>包括八种基本类型（byte、short、int、long、float、double、char、boolean）的字节码对象和一种返回值为void类型的<code>void.class</code>。</li>
+<li><code>Integer.TYPE</code>是Integer类的一个常量，它代表此包装类型包装的基本类型的字节码，所以和<code>int.class</code>是相等的。基本数据类型的字节码都可以用与之对应的包装类中的<code>TYPE</code>常量表示</li>
+</ol>
+</li>
+<li><p>只要是在源程序中出现的类型都有各自的Class实例对象，如<code>int[].class</code>。数组类型的Class实例对象，可以用<code>Class.isArray()</code>方法判断是否为数组类型的。</p>
+</li>
+</ul>
+<h3 id="Class类中的常用方法"><a href="#Class类中的常用方法" class="headerlink" title="Class类中的常用方法"></a>Class类中的常用方法</h3><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">static</span> Class&lt;?&gt;	    forName​(Module <span class="keyword">module</span>, String name)</span><br><span class="line">Annotation[]	    getAnnotations()</span><br><span class="line"><span class="function">ClassLoader	        <span class="title">getClassLoader</span><span class="params">()</span></span></span><br><span class="line"><span class="function">String	            <span class="title">getName</span><span class="params">()</span></span></span><br><span class="line"><span class="function">T	                <span class="title">newInstance</span><span class="params">()</span></span></span><br><span class="line"><span class="function">Class&lt;? <span class="keyword">super</span> T&gt;	<span class="title">getSuperclass</span><span class="params">()</span></span></span><br><span class="line"><span class="function">String	            <span class="title">getSimpleName</span><span class="params">()</span></span></span><br><span class="line"><span class="function"><span class="keyword">boolean</span>             <span class="title">isPrimitive</span><span class="params">()</span><span class="comment">//是否是基本类型</span></span></span><br></pre></td></tr></table></figure>
+<p>注意：字节码文件作比较时候建议使用<code>==</code>而不是<code>equels</code>，因为字节码在内存中只有一份。</p>
+<h3 id="Field"><a href="#Field" class="headerlink" title="Field"></a>Field</h3><p><code>Field    getField​(String name)</code>:获取所有public修饰的成员变量<br><code>Field[]    getFields()</code>:获取指定名称的public修饰的成员变量<br><code>Field    getDeclaredField​(String name)</code>:暴力获取指定名称的成员变量，不考虑修饰符<br><code>Field[]    getDeclaredFields()</code>:暴力获取所有成员变量，不考虑修饰符</p>
+<h3 id="Constructor"><a href="#Constructor" class="headerlink" title="Constructor"></a>Constructor</h3><p><code>Constructor&lt;T&gt;    getConstructor​(Class&lt;?&gt;... parameterTypes)</code>:获取public的带参构造方法</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//带参数</span></span><br><span class="line">Constructor con1 = cls.getConstructor(String<span class="class">.<span class="keyword">class</span>,<span class="title">int</span>.<span class="title">class</span>)</span>;</span><br><span class="line"><span class="comment">//不填参数是即为获取空构造方法</span></span><br><span class="line">Constructor con2s = cls.getConstructor();</span><br><span class="line"><span class="comment">//拿到构造方法之后便可以调用constructor.newInstance(...)方法来构造对象</span></span><br></pre></td></tr></table></figure>
+<p><code>Constructor&lt;?&gt;[]    getConstructors()</code>:获取所有构造方法<br><code>Constructor&lt;T&gt;    getDeclaredConstructor​(Class&lt;?&gt;... parameterTypes)</code><br><code>Constructor&lt;?&gt;[]    getDeclaredConstructors()</code></p>
+<h3 id="Method"><a href="#Method" class="headerlink" title="Method"></a>Method</h3><p><code>Method    getMethod​(String name, Class&lt;?&gt;... parameterTypes)</code></p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//带参数</span></span><br><span class="line">Method method1 = cls.getMethod(<span class="string">"show"</span>, <span class="keyword">int</span><span class="class">.<span class="keyword">class</span>)</span>;</span><br><span class="line"><span class="comment">//不带参数</span></span><br><span class="line">Method method2 = cls.getMethod(<span class="string">"show"</span>);</span><br></pre></td></tr></table></figure>
+<p><code>Method[]    getMethods()</code><br><code>Method    getDeclaredMethod​(String name, Class&lt;?&gt;... parameterTypes)</code><br><code>Method[]    getDeclaredMethods()</code><br><code>Object    invoke​(Object obj, Object... args)</code>:调用方法</p>
+<p><strong>说明</strong>: 如果传递给Method对象的invoke()方法的第一个参数为null，说明Method对象对应的是一个静态方法</p>
+<h3 id="Package"><a href="#Package" class="headerlink" title="Package"></a>Package</h3><p><code>Package    getPackage()</code>    :获取当前类的包对象<br><code>String    getPackageName()</code>   :获取当前类的包字符串</p>
+<h3 id="数组的反射"><a href="#数组的反射" class="headerlink" title="数组的反射"></a>数组的反射</h3><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">int</span> [] a1 = <span class="keyword">new</span> <span class="keyword">int</span>[]&#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>&#125;;</span><br><span class="line"><span class="keyword">int</span> [] a2 = <span class="keyword">new</span> <span class="keyword">int</span>[<span class="number">4</span>];</span><br><span class="line"><span class="keyword">int</span>[][] a3 = <span class="keyword">new</span> <span class="keyword">int</span>[<span class="number">2</span>][<span class="number">3</span>];</span><br><span class="line">String [] a4 = <span class="keyword">new</span> String[]&#123;<span class="string">"a"</span>,<span class="string">"b"</span>,<span class="string">"c"</span>&#125;;</span><br></pre></td></tr></table></figure>
+<p>具有相同维数和元素类型的数组属于同一个类型，即具有相同得Class实例对象.</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">System.out.println(a1.getClass() == a2.getClass());</span><br><span class="line">System.out.println(a1.getClass() == a4.getClass());</span><br><span class="line">System.out.println(a1.getClass() == a3.getClass());</span><br></pre></td></tr></table></figure>
+<p>代表数组的Class实例对象的<code>getSuperclass()</code>方法返回的是Object类对应的Class.</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">System.out.println(a1.getClass().getName());</span><br><span class="line">System.out.println(a1.getClass().getSuperclass().getName());</span><br><span class="line">System.out.println(a4.getClass().getSuperclass().getName());</span><br></pre></td></tr></table></figure>
+<p>基本类型的一维数组可以被当做<code>Object</code>类型使用，不能当做<code>Object[]</code>类型使用；非基本类型的一维数组，既可以当做<code>Object</code>类型使用，又可以当做<code>Object[]</code>类型使用.</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">Object aObj1 = a1;</span><br><span class="line">Object aObj2 = a4;</span><br><span class="line"><span class="comment">//Object[] aObj3 = a1; //不成立</span></span><br><span class="line">Object[] aObj4 = a3;</span><br><span class="line">Object[] aObj5 = a4;</span><br></pre></td></tr></table></figure>
+<p>Arrays.asList()方法处理<code>int[]</code>和<code>String[]</code>时候的差异.</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">System.out.println(a1);</span><br><span class="line">System.out.println(a4);</span><br><span class="line">System.out.println(Arrays.asList(a1));</span><br><span class="line">System.out.println(Arrays.asList(a4));</span><br></pre></td></tr></table></figure>
+<p>利用<code>java.util.reflect.Array</code>类完成对数组的反射操作.</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//可以打印一个obj和一个obj数组的方法</span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">printObject</span><span class="params">(Object obj)</span> </span>&#123;</span><br><span class="line">		Class clazz = obj.getClass();</span><br><span class="line">		<span class="keyword">if</span>(clazz.isArray())&#123;</span><br><span class="line">			<span class="keyword">int</span> len = Array.getLength(obj);</span><br><span class="line">			<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;len;i++)&#123;</span><br><span class="line">				System.out.println(Array.get(obj, i));</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">			System.out.println(obj);</span><br><span class="line">		&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>如何获取数组中的元素的类型</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">Object[] objs = <span class="keyword">new</span> Object[](<span class="string">"a"</span>,<span class="number">1</span>);</span><br><span class="line">a[<span class="number">0</span>].getClass().getName();</span><br></pre></td></tr></table></figure>
+<h3 id="暴力反射"><a href="#暴力反射" class="headerlink" title="暴力反射"></a>暴力反射</h3><p>如果想要获取<code>非public</code>类型的<code>Field</code>、<code>Constructor</code>、<code>Method</code>等，需要在执行<code>Declared</code>方法前设置以下代码：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">obj.setAccessable(ture);</span><br></pre></td></tr></table></figure>
+
+<h2 id="用反射技术执行某个main方法"><a href="#用反射技术执行某个main方法" class="headerlink" title="用反射技术执行某个main方法"></a>用反射技术执行某个main方法</h2><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//反射方式    </span></span><br><span class="line">Class clazz=Class.forName(“className”);    </span><br><span class="line">Method methodMain=clazz.getMethod(<span class="string">"main"</span>,String[]<span class="class">.<span class="keyword">class</span>)</span>;    </span><br><span class="line"> <span class="comment">//方式一：强制转换为超类Object，不用拆包    </span></span><br><span class="line">methodMain.invoke(<span class="keyword">null</span>, (Object)<span class="keyword">new</span> String[]&#123;<span class="string">"123"</span>,<span class="string">"456"</span>,<span class="string">"789"</span>&#125;);    </span><br><span class="line"><span class="comment">//方式二：将数组打包，编译器拆包后就是一个String[]类型的整体     </span></span><br><span class="line">methodMain.invoke(<span class="keyword">null</span>, <span class="keyword">new</span> Object[]&#123;<span class="keyword">new</span> String[]&#123;<span class="string">"123"</span>,<span class="string">"456"</span>,<span class="string">"789"</span>&#125;&#125;);</span><br></pre></td></tr></table></figure>
+
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/Java/">Java</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/Java/">Java</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="https://hashcode.cn/2019/04/30/java-reflect/" data-title="Java - 反射(Reflect) | techbird blog" data-tsina="6488657373" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2019/04/30/java-annotation/" title="Java - 注解(Annotation)">
+  <strong>上一篇：</strong><br/>
+  <span>
+  Java - 注解(Annotation)</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2019/04/29/java-junit/"  title="Junit的使用">
+ <strong>下一篇：</strong><br/> 
+ <span>Junit的使用
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+<section id="comments" class="comment">
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript" target="_blank" rel="noopener">comments powered by Disqus.</a></noscript>
+  </div>
+</section>
+
+
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#定义"><span class="toc-number">1.</span> <span class="toc-text">定义</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Class"><span class="toc-number">2.</span> <span class="toc-text">Class</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Class类中的常用方法"><span class="toc-number">2.1.</span> <span class="toc-text">Class类中的常用方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Field"><span class="toc-number">2.2.</span> <span class="toc-text">Field</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Constructor"><span class="toc-number">2.3.</span> <span class="toc-text">Constructor</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Method"><span class="toc-number">2.4.</span> <span class="toc-text">Method</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Package"><span class="toc-number">2.5.</span> <span class="toc-text">Package</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#数组的反射"><span class="toc-number">2.6.</span> <span class="toc-text">数组的反射</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#暴力反射"><span class="toc-number">2.7.</span> <span class="toc-text">暴力反射</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#用反射技术执行某个main方法"><span class="toc-number">3.</span> <span class="toc-text">用反射技术执行某个main方法</span></a></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+
+  
+<div class="github-card">
+<p class="asidetitle">Github Card</p>
+<div class="github-card" data-github="qiudengqiang" data-theme="medium"></div>
+<script type="text/javascript" src="//cdn.jsdelivr.net/github-cards/latest/widget.js" ></script>
+</div>
+
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">Categories</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/Daily/" title="Daily">Daily<sup>14</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/DataBase/" title="DataBase">DataBase<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Java/" title="Java">Java<sup>9</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Journey/" title="Journey">Journey<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Linux/" title="Linux">Linux<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/MySQL/" title="MySQL">MySQL<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/iOS/Objc/" title="Objc">Objc<sup>13</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Readed/" title="Readed">Readed<sup>5</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/VSCode/" title="VSCode">VSCode<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Web/" title="Web">Web<sup>5</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Xcode/" title="Xcode">Xcode<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/iOS/" title="iOS">iOS<sup>16</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/iOS/" title="iOS">iOS<sup>16</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Daily/" title="Daily">Daily<sup>14</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Objc/" title="Objc">Objc<sup>11</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Java/" title="Java">Java<sup>9</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Readed/" title="Readed">Readed<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Web/" title="Web">Web<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Thread/" title="Thread">Thread<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Network/" title="Network">Network<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Journey/" title="Journey">Journey<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/MySQL/" title="MySQL">MySQL<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Xcode/" title="Xcode">Xcode<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Category/" title="Category">Category<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/keywords/" title="keywords">keywords<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Idea/" title="Idea">Idea<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/KVC/" title="KVC">KVC<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/KVO/" title="KVO">KVO<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/NSThread/" title="NSThread">NSThread<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/NSURLRequest/" title="NSURLRequest">NSURLRequest<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/NSURLResponse/" title="NSURLResponse">NSURLResponse<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/NSURLSession/" title="NSURLSession">NSURLSession<sup>1</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+  <div class="weiboshow">
+  <p class="asidetitle">Weibo</p>
+    <iframe width="100%" height="120" class="share_self"  frameborder="0" scrolling="no" src="https://widget.weibo.com/weiboshow/index.php?language=&width=0&height=120&fansRow=2&ptype=1&speed=0&skin=9&isTitle=1&noborder=1&isWeibo=0&isFans=0&uid=6488657373&verifier=f458bf46&dpc=1"></iframe>
+</div>
+
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> You can&#39;t connect the dots looking forward <br/>
+			You can only connect them looking backwards.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		<a href="http://weibo.com/6488657373" target="_blank" class="icon-weibo" title="微博"></a>
+		
+		
+		<a href="https://github.com/qiudengqiang" target="_blank" class="icon-github" title="github"></a>
+		
+		
+		
+		<a href="https://twitter.com/murendless" target="_blank" class="icon-twitter" title="twitter"></a>
+		
+		
+		
+		
+		
+		
+		
+		<a href="mailto:qiudengqiang@gmail.com" target="_blank" class="icon-email" title="Email Me"></a>
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2022 
+		
+		<a href="/about" target="_blank" title="techbird">techbird</a>
+		
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+<script type="text/javascript">
+
+var disqus_shortname = 'techbird-1';
+
+(function(){
+  var dsq = document.createElement('script');
+  dsq.type = 'text/javascript';
+  dsq.async = true;
+  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+}());
+(function(){
+  var dsq = document.createElement('script');
+  dsq.type = 'text/javascript';
+  dsq.async = true;
+  dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+}());
+</script>
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

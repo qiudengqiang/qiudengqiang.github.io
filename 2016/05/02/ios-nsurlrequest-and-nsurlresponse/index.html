@@ -1,0 +1,709 @@
+
+ <!DOCTYPE HTML>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+  
+    <title>iOS - NSURLRequest &amp; NSURLResponse | techbird blog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="techbird">
+    
+
+    
+    <meta name="description" content="NSURLRequest创建请求对象 (缓存策略和超时时长都是默认的)NSURLRequest * request &#x3D; [NSURLRequest requestWithURL:url]; 创建请求对象的同时指定缓存策略和超时时长NSURLRequest * request &#x3D; [NSURLRequest requestWithURL:url cachePolicy:0 timeoutInter">
+<meta property="og:type" content="article">
+<meta property="og:title" content="iOS - NSURLRequest &amp; NSURLResponse">
+<meta property="og:url" content="https://hashcode.cn/2016/05/02/ios-nsurlrequest-and-nsurlresponse/index.html">
+<meta property="og:site_name" content="techbird blog">
+<meta property="og:description" content="NSURLRequest创建请求对象 (缓存策略和超时时长都是默认的)NSURLRequest * request &#x3D; [NSURLRequest requestWithURL:url]; 创建请求对象的同时指定缓存策略和超时时长NSURLRequest * request &#x3D; [NSURLRequest requestWithURL:url cachePolicy:0 timeoutInter">
+<meta property="og:image" content="https://hashcode.cn/images/tech/network_http_commute.png">
+<meta property="article:published_time" content="2016-05-02T14:30:51.000Z">
+<meta property="article:modified_time" content="2020-11-20T06:12:25.799Z">
+<meta property="article:author" content="techbird">
+<meta property="article:tag" content="iOS">
+<meta property="article:tag" content="Objc">
+<meta property="article:tag" content="Network">
+<meta property="article:tag" content="NSURLRequest">
+<meta property="article:tag" content="NSURLResponse">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://hashcode.cn/images/tech/network_http_commute.png">
+<meta name="twitter:creator" content="@murendless">
+
+    
+    <link rel="alternative" href="/atom.xml" title="techbird blog" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    
+<link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="/%02.css">
+<link rel="stylesheet" href="/.css">
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.png" alt="techbird blog" title="techbird blog"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="techbird blog">techbird blog</a></h1>
+				<h2 class="blog-motto">timeline of growth</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives/">Archives</a></li>
+					
+						<li><a href="/about/">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:hashcode.cn">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2016/05/02/ios-nsurlrequest-and-nsurlresponse/" title="iOS - NSURLRequest &amp; NSURLResponse" itemprop="url">iOS - NSURLRequest &amp; NSURLResponse</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="techbird" target="_blank" itemprop="author">techbird</a>
+		
+  <p class="article-time">
+    <time datetime="2016-05-02T14:30:51.000Z" itemprop="datePublished"> Published 2016-05-02 22:30</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#NSURLRequest"><span class="toc-number">1.</span> <span class="toc-text">NSURLRequest</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#创建请求对象-缓存策略和超时时长都是默认的"><span class="toc-number">1.1.</span> <span class="toc-text">创建请求对象 (缓存策略和超时时长都是默认的)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#创建请求对象的同时指定缓存策略和超时时长"><span class="toc-number">1.2.</span> <span class="toc-text">创建请求对象的同时指定缓存策略和超时时长</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#缓存策略"><span class="toc-number">1.3.</span> <span class="toc-text">缓存策略</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#超时时长"><span class="toc-number">1.4.</span> <span class="toc-text">超时时长</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#NSMutableURLRequest（可变请求）"><span class="toc-number">1.5.</span> <span class="toc-text">NSMutableURLRequest（可变请求）</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#NSURLResponse"><span class="toc-number">2.</span> <span class="toc-text">NSURLResponse</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#响应头"><span class="toc-number">2.1.</span> <span class="toc-text">响应头</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#响应体-data"><span class="toc-number">2.2.</span> <span class="toc-text">响应体 data</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#GET请求-URL中有中文时如何处理？"><span class="toc-number">3.</span> <span class="toc-text">GET请求 URL中有中文时如何处理？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#URL转字符串的方法"><span class="toc-number">4.</span> <span class="toc-text">URL转字符串的方法</span></a></li></ol>
+		
+		</div>
+		
+		<p><img src="/images/tech/network_http_commute.png" alt=""></p>
+<h2 id="NSURLRequest"><a href="#NSURLRequest" class="headerlink" title="NSURLRequest"></a>NSURLRequest</h2><h3 id="创建请求对象-缓存策略和超时时长都是默认的"><a href="#创建请求对象-缓存策略和超时时长都是默认的" class="headerlink" title="创建请求对象 (缓存策略和超时时长都是默认的)"></a>创建请求对象 (缓存策略和超时时长都是默认的)</h3><figure class="highlight objc"><table><tr><td class="code"><pre><span class="line"><span class="built_in">NSURLRequest</span> * request = [<span class="built_in">NSURLRequest</span> requestWithURL:url];</span><br></pre></td></tr></table></figure>
+<h3 id="创建请求对象的同时指定缓存策略和超时时长"><a href="#创建请求对象的同时指定缓存策略和超时时长" class="headerlink" title="创建请求对象的同时指定缓存策略和超时时长"></a>创建请求对象的同时指定缓存策略和超时时长</h3><figure class="highlight objc"><table><tr><td class="code"><pre><span class="line"><span class="built_in">NSURLRequest</span> * request = [<span class="built_in">NSURLRequest</span> requestWithURL:url cachePolicy:<span class="number">0</span> timeoutInterval:<span class="number">15</span>];</span><br></pre></td></tr></table></figure>
+<h3 id="缓存策略"><a href="#缓存策略" class="headerlink" title="缓存策略"></a>缓存策略</h3><table>
+<thead>
+<tr>
+<th>枚举</th>
+<th>数值</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>NSURLRequestUseProtocolCachePolicy</code></td>
+<td>0</td>
+<td>默认的缓存策略</td>
+</tr>
+<tr>
+<td><code>NSURLRequestReloadIgnoringLocalCacheData</code></td>
+<td>1</td>
+<td><ul><li>忽略本地缓存数据，始终加载服务器的数据</li><li>对数据的及时性要求高的应用</li></ul></td>
+</tr>
+<tr>
+<td><code>NSURLRequestReturnCacheDataElseLoad</code></td>
+<td>2</td>
+<td>如果有缓存，就返回缓存，否则加载最新数据</td>
+</tr>
+<tr>
+<td><code>NSURLRequestReturnCacheDataDontLoad</code></td>
+<td>3</td>
+<td>只加载缓存数据,不去服务器上获取(离线地图)</td>
+</tr>
+</tbody></table>
+<h3 id="超时时长"><a href="#超时时长" class="headerlink" title="超时时长"></a>超时时长</h3><ul>
+<li>默认网络时长是 <code>60 s</code><blockquote>
+<p><code>SDWebImage</code> 的默认超时时长是 <code>15</code> 秒<br><code>AFN</code> 的默认超时时长是 <code>60</code> 秒</p>
+</blockquote>
+</li>
+</ul>
+<h3 id="NSMutableURLRequest（可变请求）"><a href="#NSMutableURLRequest（可变请求）" class="headerlink" title="NSMutableURLRequest（可变请求）"></a>NSMutableURLRequest（可变请求）</h3><figure class="highlight objc"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 可变的请求对象才能设置额外的信息</span></span><br><span class="line"><span class="built_in">NSMutableURLRequest</span> *requestM = [<span class="built_in">NSMutableURLRequest</span> requestWithURL:url cachePolicy:<span class="number">0</span> timeoutInterval:<span class="number">15</span>];</span><br><span class="line"><span class="comment">// 设置请求头 : 告诉服务器,我的设备是iphone</span></span><br><span class="line">[requestM setValue:<span class="string">@"iphone AppleWebKit"</span> forHTTPHeaderField:<span class="string">@"User-Agent"</span>];</span><br></pre></td></tr></table></figure>
+<h2 id="NSURLResponse"><a href="#NSURLResponse" class="headerlink" title="NSURLResponse"></a>NSURLResponse</h2><h3 id="响应头"><a href="#响应头" class="headerlink" title="响应头"></a>响应头</h3><table>
+<thead>
+<tr>
+<th>响应属性</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>URL</code></td>
+<td>服务器反馈的 URL，有的时候，服务器会重定向新的 URL</td>
+</tr>
+<tr>
+<td><code>MIMEType</code></td>
+<td><ul><li>服务器告诉客户端，返回的二进制数据的类型（纯文本，视频，语音，超文本等）</li><li><code>ContentType</code></li><li>根据 MIMEType 客户端就知道使用什么软件处理返回的二进制数据</li></ul></td>
+</tr>
+<tr>
+<td><code>statusCode</code></td>
+<td>状态码<br /><ul><li>1XX消息</li><li>2XX 成功</li><li>3XX 更多选择</li><li>4XX 客户端错误</li><li>5XX 服务器错误</li></ul></td>
+</tr>
+<tr>
+<td><code>expectedContentLength</code></td>
+<td>数据长度，下载文件总长度</td>
+</tr>
+<tr>
+<td><code>suggestedFilename</code></td>
+<td>获取服务器的文件的名称</td>
+</tr>
+<tr>
+<td><code>allHeaderFields</code></td>
+<td>返回数据的头部信息，key－value格式</td>
+</tr>
+<tr>
+<td><code>textEncodingName</code></td>
+<td>编码的名称</td>
+</tr>
+</tbody></table>
+<h3 id="响应体-data"><a href="#响应体-data" class="headerlink" title="响应体 data"></a>响应体 data</h3><ul>
+<li><code>data</code> 服务器返回的二进制数据，程序员最关心的内容</li>
+<li>拿到响应体之后,无法直接使用,需要进行反序列化,转换成OC对象.</li>
+</ul>
+<h2 id="GET请求-URL中有中文时如何处理？"><a href="#GET请求-URL中有中文时如何处理？" class="headerlink" title="GET请求 URL中有中文时如何处理？"></a>GET请求 URL中有中文时如何处理？</h2><figure class="highlight objc"><table><tr><td class="code"><pre><span class="line"><span class="built_in">NSString</span> * URLString = [URLString stringByAddingPercentEncodingWithAllowedCharacters:[<span class="built_in">NSCharacterSet</span> URLQueryAllowedCharacterSet]];</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>注意：GET请求时,问号<code>?</code>后面的查询字符串里面不能有中文或者空格.如果有就需要使用%转义,不然URL会为nil. POST请求时,请求体里面可以有中文.<br>URLQueryAllowedCharacterSet : 百分号转义查询字符串</p>
+</blockquote>
+<h2 id="URL转字符串的方法"><a href="#URL转字符串的方法" class="headerlink" title="URL转字符串的方法"></a>URL转字符串的方法</h2><figure class="highlight objc"><table><tr><td class="code"><pre><span class="line">[filePath.path / filePath.absoluteString]</span><br></pre></td></tr></table></figure>
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/iOS/">iOS</a>►<a class="article-category-link" href="/categories/iOS/Objc/">Objc</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/iOS/">iOS</a><a href="/tags/Objc/">Objc</a><a href="/tags/Network/">Network</a><a href="/tags/NSURLRequest/">NSURLRequest</a><a href="/tags/NSURLResponse/">NSURLResponse</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="https://hashcode.cn/2016/05/02/ios-nsurlrequest-and-nsurlresponse/" data-title="iOS - NSURLRequest &amp; NSURLResponse | techbird blog" data-tsina="6488657373" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2016/05/05/ios-thread-gcd/" title="iOS - 多线程之 GCD">
+  <strong>上一篇：</strong><br/>
+  <span>
+  iOS - 多线程之 GCD</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2016/04/30/ios-nsthread/"  title="iOS - 多线程之 NSThread">
+ <strong>下一篇：</strong><br/> 
+ <span>iOS - 多线程之 NSThread
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+<section id="comments" class="comment">
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript" target="_blank" rel="noopener">comments powered by Disqus.</a></noscript>
+  </div>
+</section>
+
+
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#NSURLRequest"><span class="toc-number">1.</span> <span class="toc-text">NSURLRequest</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#创建请求对象-缓存策略和超时时长都是默认的"><span class="toc-number">1.1.</span> <span class="toc-text">创建请求对象 (缓存策略和超时时长都是默认的)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#创建请求对象的同时指定缓存策略和超时时长"><span class="toc-number">1.2.</span> <span class="toc-text">创建请求对象的同时指定缓存策略和超时时长</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#缓存策略"><span class="toc-number">1.3.</span> <span class="toc-text">缓存策略</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#超时时长"><span class="toc-number">1.4.</span> <span class="toc-text">超时时长</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#NSMutableURLRequest（可变请求）"><span class="toc-number">1.5.</span> <span class="toc-text">NSMutableURLRequest（可变请求）</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#NSURLResponse"><span class="toc-number">2.</span> <span class="toc-text">NSURLResponse</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#响应头"><span class="toc-number">2.1.</span> <span class="toc-text">响应头</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#响应体-data"><span class="toc-number">2.2.</span> <span class="toc-text">响应体 data</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#GET请求-URL中有中文时如何处理？"><span class="toc-number">3.</span> <span class="toc-text">GET请求 URL中有中文时如何处理？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#URL转字符串的方法"><span class="toc-number">4.</span> <span class="toc-text">URL转字符串的方法</span></a></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+
+  
+<div class="github-card">
+<p class="asidetitle">Github Card</p>
+<div class="github-card" data-github="qiudengqiang" data-theme="medium"></div>
+<script type="text/javascript" src="//cdn.jsdelivr.net/github-cards/latest/widget.js" ></script>
+</div>
+
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">Categories</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/Daily/" title="Daily">Daily<sup>14</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/DataBase/" title="DataBase">DataBase<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Java/" title="Java">Java<sup>9</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Journey/" title="Journey">Journey<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Linux/" title="Linux">Linux<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/MySQL/" title="MySQL">MySQL<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/iOS/Objc/" title="Objc">Objc<sup>13</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Readed/" title="Readed">Readed<sup>5</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/VSCode/" title="VSCode">VSCode<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Web/" title="Web">Web<sup>5</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Xcode/" title="Xcode">Xcode<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/iOS/" title="iOS">iOS<sup>16</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/iOS/" title="iOS">iOS<sup>16</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Daily/" title="Daily">Daily<sup>14</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Objc/" title="Objc">Objc<sup>11</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Java/" title="Java">Java<sup>9</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Readed/" title="Readed">Readed<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Web/" title="Web">Web<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Thread/" title="Thread">Thread<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Network/" title="Network">Network<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Journey/" title="Journey">Journey<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/MySQL/" title="MySQL">MySQL<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Xcode/" title="Xcode">Xcode<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Category/" title="Category">Category<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/keywords/" title="keywords">keywords<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Idea/" title="Idea">Idea<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/KVC/" title="KVC">KVC<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/KVO/" title="KVO">KVO<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/NSThread/" title="NSThread">NSThread<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/NSURLRequest/" title="NSURLRequest">NSURLRequest<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/NSURLResponse/" title="NSURLResponse">NSURLResponse<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/NSURLSession/" title="NSURLSession">NSURLSession<sup>1</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+  <div class="weiboshow">
+  <p class="asidetitle">Weibo</p>
+    <iframe width="100%" height="120" class="share_self"  frameborder="0" scrolling="no" src="https://widget.weibo.com/weiboshow/index.php?language=&width=0&height=120&fansRow=2&ptype=1&speed=0&skin=9&isTitle=1&noborder=1&isWeibo=0&isFans=0&uid=6488657373&verifier=f458bf46&dpc=1"></iframe>
+</div>
+
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> You can&#39;t connect the dots looking forward <br/>
+			You can only connect them looking backwards.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		<a href="http://weibo.com/6488657373" target="_blank" class="icon-weibo" title="微博"></a>
+		
+		
+		<a href="https://github.com/qiudengqiang" target="_blank" class="icon-github" title="github"></a>
+		
+		
+		
+		<a href="https://twitter.com/murendless" target="_blank" class="icon-twitter" title="twitter"></a>
+		
+		
+		
+		
+		
+		
+		
+		<a href="mailto:qiudengqiang@gmail.com" target="_blank" class="icon-email" title="Email Me"></a>
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2022 
+		
+		<a href="/about" target="_blank" title="techbird">techbird</a>
+		
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+<script type="text/javascript">
+
+var disqus_shortname = 'techbird-1';
+
+(function(){
+  var dsq = document.createElement('script');
+  dsq.type = 'text/javascript';
+  dsq.async = true;
+  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+}());
+(function(){
+  var dsq = document.createElement('script');
+  dsq.type = 'text/javascript';
+  dsq.async = true;
+  dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+}());
+</script>
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

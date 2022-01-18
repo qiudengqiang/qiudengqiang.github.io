@@ -1,0 +1,710 @@
+
+ <!DOCTYPE HTML>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+  
+    <title>iOS - RunLoop &amp; AutoreleasePool | techbird blog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="techbird">
+    
+
+    
+    <meta name="description" content="RunLoop A NSRunLoop object processes input for sources such as mouse and keyboard events from the window system, NSPort objects, and NSConnection objects. A NSRunLoop object also processes NSTimer eve">
+<meta property="og:type" content="article">
+<meta property="og:title" content="iOS - RunLoop &amp; AutoreleasePool">
+<meta property="og:url" content="https://hashcode.cn/2016/05/24/ios-runloop-and-autoreleasepool/index.html">
+<meta property="og:site_name" content="techbird blog">
+<meta property="og:description" content="RunLoop A NSRunLoop object processes input for sources such as mouse and keyboard events from the window system, NSPort objects, and NSConnection objects. A NSRunLoop object also processes NSTimer eve">
+<meta property="og:image" content="https://hashcode.cn/images/tech/objc_runloop.jpg">
+<meta property="og:image" content="https://hashcode.cn/images/tech/objc_runloop_mode.png">
+<meta property="og:image" content="https://hashcode.cn/images/tech/objc_autoreleasepool.png">
+<meta property="article:published_time" content="2016-05-24T01:30:51.000Z">
+<meta property="article:modified_time" content="2020-11-20T06:12:25.799Z">
+<meta property="article:author" content="techbird">
+<meta property="article:tag" content="iOS">
+<meta property="article:tag" content="Objc">
+<meta property="article:tag" content="RunLoop">
+<meta property="article:tag" content="AutoreleasePool">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://hashcode.cn/images/tech/objc_runloop.jpg">
+<meta name="twitter:creator" content="@murendless">
+
+    
+    <link rel="alternative" href="/atom.xml" title="techbird blog" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    
+<link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="/%02.css">
+<link rel="stylesheet" href="/.css">
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.png" alt="techbird blog" title="techbird blog"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="techbird blog">techbird blog</a></h1>
+				<h2 class="blog-motto">timeline of growth</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives/">Archives</a></li>
+					
+						<li><a href="/about/">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:hashcode.cn">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2016/05/24/ios-runloop-and-autoreleasepool/" title="iOS - RunLoop &amp; AutoreleasePool" itemprop="url">iOS - RunLoop &amp; AutoreleasePool</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="techbird" target="_blank" itemprop="author">techbird</a>
+		
+  <p class="article-time">
+    <time datetime="2016-05-24T01:30:51.000Z" itemprop="datePublished"> Published 2016-05-24 09:30</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#RunLoop"><span class="toc-number">1.</span> <span class="toc-text">RunLoop</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#RunLoop-的概念"><span class="toc-number">1.1.</span> <span class="toc-text">RunLoop 的概念</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Input-source-与-Timer-source"><span class="toc-number">1.2.</span> <span class="toc-text">Input source 与 Timer source</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Input-Source-可以分为三类"><span class="toc-number">1.2.1.</span> <span class="toc-text">Input Source 可以分为三类</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Timer-Source"><span class="toc-number">1.2.2.</span> <span class="toc-text">Timer Source</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#RunLoop-与线程"><span class="toc-number">1.3.</span> <span class="toc-text">RunLoop 与线程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Warning"><span class="toc-number">1.3.1.</span> <span class="toc-text">Warning</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#RunLoop-Observer"><span class="toc-number">1.4.</span> <span class="toc-text">RunLoop Observer</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#RunLoop-Mode"><span class="toc-number">1.5.</span> <span class="toc-text">RunLoop Mode</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#RunLoop-的使用"><span class="toc-number">1.6.</span> <span class="toc-text">RunLoop 的使用</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#获取-RunLoop"><span class="toc-number">1.6.1.</span> <span class="toc-text">获取 RunLoop</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#在主线程和子线程中区别"><span class="toc-number">1.6.2.</span> <span class="toc-text">在主线程和子线程中区别</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#RunLoop-与-NSTimer"><span class="toc-number">1.7.</span> <span class="toc-text">RunLoop 与 NSTimer</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#timerWithTimeInterval"><span class="toc-number">1.7.1.</span> <span class="toc-text">timerWithTimeInterval:</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#scheduledTimerWithTimeInterval"><span class="toc-number">1.7.2.</span> <span class="toc-text">scheduledTimerWithTimeInterval:</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#坑"><span class="toc-number">1.7.3.</span> <span class="toc-text">坑</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Runloop-和-Autoreleasepool-的关系图解"><span class="toc-number">2.</span> <span class="toc-text">Runloop 和 Autoreleasepool 的关系图解</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Autorelease-Pool"><span class="toc-number">3.</span> <span class="toc-text">Autorelease Pool</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Autorelease-Pool-的用处"><span class="toc-number">3.1.</span> <span class="toc-text">Autorelease Pool 的用处</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Autorelease-Pool-进行-Drain-的时机"><span class="toc-number">3.2.</span> <span class="toc-text">Autorelease Pool 进行 Drain 的时机</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#main-m-中的-autoreleasepool-的解释"><span class="toc-number">3.3.</span> <span class="toc-text">main.m 中的 autoreleasepool 的解释</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#autoreleasepool的创建与销毁"><span class="toc-number">3.4.</span> <span class="toc-text">autoreleasepool的创建与销毁</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#参考资料"><span class="toc-number">4.</span> <span class="toc-text">参考资料</span></a></li></ol>
+		
+		</div>
+		
+		<h1 id="RunLoop"><a href="#RunLoop" class="headerlink" title="RunLoop"></a>RunLoop</h1><blockquote>
+<p>A NSRunLoop object processes input for sources such as mouse and keyboard events from the window system, NSPort objects, and NSConnection objects. A NSRunLoop object also processes NSTimer events.</p>
+</blockquote>
+<h2 id="RunLoop-的概念"><a href="#RunLoop-的概念" class="headerlink" title="RunLoop 的概念"></a>RunLoop 的概念</h2><p>运行循环也叫消息循环，作用是循环的捕捉消息，然后执行消息对应的操作；并且保证应用程序不会退出。<br>OSX/iOS 系统中，提供了两个这样的对象：<code>NSRunLoop</code> 和 <code>CFRunLoopRef</code>。<br><code>CFRunLoopRef</code> 是在 <code>CoreFoundation</code> 框架内的，它提供了纯 C 函数的 API，所有这些 API 都是线程安全的。<br><code>NSRunLoop</code> 是基于 <code>CFRunLoopRef</code> 的封装，提供了面向对象的 API，但是这些 API 不是线程安全的。</p>
+<h2 id="Input-source-与-Timer-source"><a href="#Input-source-与-Timer-source" class="headerlink" title="Input source 与 Timer source"></a>Input source 与 Timer source</h2><p><code>Input source</code> 与 <code>Timer source</code>这两个都是 RunLoop 事件的来源</p>
+<h3 id="Input-Source-可以分为三类"><a href="#Input-Source-可以分为三类" class="headerlink" title="Input Source 可以分为三类"></a>Input Source 可以分为三类</h3><ul>
+<li>Port-Based Sources：系统底层的 Port 事件源，例如<code>CFSocketRef</code>，但在应用层中几乎用不到。</li>
+<li>Custom Input Sources：用户手动创建的事件源，例如手势，触摸，键入。</li>
+<li>Cocoa Perform Selector Sources：Cocoa 提供的<code>performSelector</code>系列方法也是一种事件源。</li>
+</ul>
+<h3 id="Timer-Source"><a href="#Timer-Source" class="headerlink" title="Timer Source"></a>Timer Source</h3><p>即是指定时器事件（<code>NSTimer</code>）。</p>
+<h2 id="RunLoop-与线程"><a href="#RunLoop-与线程" class="headerlink" title="RunLoop 与线程"></a>RunLoop 与线程</h2><p>线程和 RunLoop  之间是一一对应的，其关系是保存在一个全局的 Dictionary 里。线程刚创建时候并没有 RunLoop，如果你不主动获取，那么它一直不会有。RunLoop 的创建是发生在第一次获取时，RunLoop 的销毁是发生在线程结束时。所以只能在一个线程的内部获取 RunLoop(主线程除外)。</p>
+<p>下图中展现了 RunLoop 在线程中的作用：从 input source 和 timer source 接受事件，然后在线程中处理事件。<br><img src="/images/tech/objc_runloop.jpg" alt="RunLoop"></p>
+<h3 id="Warning"><a href="#Warning" class="headerlink" title="Warning"></a>Warning</h3><blockquote>
+<p>The NSRunLoop class is generally not considered to be thread-safe and its methods should only be called within the context of the current thread. You should never try to call the methods of an NSRunLoop object running in a different thread, as doing so might cause unexpected results.</p>
+</blockquote>
+<h2 id="RunLoop-Observer"><a href="#RunLoop-Observer" class="headerlink" title="RunLoop Observer"></a>RunLoop Observer</h2><p>RunLoop 通过监听 Source 来决定有没有任务要做；除此之外，我们还可以用 RunLoop Observer 来监控 RunLoop 本身的状态。</p>
+<p>RunLoop Observer 可以监听以下 RunLoop 事件：</p>
+<ul>
+<li>The entrance to the run loop.</li>
+<li>When the run loop is about to process a timer.</li>
+<li>When the run loop is about to process an input source.</li>
+<li>When the run loop is about to go to sleep.</li>
+<li>When the run loop has woken up, but before it has processed the event that woke it up.</li>
+<li>The exit from the run loop.</li>
+</ul>
+<h2 id="RunLoop-Mode"><a href="#RunLoop-Mode" class="headerlink" title="RunLoop Mode"></a>RunLoop Mode</h2><p>在监听与被监听中，RunLoop 要处理的事情非常复杂；为了让 RunLoop专注于处理特定事件而引入了 RunLoop Mode 概念<br><img src="/images/tech/objc_runloop_mode.png" alt="RunLoop Mode"><br>如果所示，RunLoop Mode 实际上是 Source、Timer、Observer 的集合，不同的 Mode 把不同组的 Source、Timer、Observer 隔绝开来；而 RunLoop 在某个时刻下只能跑在某一个 Mode 下，处理这一个 Mode 当中的Source、Timer 和 Observer。</p>
+<p>苹果文档中提到的 Mode 有五个，分别是：</p>
+<ul>
+<li><code>NSDefaultRunLoopMode</code></li>
+<li><code>NSConnectionReplyMode</code></li>
+<li><code>NSModalPanelRunLoopMode</code></li>
+<li><code>NSTrackingRunLoopMode</code></li>
+<li><code>NSRunLoopCommonModes</code></li>
+</ul>
+<p>iOS 中公开暴露出来的只有 <code>NSDefaultRunLoopMode</code> 、<code>UITrackingRunLoopMode</code> 和 <code>NSRunLoopCommonModes。</code> 而<code>NSRunLoopCommonModes</code> 实际上是一个 Mode 的集合，默认包括 <code>NSDefaultRunLoopMode</code> 和 <code>NSTrackingRunLoopMode</code>。</p>
+<h2 id="RunLoop-的使用"><a href="#RunLoop-的使用" class="headerlink" title="RunLoop 的使用"></a>RunLoop 的使用</h2><p>RunLoop 和线程是绑定在一起的；每个线程（包括主线程）都有一个对应的 RunLoop 对象。</p>
+<h3 id="获取-RunLoop"><a href="#获取-RunLoop" class="headerlink" title="获取 RunLoop"></a>获取 RunLoop</h3><p>我们不能自己创建 RunLoop 对象，只能获取到系统提供的 RunLoop 对象。</p>
+<figure class="highlight objc"><table><tr><td class="code"><pre><span class="line">[<span class="built_in">NSRunLoop</span> currentRunLoop];</span><br><span class="line">[<span class="built_in">NSRunLoop</span> mainRunLoop];</span><br></pre></td></tr></table></figure>
+<h3 id="在主线程和子线程中区别"><a href="#在主线程和子线程中区别" class="headerlink" title="在主线程和子线程中区别"></a>在主线程和子线程中区别</h3><p>RunLoop 在主线程和子线程中的 <strong>区别</strong> 在于：主线程的 RunLoop 会在应用启动的时候默认开启；其他线程（子线程）的 RunLoop 默认并不会启动，需要手动开启。</p>
+<figure class="highlight objc"><table><tr><td class="code"><pre><span class="line"><span class="comment">//手动启动RunLoop，无法控制结束</span></span><br><span class="line">[[<span class="built_in">NSRunLoop</span> currentRunLoop] run];</span><br><span class="line"><span class="comment">//手动启动RunLoop，指定结束时间</span></span><br><span class="line">[[<span class="built_in">NSRunLoop</span> currentRunLoop] runUntilDate:[[<span class="built_in">NSDate</span> date] dateByAddingTimeInterval:<span class="number">5</span>]];</span><br></pre></td></tr></table></figure>
+
+<h2 id="RunLoop-与-NSTimer"><a href="#RunLoop-与-NSTimer" class="headerlink" title="RunLoop 与 NSTimer"></a>RunLoop 与 NSTimer</h2><h3 id="timerWithTimeInterval"><a href="#timerWithTimeInterval" class="headerlink" title="timerWithTimeInterval:"></a>timerWithTimeInterval:</h3><figure class="highlight objc"><table><tr><td class="code"><pre><span class="line"><span class="comment">//需要手动加入 RunLoop 并设置 Mode</span></span><br><span class="line"><span class="built_in">NSTimer</span> *timer = [<span class="built_in">NSTimer</span> timerWithTimeInterval:<span class="number">1</span> target:<span class="keyword">self</span> selector:<span class="keyword">@selector</span>(timeFire) userInfo:<span class="literal">nil</span> repeats:<span class="literal">YES</span>];</span><br><span class="line"><span class="comment">//立即调用一次</span></span><br><span class="line">[timer fire];</span><br><span class="line"><span class="comment">//手动加入 RunLoop</span></span><br><span class="line">[[<span class="built_in">NSRunLoop</span> currentRunLoop] addTimer:timer forMode:<span class="built_in">NSDefaultRunLoopMode</span>];</span><br></pre></td></tr></table></figure>
+<h3 id="scheduledTimerWithTimeInterval"><a href="#scheduledTimerWithTimeInterval" class="headerlink" title="scheduledTimerWithTimeInterval:"></a>scheduledTimerWithTimeInterval:</h3><figure class="highlight objc"><table><tr><td class="code"><pre><span class="line"><span class="comment">//默认加入 RunLoop 并设置 Mode 为 NSDefaultRunLoopMode</span></span><br><span class="line"><span class="built_in">NSTimer</span> *timer = [<span class="built_in">NSTimer</span> scheduledTimerWithTimeInterval:<span class="number">1</span> target:<span class="keyword">self</span> selector:<span class="keyword">@selector</span>(timeFire) userInfo:<span class="literal">nil</span> repeats:<span class="literal">YES</span>];</span><br><span class="line"><span class="comment">//立即调用一次</span></span><br><span class="line">[timer fire];</span><br></pre></td></tr></table></figure>
+<h3 id="坑"><a href="#坑" class="headerlink" title="坑"></a>坑</h3><p>日常开发中，与 RunLoop 接触得最近可能就是通过 NSTimer，一个 Timer 一次只能加入到一个 RunLoop 中。我们日常使用的时候，通常就是加入到当前的 RunLoop 的 <code>NSDefaultRunLoopMode</code> 中，而 ScrollView 在用户滑动时，主线程 RunLoop 会转到 <code>UITrackingRunLoopMode</code>；而这个时候， Timer 就不会运行。</p>
+<p><strong>解决方案：</strong><br>设置RunLoop Mode，例如 NSTimer，我们指定它运行于 <code>NSRunLoopCommonModes</code> ，这是一个Mode的集合。这样无论当前 RunLoop 运行哪个 Mode ，事件都能得到执行。</p>
+<p>例如在 AFNetworking 中，就有相关的代码，如下：</p>
+<figure class="highlight objc"><table><tr><td class="code"><pre><span class="line">- (<span class="keyword">void</span>)startActivationDelayTimer &#123;</span><br><span class="line">    <span class="keyword">self</span>.activationDelayTimer = [<span class="built_in">NSTimer</span></span><br><span class="line">                                 timerWithTimeInterval:<span class="keyword">self</span>.activationDelay target:<span class="keyword">self</span> selector:<span class="keyword">@selector</span>(activationDelayTimerFired) userInfo:<span class="literal">nil</span> repeats:<span class="literal">NO</span>];</span><br><span class="line">    [[<span class="built_in">NSRunLoop</span> mainRunLoop] addTimer:<span class="keyword">self</span>.activationDelayTimer forMode:<span class="built_in">NSRunLoopCommonModes</span>];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这里就是添加了一个计时器，由于指定了 <code>NSRunLoopCommonModes</code>，所以不管 RunLoop 处于什么状态，都会执行这个计时器任务。</p>
+<h1 id="Runloop-和-Autoreleasepool-的关系图解"><a href="#Runloop-和-Autoreleasepool-的关系图解" class="headerlink" title="Runloop 和 Autoreleasepool 的关系图解"></a>Runloop 和 Autoreleasepool 的关系图解</h1><p><img src="/images/tech/objc_autoreleasepool.png" alt="关系图解"></p>
+<h1 id="Autorelease-Pool"><a href="#Autorelease-Pool" class="headerlink" title="Autorelease Pool"></a>Autorelease Pool</h1><p>Autorelase Pool 提供了一种可以允许你向一个对象延迟发送 <code>release</code> 消息的机制；当你想放弃对象的所有权，同时又不希望这个对象被立即释放掉（例如在一个方法中返回一个对象时），Autoreleasepool就可以发挥作用。所谓的延迟发送<code>release</code>消息是指，当我们把一个对象标记为autorelease时:</p>
+<figure class="highlight objc"><table><tr><td class="code"><pre><span class="line"><span class="built_in">NSString</span>* str = [[[<span class="built_in">NSString</span> alloc] initWithString:<span class="string">@"hello"</span>] autorelease];</span><br></pre></td></tr></table></figure>
+<p>这个对象的<code>retainCount+1</code>，但不会发生 <code>release</code>；当这个变量所处的<code>autoreleasepool</code>被 <code>倾倒(drain)</code> 操作时，所有标记了autorelease的对象的 <code>retainCount-1</code>；即<code>release</code>消息的发送被延迟到<code>autoreleasepool</code>释放的时候了。<br>在 ARC 环境下，苹果引入了 <code>@autoreleasepool</code> 语法，不在需要手动调用<code>autorelease</code> 和 <code>drain</code> 等方法。</p>
+<blockquote>
+<p>提示 : 此处讨论的自动释放池不是手动创建的，是跟运行循环相关的，并非 <code>main.m</code> 中的 <code>@autoreleasepool</code></p>
+</blockquote>
+<h2 id="Autorelease-Pool-的用处"><a href="#Autorelease-Pool-的用处" class="headerlink" title="Autorelease Pool 的用处"></a>Autorelease Pool 的用处</h2><p>在 ARC 下我们并不需要手动调用<code>autorelease</code>有关的方法，甚至可以完全不知道 autorelease 的存在，就可以正确的管理好内存；因为 Cocoa Touch 的 RunLoop 中，每个 RunLoop Circle中系统都加入了 Autorelease Pool 的创建和释放。</p>
+<p>当我们需要创建和销毁大量对象时，使用手动创建的<code>autoreleasepool</code>可以有效的避免内存峰值的出现；因为如果不手动创建的话，外层系统创建的 Pool 会在整个 Runloop Circle 结束之后才执行 drain 操作，手动创建的话会在 block 结束之后就就执行 drain 操作。详情请见<a href="https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/MemoryMgmt/Articles/mmAutoreleasePools.html#//apple_ref/doc/uid/20000047-CJBFBEDI" target="_blank" rel="noopener">苹果官方文档</a></p>
+<p>一个普遍被使用的例子如下：</p>
+<figure class="highlight objc"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">10000000</span>; i++)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">@autoreleasepool</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">NSString</span>* string = <span class="string">@"abc"</span>;</span><br><span class="line">        <span class="built_in">NSArray</span>* array = [string componentsSeparatedByString:string];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在上面的例子中如果不使用<code>autoreleasepool</code>，需要在循环结束之后释放1000000个字符串；如果使用的话会在每次循环结束的时候都进行release操作。</p>
+<h2 id="Autorelease-Pool-进行-Drain-的时机"><a href="#Autorelease-Pool-进行-Drain-的时机" class="headerlink" title="Autorelease Pool 进行 Drain 的时机"></a>Autorelease Pool 进行 Drain 的时机</h2><p>如上所述，系统在 RunLoop 中创建的 autoreleasepool 会在 RunLoop 的一个 Event 结束时进行 Drain 操作；而我们手动创建的 autoreleasepool 会在 block 执行完后进行 Drain  操作。</p>
+<p>但需要注意的是：</p>
+<ul>
+<li>当 block 以异常(exception)结束时，pool 不会进行 drain 操作</li>
+<li>Pool 的 drain 操作会把所有标记为 autorelease 的对象<code>retainCount-1</code>，但并不意味着这个对象一定会被释放掉；我们可以在 autoreleasepool 中手动 retain 该对象，以延长它的声明周期(在MRC中）</li>
+</ul>
+<h2 id="main-m-中的-autoreleasepool-的解释"><a href="#main-m-中的-autoreleasepool-的解释" class="headerlink" title="main.m 中的 autoreleasepool 的解释"></a>main.m 中的 autoreleasepool 的解释</h2><p>在 iOS 程序的 main.m 文件中有类似这样的语句：</p>
+<figure class="highlight objc"><table><tr><td class="code"><pre><span class="line"><span class="keyword">int</span> main(<span class="keyword">int</span> argc, <span class="keyword">char</span> * argv[]) &#123;</span><br><span class="line">    <span class="keyword">@autoreleasepool</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">UIApplicationMain</span>(argc, argv, <span class="literal">nil</span>, <span class="built_in">NSStringFromClass</span>([AppDelegate <span class="keyword">class</span>]));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在面试中问到有关autorealeasepool的知识时，也多半会问一下，这里的 pool 有什么作用？能不能去掉之类…<br>根据<a href="https://developer.apple.com/library/archive/documentation/iPhone/Conceptual/iPhoneOSProgrammingGuide/TheAppLifeCycle/TheAppLifeCycle.html" target="_blank" rel="noopener">苹果官方文档</a>：<code>UIApplicationMain</code>函数是整个 app 的入口，用来创建 application对象（单例）和application delegate；尽管这个函数有返回值，但是却永远不会返回，当按下Home键时，app 只是切换到了后台状态。</p>
+<p>由文档知道，UIApplication会自己创建一个 main runloop，大致可以得到下面的结论：</p>
+<ol>
+<li><code>main.m</code>中 UIApplicationMain 永远不会返回，只有在系统kill掉整个app时候，系统会把应用占用的全部内存释放出来。</li>
+<li>因为 UIApplicationMain 永远不会返回，所以这里的 autoreleasepool 就永远不会进入到drain阶段。</li>
+<li>假设真的有变量进入了main.m 中的这个 Pool（而没有被更内层的 Pool 捕获），那么这些内存实际上就是被泄露的，这个autoreleasepool 等于把这种泄露情况进行了隐藏。</li>
+<li>UIApplication自己会创建 main runlooop，在 Cocoa 的 RunLoop 中实际上也是包含 autoreleasepool 的，因此main.m中的autoreleasepool可以认为是 <strong>没有必要</strong> 的。</li>
+</ol>
+<p>另外，在基于 AppKit 框架的 Mac OS 开发中，<code>main.m</code>中就是不存在 autoreleasepool 的，这也进一步印证了上面的结论。不过因为不知道更底层的代码，加上苹果文档中不建议修改main.m 文件，所以我们也没有理由把它删掉。但是，删掉之后也不会影响 App 运行，用 <code>Instruments</code> 也没有发现内存泄露。</p>
+<h2 id="autoreleasepool的创建与销毁"><a href="#autoreleasepool的创建与销毁" class="headerlink" title="autoreleasepool的创建与销毁"></a>autoreleasepool的创建与销毁</h2><ul>
+<li>创建 : 运行循环检测到事件并启动后，就会创建自动释放池</li>
+<li>销毁 : 一次完整的运行循环结束之前，会被销毁</li>
+</ul>
+<p>以上，autoreleasepool的创建与销毁都和运行循环（RunLoop）息息相关。</p>
+<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><p><a href="https://hit-alibaba.github.io/interview/iOS/ObjC-Basic/RunLoop.html" target="_blank" rel="noopener">https://hit-alibaba.github.io/interview/iOS/ObjC-Basic/RunLoop.html</a><br><a href="https://blog.ibireme.com/2015/05/18/RunLoop/" target="_blank" rel="noopener">https://blog.ibireme.com/2015/05/18/RunLoop/</a></p>
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/iOS/">iOS</a>►<a class="article-category-link" href="/categories/iOS/Objc/">Objc</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/iOS/">iOS</a><a href="/tags/Objc/">Objc</a><a href="/tags/RunLoop/">RunLoop</a><a href="/tags/AutoreleasePool/">AutoreleasePool</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="https://hashcode.cn/2016/05/24/ios-runloop-and-autoreleasepool/" data-title="iOS - RunLoop &amp; AutoreleasePool | techbird blog" data-tsina="6488657373" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2016/05/24/read-trjzdlxz/" title="陈坤在世间行走的旁白 - 读《突然就走到了西藏》">
+  <strong>上一篇：</strong><br/>
+  <span>
+  陈坤在世间行走的旁白 - 读《突然就走到了西藏》</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2016/05/16/ios-category-use-merit-and-demerit/"  title="iOS - Category 的使用和优缺点">
+ <strong>下一篇：</strong><br/> 
+ <span>iOS - Category 的使用和优缺点
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+<section id="comments" class="comment">
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript" target="_blank" rel="noopener">comments powered by Disqus.</a></noscript>
+  </div>
+</section>
+
+
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#RunLoop"><span class="toc-number">1.</span> <span class="toc-text">RunLoop</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#RunLoop-的概念"><span class="toc-number">1.1.</span> <span class="toc-text">RunLoop 的概念</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Input-source-与-Timer-source"><span class="toc-number">1.2.</span> <span class="toc-text">Input source 与 Timer source</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Input-Source-可以分为三类"><span class="toc-number">1.2.1.</span> <span class="toc-text">Input Source 可以分为三类</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Timer-Source"><span class="toc-number">1.2.2.</span> <span class="toc-text">Timer Source</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#RunLoop-与线程"><span class="toc-number">1.3.</span> <span class="toc-text">RunLoop 与线程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Warning"><span class="toc-number">1.3.1.</span> <span class="toc-text">Warning</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#RunLoop-Observer"><span class="toc-number">1.4.</span> <span class="toc-text">RunLoop Observer</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#RunLoop-Mode"><span class="toc-number">1.5.</span> <span class="toc-text">RunLoop Mode</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#RunLoop-的使用"><span class="toc-number">1.6.</span> <span class="toc-text">RunLoop 的使用</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#获取-RunLoop"><span class="toc-number">1.6.1.</span> <span class="toc-text">获取 RunLoop</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#在主线程和子线程中区别"><span class="toc-number">1.6.2.</span> <span class="toc-text">在主线程和子线程中区别</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#RunLoop-与-NSTimer"><span class="toc-number">1.7.</span> <span class="toc-text">RunLoop 与 NSTimer</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#timerWithTimeInterval"><span class="toc-number">1.7.1.</span> <span class="toc-text">timerWithTimeInterval:</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#scheduledTimerWithTimeInterval"><span class="toc-number">1.7.2.</span> <span class="toc-text">scheduledTimerWithTimeInterval:</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#坑"><span class="toc-number">1.7.3.</span> <span class="toc-text">坑</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Runloop-和-Autoreleasepool-的关系图解"><span class="toc-number">2.</span> <span class="toc-text">Runloop 和 Autoreleasepool 的关系图解</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Autorelease-Pool"><span class="toc-number">3.</span> <span class="toc-text">Autorelease Pool</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Autorelease-Pool-的用处"><span class="toc-number">3.1.</span> <span class="toc-text">Autorelease Pool 的用处</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Autorelease-Pool-进行-Drain-的时机"><span class="toc-number">3.2.</span> <span class="toc-text">Autorelease Pool 进行 Drain 的时机</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#main-m-中的-autoreleasepool-的解释"><span class="toc-number">3.3.</span> <span class="toc-text">main.m 中的 autoreleasepool 的解释</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#autoreleasepool的创建与销毁"><span class="toc-number">3.4.</span> <span class="toc-text">autoreleasepool的创建与销毁</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#参考资料"><span class="toc-number">4.</span> <span class="toc-text">参考资料</span></a></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+
+  
+<div class="github-card">
+<p class="asidetitle">Github Card</p>
+<div class="github-card" data-github="qiudengqiang" data-theme="medium"></div>
+<script type="text/javascript" src="//cdn.jsdelivr.net/github-cards/latest/widget.js" ></script>
+</div>
+
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">Categories</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/Daily/" title="Daily">Daily<sup>14</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/DataBase/" title="DataBase">DataBase<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Java/" title="Java">Java<sup>9</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Journey/" title="Journey">Journey<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Linux/" title="Linux">Linux<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/MySQL/" title="MySQL">MySQL<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/iOS/Objc/" title="Objc">Objc<sup>13</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Readed/" title="Readed">Readed<sup>5</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/VSCode/" title="VSCode">VSCode<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Web/" title="Web">Web<sup>5</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Xcode/" title="Xcode">Xcode<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/iOS/" title="iOS">iOS<sup>16</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/iOS/" title="iOS">iOS<sup>16</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Daily/" title="Daily">Daily<sup>14</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Objc/" title="Objc">Objc<sup>11</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Java/" title="Java">Java<sup>9</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Readed/" title="Readed">Readed<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Web/" title="Web">Web<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Thread/" title="Thread">Thread<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Network/" title="Network">Network<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Journey/" title="Journey">Journey<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/MySQL/" title="MySQL">MySQL<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Xcode/" title="Xcode">Xcode<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Category/" title="Category">Category<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/keywords/" title="keywords">keywords<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Idea/" title="Idea">Idea<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/KVC/" title="KVC">KVC<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/KVO/" title="KVO">KVO<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/NSThread/" title="NSThread">NSThread<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/NSURLRequest/" title="NSURLRequest">NSURLRequest<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/NSURLResponse/" title="NSURLResponse">NSURLResponse<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/NSURLSession/" title="NSURLSession">NSURLSession<sup>1</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+  <div class="weiboshow">
+  <p class="asidetitle">Weibo</p>
+    <iframe width="100%" height="120" class="share_self"  frameborder="0" scrolling="no" src="https://widget.weibo.com/weiboshow/index.php?language=&width=0&height=120&fansRow=2&ptype=1&speed=0&skin=9&isTitle=1&noborder=1&isWeibo=0&isFans=0&uid=6488657373&verifier=f458bf46&dpc=1"></iframe>
+</div>
+
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> You can&#39;t connect the dots looking forward <br/>
+			You can only connect them looking backwards.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		<a href="http://weibo.com/6488657373" target="_blank" class="icon-weibo" title="微博"></a>
+		
+		
+		<a href="https://github.com/qiudengqiang" target="_blank" class="icon-github" title="github"></a>
+		
+		
+		
+		<a href="https://twitter.com/murendless" target="_blank" class="icon-twitter" title="twitter"></a>
+		
+		
+		
+		
+		
+		
+		
+		<a href="mailto:qiudengqiang@gmail.com" target="_blank" class="icon-email" title="Email Me"></a>
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2022 
+		
+		<a href="/about" target="_blank" title="techbird">techbird</a>
+		
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+<script type="text/javascript">
+
+var disqus_shortname = 'techbird-1';
+
+(function(){
+  var dsq = document.createElement('script');
+  dsq.type = 'text/javascript';
+  dsq.async = true;
+  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+}());
+(function(){
+  var dsq = document.createElement('script');
+  dsq.type = 'text/javascript';
+  dsq.async = true;
+  dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+}());
+</script>
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

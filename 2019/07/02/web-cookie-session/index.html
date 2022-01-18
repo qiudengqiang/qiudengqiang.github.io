@@ -1,0 +1,718 @@
+
+ <!DOCTYPE HTML>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+  
+    <title>Cookie &amp; Session 基础 | techbird blog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="techbird">
+    
+
+    
+    <meta name="description" content="会话技术为了实现某一个需求，浏览器和服务器之间会产生多次的请求和响应；从打开浏览器访问服务器开始，到访问服务器结束关闭浏览器，之间的多次请求和响应称为：「浏览器和服务器之间的一次会话」「一次会话」：浏览器第一次给服务器资源发送请求，会话建立，直到有一方断开为止 功能在一次会话的范围内的多次请求间，共享数据 方式 客户端会话技术：Cookie 服务器端会话技术：Session  CookieCook">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Cookie &amp; Session 基础">
+<meta property="og:url" content="https://hashcode.cn/2019/07/02/web-cookie-session/index.html">
+<meta property="og:site_name" content="techbird blog">
+<meta property="og:description" content="会话技术为了实现某一个需求，浏览器和服务器之间会产生多次的请求和响应；从打开浏览器访问服务器开始，到访问服务器结束关闭浏览器，之间的多次请求和响应称为：「浏览器和服务器之间的一次会话」「一次会话」：浏览器第一次给服务器资源发送请求，会话建立，直到有一方断开为止 功能在一次会话的范围内的多次请求间，共享数据 方式 客户端会话技术：Cookie 服务器端会话技术：Session  CookieCook">
+<meta property="article:published_time" content="2019-07-02T02:01:47.000Z">
+<meta property="article:modified_time" content="2020-11-20T06:12:25.807Z">
+<meta property="article:author" content="techbird">
+<meta property="article:tag" content="Web">
+<meta property="article:tag" content="Cookie">
+<meta property="article:tag" content="Session">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:creator" content="@murendless">
+
+    
+    <link rel="alternative" href="/atom.xml" title="techbird blog" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    
+<link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="/%02.css">
+<link rel="stylesheet" href="/.css">
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.png" alt="techbird blog" title="techbird blog"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="techbird blog">techbird blog</a></h1>
+				<h2 class="blog-motto">timeline of growth</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives/">Archives</a></li>
+					
+						<li><a href="/about/">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:hashcode.cn">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2019/07/02/web-cookie-session/" title="Cookie &amp; Session 基础" itemprop="url">Cookie &amp; Session 基础</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="techbird" target="_blank" itemprop="author">techbird</a>
+		
+  <p class="article-time">
+    <time datetime="2019-07-02T02:01:47.000Z" itemprop="datePublished"> Published 2019-07-02 10:01</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#会话技术"><span class="toc-number">1.</span> <span class="toc-text">会话技术</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#功能"><span class="toc-number">1.1.</span> <span class="toc-text">功能</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#方式"><span class="toc-number">1.2.</span> <span class="toc-text">方式</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Cookie"><span class="toc-number">2.</span> <span class="toc-text">Cookie</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#概念"><span class="toc-number">2.1.</span> <span class="toc-text">概念</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#快速入门"><span class="toc-number">2.2.</span> <span class="toc-text">快速入门</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#实现原理"><span class="toc-number">2.3.</span> <span class="toc-text">实现原理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#方法"><span class="toc-number">2.4.</span> <span class="toc-text">方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#一次可不可以发送多个cookie"><span class="toc-number">2.5.</span> <span class="toc-text">一次可不可以发送多个cookie?</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#cookie在浏览器中保存多长时间？"><span class="toc-number">2.6.</span> <span class="toc-text">cookie在浏览器中保存多长时间？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#cookie能不能存中文？"><span class="toc-number">2.7.</span> <span class="toc-text">cookie能不能存中文？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#cookie共享问题？"><span class="toc-number">2.8.</span> <span class="toc-text">cookie共享问题？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Cookie的特点和作用"><span class="toc-number">2.9.</span> <span class="toc-text">Cookie的特点和作用</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#作用"><span class="toc-number">2.9.1.</span> <span class="toc-text">作用</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Session"><span class="toc-number">3.</span> <span class="toc-text">Session</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#快速入门-1"><span class="toc-number">3.1.</span> <span class="toc-text">快速入门</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#生命周期"><span class="toc-number">3.2.</span> <span class="toc-text">生命周期</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#三种销毁Session对象情况"><span class="toc-number">3.2.1.</span> <span class="toc-text">三种销毁Session对象情况</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#实现原理-1"><span class="toc-number">3.3.</span> <span class="toc-text">实现原理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#细节"><span class="toc-number">3.4.</span> <span class="toc-text">细节</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#当客户端关闭后，服务器不关闭，两次获取-session-是否为同一个？"><span class="toc-number">3.4.1.</span> <span class="toc-text">当客户端关闭后，服务器不关闭，两次获取 session 是否为同一个？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#客户端不关闭，服务器关闭后，两次获取的session是同一个吗？"><span class="toc-number">3.4.2.</span> <span class="toc-text">客户端不关闭，服务器关闭后，两次获取的session是同一个吗？</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#session的特点"><span class="toc-number">3.5.</span> <span class="toc-text">session的特点</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#解决浏览器禁止cookie的情况-了解即可"><span class="toc-number">3.6.</span> <span class="toc-text">解决浏览器禁止cookie的情况 (了解即可)</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#小结：session与Cookie的区别"><span class="toc-number">4.</span> <span class="toc-text">小结：session与Cookie的区别</span></a></li></ol>
+		
+		</div>
+		
+		<h1 id="会话技术"><a href="#会话技术" class="headerlink" title="会话技术"></a>会话技术</h1><p>为了实现某一个需求，浏览器和服务器之间会产生多次的请求和响应；从打开浏览器访问服务器开始，到访问服务器结束关闭浏览器，之间的多次请求和响应称为：「浏览器和服务器之间的一次会话」<br>「一次会话」：浏览器第一次给服务器资源发送请求，会话建立，直到有一方断开为止</p>
+<h2 id="功能"><a href="#功能" class="headerlink" title="功能"></a>功能</h2><p>在一次会话的范围内的多次请求间，共享数据</p>
+<h2 id="方式"><a href="#方式" class="headerlink" title="方式"></a>方式</h2><ol>
+<li>客户端会话技术：Cookie</li>
+<li>服务器端会话技术：Session</li>
+</ol>
+<h1 id="Cookie"><a href="#Cookie" class="headerlink" title="Cookie"></a>Cookie</h1><p>Cookie，有时也用其复数形式 Cookies，指某些网站为了辨别用户身份、进行 session 跟踪而储存在用户本地终端上的数据(可以叫做浏览器缓存）</p>
+<h2 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h2><p>客户端会话技术，将数据保存到客户端</p>
+<h2 id="快速入门"><a href="#快速入门" class="headerlink" title="快速入门"></a>快速入门</h2><ol>
+<li>创建Cookie对象，绑定数据<br> new Cookie(String name, String value) </li>
+<li>发送Cookie对象<br> response.addCookie(Cookie cookie) </li>
+<li>获取Cookie，拿到数据<br> Cookie[]  request.getCookies()  </li>
+</ol>
+<h2 id="实现原理"><a href="#实现原理" class="headerlink" title="实现原理"></a>实现原理</h2><p>基于响应头set-cookie和请求头cookie实现</p>
+<h2 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h2><ol>
+<li>new cookie(“key”,”value”);</li>
+<li>setPath(path);</li>
+<li>setMaxAge(time);</li>
+<li>response.addCookie(cookie);</li>
+</ol>
+<p>删除cookie的时候只需要覆盖同路径，同名，只要存活时间(serMaxAge(0))设置为0就可以</p>
+<h2 id="一次可不可以发送多个cookie"><a href="#一次可不可以发送多个cookie" class="headerlink" title="一次可不可以发送多个cookie?"></a>一次可不可以发送多个cookie?</h2><p>可以创建多个Cookie对象，使用response调用多次addCookie方法发送cookie即可。</p>
+<h2 id="cookie在浏览器中保存多长时间？"><a href="#cookie在浏览器中保存多长时间？" class="headerlink" title="cookie在浏览器中保存多长时间？"></a>cookie在浏览器中保存多长时间？</h2><ul>
+<li>默认情况下，当浏览器关闭后，Cookie数据被销毁</li>
+<li>持久化存储： <code>setMaxAge(int seconds)</code><ul>
+<li>正数：将Cookie数据写到硬盘的文件中。持久化存储。并指定cookie存活时间，时间到后，cookie文件自动失效</li>
+<li>负数：默认值</li>
+<li>零：删除cookie信息</li>
+</ul>
+</li>
+</ul>
+<h2 id="cookie能不能存中文？"><a href="#cookie能不能存中文？" class="headerlink" title="cookie能不能存中文？"></a>cookie能不能存中文？</h2><ul>
+<li>在tomcat 8 之前 cookie中不能直接存储中文数据。需要将中文数据转码—一般采用URL编码(%E3)</li>
+<li>在tomcat 8 之后，cookie支持中文数据。特殊字符还是不支持，建议使用URL编码存储，URL解码解析</li>
+</ul>
+<h2 id="cookie共享问题？"><a href="#cookie共享问题？" class="headerlink" title="cookie共享问题？"></a>cookie共享问题？</h2><ol>
+<li>假设在一个tomcat服务器中，部署了多个web项目，那么在这些web项目中cookie能不能共享？</li>
+</ol>
+<ul>
+<li>默认情况下cookie不能共享</li>
+<li><code>setPath(String path)</code>:设置 cookie 的获取范围。默认情况下，设置当前的虚拟目录</li>
+<li>如果要共享，则可以将 path 设置为<code>/</code></li>
+</ul>
+<ol start="2">
+<li>不同的 tomcat 服务器间 cookie 共享问题？</li>
+</ol>
+<ul>
+<li><code>setDomain(String path)</code>：如果设置一级域名相同，那么多个服务器之间 cookie 可以共享</li>
+<li><code>setDomain(&quot;.baidu.com&quot;)</code>：那么tieba.baidu.com和news.baidu.com中 cookie 可以共享</li>
+</ul>
+<h2 id="Cookie的特点和作用"><a href="#Cookie的特点和作用" class="headerlink" title="Cookie的特点和作用"></a>Cookie的特点和作用</h2><ol>
+<li>cookie存储数据在客户端浏览器</li>
+<li>浏览器对于单个cookie 的大小有限制<code>(4kb)</code> 以及 对同一个域名下的总cookie数量也有限制(20个)</li>
+</ol>
+<h3 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h3><ol>
+<li>cookie一般用于存出少量的不太敏感的数据</li>
+<li>在不登录的情况下，完成服务器对客户端的身份识别</li>
+<li>eg： 记住上一次访问时间</li>
+</ol>
+<h1 id="Session"><a href="#Session" class="headerlink" title="Session"></a>Session</h1><p>服务器端会话技术，在一次会话的多次请求间共享数据，将数据保存在服务器端的对象中。HttpSession</p>
+<h2 id="快速入门-1"><a href="#快速入门-1" class="headerlink" title="快速入门"></a>快速入门</h2><ol>
+<li>获取HttpSession对象：<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">HttpSession session = request.getSession();</span><br></pre></td></tr></table></figure></li>
+<li>使用HttpSession对象：<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="function">Object <span class="title">getAttribute</span><span class="params">(String name)</span>  </span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">setAttribute</span><span class="params">(String name, Object value)</span></span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">removeAttribute</span><span class="params">(String name)</span></span></span><br></pre></td></tr></table></figure>
+<h2 id="生命周期"><a href="#生命周期" class="headerlink" title="生命周期"></a>生命周期</h2></li>
+<li>调用<code>request.getSession()</code>;方法时开始创建</li>
+<li>默认是<code>30</code>分钟用户无操作自动销毁</li>
+<li>可以手动销毁</li>
+</ol>
+<h3 id="三种销毁Session对象情况"><a href="#三种销毁Session对象情况" class="headerlink" title="三种销毁Session对象情况"></a>三种销毁Session对象情况</h3><ol>
+<li>不正常关闭服务(正常关闭服务器Session信息会被序列化到硬盘中 保存tomcat/work目录)</li>
+<li>session 对象调用invalidate() 手动销毁Session对象</li>
+<li>session 默认失效时间 30分钟（连续不使用Session对象时间）<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">//选择性配置修改，在tomcat/conf/web.xml 配置</span><br><span class="line">&lt;session-config&gt;</span><br><span class="line">    &lt;session-timeout&gt;30&lt;/session-timeout&gt;</span><br><span class="line">&lt;/session-config&gt;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<h2 id="实现原理-1"><a href="#实现原理-1" class="headerlink" title="实现原理"></a>实现原理</h2><p>Session的实现是依赖于Cookie的</p>
+<h2 id="细节"><a href="#细节" class="headerlink" title="细节"></a>细节</h2><h3 id="当客户端关闭后，服务器不关闭，两次获取-session-是否为同一个？"><a href="#当客户端关闭后，服务器不关闭，两次获取-session-是否为同一个？" class="headerlink" title="当客户端关闭后，服务器不关闭，两次获取 session 是否为同一个？"></a>当客户端关闭后，服务器不关闭，两次获取 session 是否为同一个？</h3><ul>
+<li>默认情况下，不是同一个。</li>
+<li>如果需要相同，则可以创建 Cookie,键为 JSESSIONID，设置最大存活时间，让 cookie 持久化保存。<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">Cookie c = <span class="keyword">new</span> Cookie(<span class="string">"JSESSIONID"</span>,session.getId());</span><br><span class="line">c.setMaxAge(<span class="number">60</span>*<span class="number">60</span>);</span><br><span class="line">response.addCookie(c);</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h3 id="客户端不关闭，服务器关闭后，两次获取的session是同一个吗？"><a href="#客户端不关闭，服务器关闭后，两次获取的session是同一个吗？" class="headerlink" title="客户端不关闭，服务器关闭后，两次获取的session是同一个吗？"></a>客户端不关闭，服务器关闭后，两次获取的session是同一个吗？</h3><ul>
+<li>不是同一个，但是要确保数据不丢失。tomcat自动完成以下工作</li>
+<li>session的<code>钝化</code>： 在服务器正常关闭之前，将session对象系列化到硬盘上</li>
+<li>session的<code>活化</code>： 在服务器启动后，将session文件转化为内存中的session对象即可。</li>
+</ul>
+<h2 id="session的特点"><a href="#session的特点" class="headerlink" title="session的特点"></a>session的特点</h2><ol>
+<li>session用于存储一次会话的多次请求的数据，存在服务器端</li>
+<li>session可以存储任意类型，任意大小的数据</li>
+</ol>
+<h2 id="解决浏览器禁止cookie的情况-了解即可"><a href="#解决浏览器禁止cookie的情况-了解即可" class="headerlink" title="解决浏览器禁止cookie的情况 (了解即可)"></a>解决浏览器禁止cookie的情况 (了解即可)</h2><p>浏览器无法保存cookie中jsession id ，无法完成Session追踪，通过程序重写URL(携带session的URL)</p>
+<h1 id="小结：session与Cookie的区别"><a href="#小结：session与Cookie的区别" class="headerlink" title="小结：session与Cookie的区别"></a>小结：session与Cookie的区别</h1><ol>
+<li>session存储数据在服务器端，Cookie在客户端</li>
+<li>session没有数据大小限制，Cookie有</li>
+<li>session数据安全，Cookie相对于不安全</li>
+</ol>
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/Web/">Web</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/Web/">Web</a><a href="/tags/Cookie/">Cookie</a><a href="/tags/Session/">Session</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="https://hashcode.cn/2019/07/02/web-cookie-session/" data-title="Cookie &amp; Session 基础 | techbird blog" data-tsina="6488657373" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2019/07/08/web-jsp-el-jstl-base/" title="JSP/EL/JSTL 快速入门">
+  <strong>上一篇：</strong><br/>
+  <span>
+  JSP/EL/JSTL 快速入门</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2019/06/08/web-javascript-base/"  title="JavaScript 快速入门">
+ <strong>下一篇：</strong><br/> 
+ <span>JavaScript 快速入门
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+<section id="comments" class="comment">
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript" target="_blank" rel="noopener">comments powered by Disqus.</a></noscript>
+  </div>
+</section>
+
+
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#会话技术"><span class="toc-number">1.</span> <span class="toc-text">会话技术</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#功能"><span class="toc-number">1.1.</span> <span class="toc-text">功能</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#方式"><span class="toc-number">1.2.</span> <span class="toc-text">方式</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Cookie"><span class="toc-number">2.</span> <span class="toc-text">Cookie</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#概念"><span class="toc-number">2.1.</span> <span class="toc-text">概念</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#快速入门"><span class="toc-number">2.2.</span> <span class="toc-text">快速入门</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#实现原理"><span class="toc-number">2.3.</span> <span class="toc-text">实现原理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#方法"><span class="toc-number">2.4.</span> <span class="toc-text">方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#一次可不可以发送多个cookie"><span class="toc-number">2.5.</span> <span class="toc-text">一次可不可以发送多个cookie?</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#cookie在浏览器中保存多长时间？"><span class="toc-number">2.6.</span> <span class="toc-text">cookie在浏览器中保存多长时间？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#cookie能不能存中文？"><span class="toc-number">2.7.</span> <span class="toc-text">cookie能不能存中文？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#cookie共享问题？"><span class="toc-number">2.8.</span> <span class="toc-text">cookie共享问题？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Cookie的特点和作用"><span class="toc-number">2.9.</span> <span class="toc-text">Cookie的特点和作用</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#作用"><span class="toc-number">2.9.1.</span> <span class="toc-text">作用</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Session"><span class="toc-number">3.</span> <span class="toc-text">Session</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#快速入门-1"><span class="toc-number">3.1.</span> <span class="toc-text">快速入门</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#生命周期"><span class="toc-number">3.2.</span> <span class="toc-text">生命周期</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#三种销毁Session对象情况"><span class="toc-number">3.2.1.</span> <span class="toc-text">三种销毁Session对象情况</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#实现原理-1"><span class="toc-number">3.3.</span> <span class="toc-text">实现原理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#细节"><span class="toc-number">3.4.</span> <span class="toc-text">细节</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#当客户端关闭后，服务器不关闭，两次获取-session-是否为同一个？"><span class="toc-number">3.4.1.</span> <span class="toc-text">当客户端关闭后，服务器不关闭，两次获取 session 是否为同一个？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#客户端不关闭，服务器关闭后，两次获取的session是同一个吗？"><span class="toc-number">3.4.2.</span> <span class="toc-text">客户端不关闭，服务器关闭后，两次获取的session是同一个吗？</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#session的特点"><span class="toc-number">3.5.</span> <span class="toc-text">session的特点</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#解决浏览器禁止cookie的情况-了解即可"><span class="toc-number">3.6.</span> <span class="toc-text">解决浏览器禁止cookie的情况 (了解即可)</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#小结：session与Cookie的区别"><span class="toc-number">4.</span> <span class="toc-text">小结：session与Cookie的区别</span></a></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+
+  
+<div class="github-card">
+<p class="asidetitle">Github Card</p>
+<div class="github-card" data-github="qiudengqiang" data-theme="medium"></div>
+<script type="text/javascript" src="//cdn.jsdelivr.net/github-cards/latest/widget.js" ></script>
+</div>
+
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">Categories</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/Daily/" title="Daily">Daily<sup>14</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/DataBase/" title="DataBase">DataBase<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Java/" title="Java">Java<sup>9</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Journey/" title="Journey">Journey<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Linux/" title="Linux">Linux<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/MySQL/" title="MySQL">MySQL<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/iOS/Objc/" title="Objc">Objc<sup>13</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Readed/" title="Readed">Readed<sup>5</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/VSCode/" title="VSCode">VSCode<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Web/" title="Web">Web<sup>5</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Xcode/" title="Xcode">Xcode<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/iOS/" title="iOS">iOS<sup>16</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/iOS/" title="iOS">iOS<sup>16</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Daily/" title="Daily">Daily<sup>14</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Objc/" title="Objc">Objc<sup>11</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Java/" title="Java">Java<sup>9</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Readed/" title="Readed">Readed<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Web/" title="Web">Web<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Thread/" title="Thread">Thread<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Network/" title="Network">Network<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Journey/" title="Journey">Journey<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/MySQL/" title="MySQL">MySQL<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Xcode/" title="Xcode">Xcode<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Category/" title="Category">Category<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/keywords/" title="keywords">keywords<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Idea/" title="Idea">Idea<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/KVC/" title="KVC">KVC<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/KVO/" title="KVO">KVO<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/NSThread/" title="NSThread">NSThread<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/NSURLRequest/" title="NSURLRequest">NSURLRequest<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/NSURLResponse/" title="NSURLResponse">NSURLResponse<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/NSURLSession/" title="NSURLSession">NSURLSession<sup>1</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+  <div class="weiboshow">
+  <p class="asidetitle">Weibo</p>
+    <iframe width="100%" height="120" class="share_self"  frameborder="0" scrolling="no" src="https://widget.weibo.com/weiboshow/index.php?language=&width=0&height=120&fansRow=2&ptype=1&speed=0&skin=9&isTitle=1&noborder=1&isWeibo=0&isFans=0&uid=6488657373&verifier=f458bf46&dpc=1"></iframe>
+</div>
+
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> You can&#39;t connect the dots looking forward <br/>
+			You can only connect them looking backwards.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		<a href="http://weibo.com/6488657373" target="_blank" class="icon-weibo" title="微博"></a>
+		
+		
+		<a href="https://github.com/qiudengqiang" target="_blank" class="icon-github" title="github"></a>
+		
+		
+		
+		<a href="https://twitter.com/murendless" target="_blank" class="icon-twitter" title="twitter"></a>
+		
+		
+		
+		
+		
+		
+		
+		<a href="mailto:qiudengqiang@gmail.com" target="_blank" class="icon-email" title="Email Me"></a>
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2022 
+		
+		<a href="/about" target="_blank" title="techbird">techbird</a>
+		
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+<script type="text/javascript">
+
+var disqus_shortname = 'techbird-1';
+
+(function(){
+  var dsq = document.createElement('script');
+  dsq.type = 'text/javascript';
+  dsq.async = true;
+  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+}());
+(function(){
+  var dsq = document.createElement('script');
+  dsq.type = 'text/javascript';
+  dsq.async = true;
+  dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+}());
+</script>
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

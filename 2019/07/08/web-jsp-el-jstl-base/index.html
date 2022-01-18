@@ -1,0 +1,788 @@
+
+ <!DOCTYPE HTML>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+  
+    <title>JSP/EL/JSTL 快速入门 | techbird blog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="techbird">
+    
+
+    
+    <meta name="description" content="JSPJSP(JavaServer Pages) 是一种动态页面技术，它实现了Html语法中的java扩展（以 &lt;%, %&gt;形式）。JSP 与 Servlet 一样，是在服务器端执行的。通常返回给客户端的就是一个 HTML 文本，因此客户端只要有浏览器就能浏览。 指令作用用于配置 JSP 页面，导入资源文件 格式&lt;%@ 指令名称 属性名1&#x3D;属性值1 属性名2&#x3D;属性值2%&gt;">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JSP&#x2F;EL&#x2F;JSTL 快速入门">
+<meta property="og:url" content="https://hashcode.cn/2019/07/08/web-jsp-el-jstl-base/index.html">
+<meta property="og:site_name" content="techbird blog">
+<meta property="og:description" content="JSPJSP(JavaServer Pages) 是一种动态页面技术，它实现了Html语法中的java扩展（以 &lt;%, %&gt;形式）。JSP 与 Servlet 一样，是在服务器端执行的。通常返回给客户端的就是一个 HTML 文本，因此客户端只要有浏览器就能浏览。 指令作用用于配置 JSP 页面，导入资源文件 格式&lt;%@ 指令名称 属性名1&#x3D;属性值1 属性名2&#x3D;属性值2%&gt;">
+<meta property="og:image" content="https://hashcode.cn/images/tech/web-scope-object-hidden01">
+<meta property="og:image" content="https://hashcode.cn/images/tech/web-scope-object-hidden02">
+<meta property="article:published_time" content="2019-07-08T02:01:47.000Z">
+<meta property="article:modified_time" content="2020-11-20T06:12:25.808Z">
+<meta property="article:author" content="techbird">
+<meta property="article:tag" content="Web">
+<meta property="article:tag" content="JSP">
+<meta property="article:tag" content="EL">
+<meta property="article:tag" content="JSTL">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://hashcode.cn/images/tech/web-scope-object-hidden01">
+<meta name="twitter:creator" content="@murendless">
+
+    
+    <link rel="alternative" href="/atom.xml" title="techbird blog" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    
+<link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="/%02.css">
+<link rel="stylesheet" href="/.css">
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.png" alt="techbird blog" title="techbird blog"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="techbird blog">techbird blog</a></h1>
+				<h2 class="blog-motto">timeline of growth</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives/">Archives</a></li>
+					
+						<li><a href="/about/">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:hashcode.cn">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2019/07/08/web-jsp-el-jstl-base/" title="JSP/EL/JSTL 快速入门" itemprop="url">JSP/EL/JSTL 快速入门</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="techbird" target="_blank" itemprop="author">techbird</a>
+		
+  <p class="article-time">
+    <time datetime="2019-07-08T02:01:47.000Z" itemprop="datePublished"> Published 2019-07-08 10:01</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#JSP"><span class="toc-number">1.</span> <span class="toc-text">JSP</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#指令"><span class="toc-number">1.1.</span> <span class="toc-text">指令</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#作用"><span class="toc-number">1.1.1.</span> <span class="toc-text">作用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#格式"><span class="toc-number">1.1.2.</span> <span class="toc-text">格式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#分类"><span class="toc-number">1.1.3.</span> <span class="toc-text">分类</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#其他指令"><span class="toc-number">1.1.4.</span> <span class="toc-text">其他指令</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#注释"><span class="toc-number">1.2.</span> <span class="toc-text">注释</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#html注释"><span class="toc-number">1.2.1.</span> <span class="toc-text">html注释</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#jsp注释"><span class="toc-number">1.2.2.</span> <span class="toc-text">jsp注释</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#内置对象"><span class="toc-number">1.3.</span> <span class="toc-text">内置对象</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#详解"><span class="toc-number">1.3.1.</span> <span class="toc-text">详解</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#EL"><span class="toc-number">2.</span> <span class="toc-text">EL</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#语法"><span class="toc-number">2.1.</span> <span class="toc-text">语法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#运算符"><span class="toc-number">2.2.</span> <span class="toc-text">运算符</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#获取值"><span class="toc-number">2.3.</span> <span class="toc-text">获取值</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#语法-1"><span class="toc-number">2.3.1.</span> <span class="toc-text">语法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#隐式对象"><span class="toc-number">2.3.2.</span> <span class="toc-text">隐式对象</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#小结"><span class="toc-number">2.4.</span> <span class="toc-text">小结</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#getParameter-和-getAttribute-区别-？"><span class="toc-number">2.4.1.</span> <span class="toc-text">getParameter 和 getAttribute 区别 ？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#getParameter-与-getParamValues-的区别"><span class="toc-number">2.4.2.</span> <span class="toc-text">getParameter() 与 getParamValues() 的区别 ?</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#getHeader-与-getHeaderValues-区别"><span class="toc-number">2.4.3.</span> <span class="toc-text">getHeader() 与 getHeaderValues() 区别 ?</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#cookie"><span class="toc-number">2.4.4.</span> <span class="toc-text">cookie</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#initParam"><span class="toc-number">2.4.5.</span> <span class="toc-text">initParam</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#最常使用"><span class="toc-number">2.4.6.</span> <span class="toc-text">最常使用</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#注意"><span class="toc-number">2.5.</span> <span class="toc-text">注意</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#JSTL"><span class="toc-number">3.</span> <span class="toc-text">JSTL</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#使用步骤"><span class="toc-number">3.1.</span> <span class="toc-text">使用步骤</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#常用标签"><span class="toc-number">3.2.</span> <span class="toc-text">常用标签</span></a></li></ol></li></ol>
+		
+		</div>
+		
+		<h1 id="JSP"><a href="#JSP" class="headerlink" title="JSP"></a>JSP</h1><p>JSP(JavaServer Pages) 是一种动态页面技术，它实现了Html语法中的java扩展（以 <code>&lt;%, %&gt;</code>形式）。JSP 与 Servlet 一样，是在服务器端执行的。通常返回给客户端的就是一个 HTML 文本，因此客户端只要有浏览器就能浏览。</p>
+<h2 id="指令"><a href="#指令" class="headerlink" title="指令"></a>指令</h2><h3 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h3><p>用于配置 JSP 页面，导入资源文件</p>
+<h3 id="格式"><a href="#格式" class="headerlink" title="格式"></a>格式</h3><p>&lt;%@ 指令名称 属性名1=属性值1 属性名2=属性值2%&gt;</p>
+<h3 id="分类"><a href="#分类" class="headerlink" title="分类"></a>分类</h3><ol>
+<li>page：用于标识和配置 JSP 页面</li>
+</ol>
+<ul>
+<li>contentType：类似于response.setContentType()，用于设置响应体的mime类型及字符集，设置当前 JSP 页面编码</li>
+<li>import：导入包</li>
+<li>errorPage：当前页面发生异常后，会跳转到指定的错误页面，例如 404 等</li>
+<li>isErrorPage：标识当前是否是错误页面，参数：true（可以使用内置对象 exception），页面默认值是 false</li>
+<li>session：用于指定当前页面是否可以使用session</li>
+<li>pageEncoding：解决乱码问题(在低级工具中声明)</li>
+</ul>
+<ol start="2">
+<li>include：包含页面，导入其他页面资源文件：<br>&lt;%@ include file=”index.jsp”%&gt;</li>
+<li>taglib：用于导入第三方资源<br>&lt;%@ taglib prefix=”c” uri=”<a href="http://java.sun.com/jsp/jstl/core&quot;%&gt;" target="_blank" rel="noopener">http://java.sun.com/jsp/jstl/core&quot;%&gt;</a> 其中prefix支持自定义</li>
+</ol>
+<h3 id="其他指令"><a href="#其他指令" class="headerlink" title="其他指令"></a>其他指令</h3><ol>
+<li>JSP脚本表达式 ：       &lt;%=  java表达式 %&gt;</li>
+<li>JSP脚本片断   ：       &lt;% 任意多的java语句 %&gt;</li>
+<li>JSP声明      ：       &lt;%!  java代码 %&gt;</li>
+</ol>
+<h2 id="注释"><a href="#注释" class="headerlink" title="注释"></a>注释</h2><h3 id="html注释"><a href="#html注释" class="headerlink" title="html注释"></a>html注释</h3><pre><code>`&lt;!-- --&gt;`:只能注释 html 代码片段</code></pre><h3 id="jsp注释"><a href="#jsp注释" class="headerlink" title="jsp注释"></a>jsp注释</h3><p>推荐使用：<code>&lt;%-- --%&gt;</code>：可以注释所有</p>
+<h2 id="内置对象"><a href="#内置对象" class="headerlink" title="内置对象"></a>内置对象</h2><ul>
+<li>在jsp页面中不需要创建，直接使用的对象, 一共有9个：<pre><code>变量名                    真实类型                        作用</code></pre><ul>
+<li><code>pageContext</code>                PageContext                    当前页面共享数据，还可以获取其他八个内置对象</li>
+<li><code>request</code>                    HttpServletRequest            一次请求访问的多个资源(转发)</li>
+<li><code>session</code>                    HttpSession                    一次会话的多个请求间</li>
+<li><code>application</code>                ServletContext                所有用户间共享数据</li>
+<li><code>response</code>                    HttpServletResponse            响应对象</li>
+<li><code>page</code>                        Object                        当前页面(Servlet)的对象  this</li>
+<li><code>out</code>                        JspWriter                    输出对象，数据输出到页面上</li>
+<li><code>config</code>                    ServletConfig                Servlet的配置对象</li>
+<li><code>exception</code>                    Throwable                    异常对象</li>
+</ul>
+</li>
+</ul>
+<h3 id="详解"><a href="#详解" class="headerlink" title="详解"></a>详解</h3><ul>
+<li><code>out</code><br>相当于<code>response.getWriter()</code>获取到的输入流，内置单独的缓冲区<br>[ buffer=”none | <code>8kb</code> | sizekb” ] out隐式对象所使用的缓冲区的大小<br>[ autoFlush=”true | false” ] out隐式对象是否自动刷新缓冲区，默认为true，不需要更改</li>
+<li><code>pageContext</code><br>代表当前 JSP 的运行环境<br>生命周期:  随着 JSP 页面打开而创建,随着关闭而销毁.<br>用处:     在整个 JSP 页面中共享数据</li>
+</ul>
+<ol>
+<li>可以作为入口对象获取其他八大隐示对象的引用<br> <code>getException</code><br> <code>getPage</code><br> <code>getRequest</code><br> <code>getRespons</code><br> <code>getServletConfig</code><br> <code>getServletContext</code> 方法返回 application 隐式对象<br> <code>getSession</code><br> <code>getOut</code><br> <strong><strong><strong>___</strong></strong></strong>返回的都是本类型的隐示对象</li>
+</ol>
+<ol start="2">
+<li><p>首先是一个域对象，作为入口操作四大作用域中的数据</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">ServletContext(application域) &gt; Session(session域)  &gt; request(request域) &gt;pageContext(page域)</span><br><span class="line"></span><br><span class="line"><span class="comment">//用来操作page域中的属性</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setAttribute</span><span class="params">(java.lang.String?name,java.lang.Object?value)</span></span></span><br><span class="line"><span class="function"><span class="keyword">public</span> java.lang.Object?<span class="title">getAttribute</span><span class="params">(java.lang.String?name)</span></span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span>?<span class="title">removeAttribute</span><span class="params">(java.lang.String?name)</span></span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function"><span class="comment">//用来操作四大作用域中任意域中的属性</span></span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setAttribute</span><span class="params">(java.lang.String?name, java.lang.Object?value,<span class="keyword">int</span>?scope)</span></span></span><br><span class="line"><span class="function"><span class="keyword">public</span> java.lang.Object?<span class="title">getAttribute</span><span class="params">(java.lang.String?name,<span class="keyword">int</span>?scope)</span></span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span>?<span class="title">removeAttribute</span><span class="params">(java.lang.String?name,<span class="keyword">int</span>?scope)</span></span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function">PageContext.APPLICATION_SCOPE</span></span><br><span class="line"><span class="function">PageContext.SESSION_SCOPE</span></span><br><span class="line"><span class="function">PageContext.REQUEST_SCOPE</span></span><br><span class="line"><span class="function">PageContext.PAGE_SCOPE</span></span><br></pre></td></tr></table></figure>
+<p><strong>小结</strong>： 四大作用域什么时候用:<br> 如果一个数据只在当前jsp页面中使用，存入page域。<br> 如果一个数据，在Servlet中处理好后，请求转发到其他serlvet或jsp使用此数据，放入request域。<br> 如果一个数据，我当前要用，过一会我自己还要用。存入session。<br> 如果一个数据，我当前要用，过一会其他人也要用。存入application域。</p>
+<hr>
+<p> <code>findAttribute</code>: (此方法用来查找各个域中的属性)<br> 从最小的域开始向最大的域搜索(page,request,session,application),找到就则返回该值,找完四大作用域找不到则返回null</p>
+</li>
+</ol>
+<ol start="3">
+<li>提交了快捷方法,实现请求转发和请求包含<pre><code>pageContext.forward(&quot;&quot;);
+pageContext.include(&quot;&quot;);</code></pre></li>
+</ol>
+<h1 id="EL"><a href="#EL" class="headerlink" title="EL"></a>EL</h1><p>EL(Expression Language) 表达式语言,用于获取数据、执行运算、操作web中隐含对象、调用java函数</p>
+<h2 id="语法"><a href="#语法" class="headerlink" title="语法"></a>语法</h2><p><code>${标识符}</code><br>EL表达式语句在执行时，会调用<code>pageContext.findAttribute</code>方法，用标识符为关键字，分别从 <code>page</code> 、 <code>request</code> 、 <code>session</code> 、<code>application</code> 四个域 中查找相应的对象，找到则返回相应对象，找不到则返回<code>””</code> （注意：不是null，而是空字符串）。<br><strong>「经验」</strong>：只要标识符中没有逻辑错误，语法错误，就不会报错，<code>${a}</code>的结果是个<code>“”</code>字符串。</p>
+<h2 id="运算符"><a href="#运算符" class="headerlink" title="运算符"></a>运算符</h2><ol>
+<li>算数运算符： + - * /(<code>div</code>) %(<code>mod</code>)</li>
+<li>比较运算符： &gt; &lt; &gt;= &lt;= == !=</li>
+<li>逻辑运算符： &amp;&amp;(<code>and</code>) ||(<code>or</code>) !(<code>not</code>)</li>
+<li>空运算符： <code>empty</code><ul>
+<li>功能：用于判断字符串、集合、数组对象是否为 null 或者长度是否为 0</li>
+<li><code>${empty list}</code>:判断字符串、集合、数组对象是否为 null 或者长度为 0</li>
+<li><code>${not empty str}</code>:表示判断字符串、集合、数组对象是否不为 null 并且 长度 &gt; 0</li>
+</ul>
+</li>
+</ol>
+<h2 id="获取值"><a href="#获取值" class="headerlink" title="获取值"></a>获取值</h2><p>EL 表达式只能从域对象中获取值</p>
+<h3 id="语法-1"><a href="#语法-1" class="headerlink" title="语法"></a>语法</h3><ol>
+<li><p><code>${域名称.键名}</code>：从指定域中获取指定键的值</p>
+<ul>
+<li>域名称：<ol>
+<li>pageScope        –&gt; pageContext</li>
+<li>requestScope     –&gt; request</li>
+<li>sessionScope     –&gt; session</li>
+<li>applicationScope –&gt; application（ServletContext）</li>
+</ol>
+</li>
+<li>[举例]：在request域中存储了name=zhangsan</li>
+<li>[获取]：${requestScope.name}</li>
+</ul>
+</li>
+<li><p><code>${键名}</code>：表示依次从最小的域中查找是否有该键对应的值，直到找到为止。</p>
+</li>
+<li><p>获取对象、List 集合、Map 集合的值</p>
+<ol>
+<li><p>对象：<code>${域名称.键名.属性名}</code></p>
+<ul>
+<li>本质上会去调用对象的 <code>getter</code> 方法</li>
+</ul>
+</li>
+<li><p>List集合：<code>${域名称.键名[索引]}</code></p>
+</li>
+<li><p>Map集合：</p>
+<ul>
+<li><code>${域名称.键名.key名称}</code></li>
+<li><code>${域名称.键名[&quot;key名称&quot;]}</code></li>
+</ul>
+</li>
+</ol>
+<ol start="4">
+<li>调用java方法                       <ul>
+<li>调用的方法必须是静态方法</li>
+<li>在开发中一般是直接使用(taglib)指令导入相关的包,j2ee5.0以上已经内置</li>
+</ul>
+</li>
+</ol>
+</li>
+</ol>
+<h3 id="隐式对象"><a href="#隐式对象" class="headerlink" title="隐式对象"></a>隐式对象</h3><p>EL 表达式中有11个内置对象：不需要定义直接在 EL 中可以直接使用</p>
+<p><img src="/images/tech/web-scope-object-hidden01" alt="域对象"><br><img src="/images/tech/web-scope-object-hidden02" alt="6个隐式对象"></p>
+<p><strong>「注意」</strong></p>
+<ul>
+<li>只能用来获取集合数组中的数据不能用来遍历</li>
+<li>只能用来获取数据不能用来设置数据</li>
+</ul>
+<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><h3 id="getParameter-和-getAttribute-区别-？"><a href="#getParameter-和-getAttribute-区别-？" class="headerlink" title="getParameter 和 getAttribute 区别 ？"></a>getParameter 和 getAttribute 区别 ？</h3><p>=====================================================<br>getParameter 获得 HTTP中请求参数的值</p>
+<p>getAttribute 获得服务器端各种数据范围的值 <code>request.getAttribute</code> 获得request数据范围的值</p>
+<ul>
+<li>值在服务器端通过 <code>request.setAttribute</code> 保存的</li>
+</ul>
+<p>getParameter 获得客户端提交的数据，getAttribute 服务器内部传递的数据</p>
+<h3 id="getParameter-与-getParamValues-的区别"><a href="#getParameter-与-getParamValues-的区别" class="headerlink" title="getParameter() 与 getParamValues() 的区别 ?"></a>getParameter() 与 getParamValues() 的区别 ?</h3><p>=====================================================<br>param 、paramValues 用户获得请求参数的值<br><code>${param.name}</code> ==== request.getParameter(“name”);<br><code>${paramValues.name}</code> ===== request.getParameterValues(“name”);</p>
+<h3 id="getHeader-与-getHeaderValues-区别"><a href="#getHeader-与-getHeaderValues-区别" class="headerlink" title="getHeader() 与 getHeaderValues() 区别 ?"></a>getHeader() 与 getHeaderValues() 区别 ?</h3><p>=====================================================<br>header、headerValues 获得请求头信息的数据<br><code>${header[&quot;user-agent&quot;]}</code> ========== request.getHeader(“user-agent”);<br><code>${headerValues[&quot;user-agent&quot;]}</code> ============= request.getHeaders(“user-agent”);</p>
+<h3 id="cookie"><a href="#cookie" class="headerlink" title="cookie"></a>cookie</h3><p>=====================================================<br>用来在开发中快速获得 cookie 的值  ——- 是一个Map&lt;String,Cookie&gt; //保持的value是对象<br><code>${cookie.name.value}</code> 获得指定名称的cookie的value值</p>
+<h3 id="initParam"><a href="#initParam" class="headerlink" title="initParam"></a>initParam</h3><p>=====================================================<br>用来快速读取 ServletContext 的全局初始化参数<br><code>${initParam.name}</code> ===================== getServletContext().getInitParameter(“name”);</p>
+<ul>
+<li><context-param> 配置全局参数</li>
+</ul>
+<h3 id="最常使用"><a href="#最常使用" class="headerlink" title="最常使用"></a>最常使用</h3><p>=====================================================<br>cookie   ———– <code>${cookie.name.value}</code> 这里 name 是 cookie 的 name 值<br>pageContext ————- <code>${pageContext.request.contextPath}</code> ==== pageContext.getRequest().getContextPath() 返回 <code>/virtual-directory</code></p>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line">&lt;!-- 编写一个链接 --&gt;</span><br><span class="line">&lt;a href="/virtual-directory/el/1.jsp"&gt;link&lt;/a&gt;</span><br><span class="line">&lt;!-- 使用EL 获得工程名 --&gt;</span><br><span class="line">&lt;a href="$&#123;pageContext.request.contextPath &#125;/el/1.jsp"&gt;link&lt;/a&gt;</span><br></pre></td></tr></table></figure>
+<p>快速获得ip ： <code>${pageContext.request.remoteAddr}</code><br>注册信息的回调 ： <code>${param.username}</code> ，因为提交的信息还保存在request里</p>
+<h2 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h2><p>JSP 默认支持 EL 表达式的。如果要忽略 EL 表达式则使用以下方法：</p>
+<ol>
+<li>JSP 中 page 指令中：<code>isELIgnored=&quot;true&quot;</code>忽略当前jsp页面中所有的 EL 表达式</li>
+<li><code>\${表达式}</code> ：忽略当前这个el表达式</li>
+</ol>
+<h1 id="JSTL"><a href="#JSTL" class="headerlink" title="JSTL"></a>JSTL</h1><p>JSTL (JavaServer Pages Tag Library) 是 JSP 标准标签库，是由 Apache 组织提供的开源的免费的 JSP &lt;标签&gt;，用于简化和替换 JSP 页面上的Java 代码</p>
+<h2 id="使用步骤"><a href="#使用步骤" class="headerlink" title="使用步骤"></a>使用步骤</h2><ol>
+<li>导入jstl相关jar包</li>
+<li>引入标签库：taglib指令：  &lt;%@ taglib prefix=”c” uri=”<a href="http://java.sun.com/jsp/jstl/core&quot;%&gt;" target="_blank" rel="noopener">http://java.sun.com/jsp/jstl/core&quot;%&gt;</a></li>
+<li>使用标签</li>
+</ol>
+<h2 id="常用标签"><a href="#常用标签" class="headerlink" title="常用标签"></a>常用标签</h2><p><code>&lt;c:out&gt;</code> 标签用于输出一段文本内容到<code>pageContext</code>对象当前保存的<code>out</code>对象中。</p>
+<p><code>&lt;c:set&gt;</code>标签用于把某一个对象存在指定的域范围内，或者设置 Web 域中的 java.util.Map 类型的属性对象或 JavaBean 类型的属性对象的属性。</p>
+<p><code>&lt;c:remove&gt;</code>标签用于删除各种 Web 域中的属性</p>
+<p><code>&lt;c:catch&gt;</code>标签用于捕获嵌套在标签体中的内容抛出的异常，其语法格式如下：</p>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line">&lt;c:catch [var="varName"]&gt;nested actions&lt;/c:catch&gt;</span><br></pre></td></tr></table></figure>
+
+<p><code>&lt;c:if test=“”&gt;</code> 标签可以构造简单的<code>if-then</code>结构的条件表达式</p>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line">&lt;c:<span class="keyword">if</span> test=<span class="string">"条件,可以写el表达式"</span>&gt;</span><br><span class="line">&lt;/c:if&gt;</span><br></pre></td></tr></table></figure>
+<p><code>&lt;c:choose&gt;</code> 标签用于指定多个条件选择的组合边界，它必须与<code>&lt;c:when&gt;</code>和<code>&lt;c:otherwise&gt;</code>标签一起使用。<br>                    使用<code>&lt;c:choose&gt;</code>，<code>&lt;c:when&gt;</code>和<code>&lt;c:otherwise&gt;</code>三个标签，可以构造类似 <code>if-else if-else</code> 的复杂条件判断结构。</p>
+<p><code>&lt;c:forEach&gt;</code> 标签用于对一个集合对象中的元素进行循环迭代操作，或者按指定的次数重复迭代执行标签体中的内容。语法格式如下：</p>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line"><span class="comment">//类似于java中的fori</span></span><br><span class="line">&lt;c:forEach begin=<span class="string">"1"</span> end=<span class="string">"length"</span> <span class="keyword">var</span>=<span class="string">"i"</span>&gt;</span><br><span class="line">&lt;/c:forEach&gt;</span><br><span class="line"><span class="comment">//类似于java中的foreach</span></span><br><span class="line">&lt;c:forEach items=<span class="string">"strs"</span> <span class="keyword">var</span>=<span class="string">"str"</span> varStatus=<span class="string">"s"</span>&gt;</span><br><span class="line">&lt;/c:forEach&gt;</span><br></pre></td></tr></table></figure>
+
+<p><code>&lt;c:forTokens&gt;</code>用来浏览一字符串中所有的成员，其成员是由定义符号所分隔的</p>
+<p><code>&lt;c:param&gt;</code>标签  在JSP页面进行URL的相关操作时，经常要在 URL 地址后面附加一些参数。<br>                <code>&lt;c:param&gt;</code>标签可以嵌套在<code>&lt;c:import&gt;</code>、<code>&lt;c:url&gt;</code>或<code>&lt;c:redirect&gt;</code>标签内，为这些标签所使用的URL地址附加参数。</p>
+<p><code>&lt;c:import&gt;</code> 标签,实现 include 操作</p>
+<p><code>&lt;c:url&gt;</code> 标签用于在 JSP 页面中构造一个 URL 地址，其主要目的是实现 URL 重写。URL 重写就是将会话标识号以参数形式附加在 URL 地址后面</p>
+<p><code>&lt;c:redirect&gt;</code> 标签用于实现请求重定向</p>
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/Web/">Web</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/Web/">Web</a><a href="/tags/JSP/">JSP</a><a href="/tags/EL/">EL</a><a href="/tags/JSTL/">JSTL</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="https://hashcode.cn/2019/07/08/web-jsp-el-jstl-base/" data-title="JSP/EL/JSTL 快速入门 | techbird blog" data-tsina="6488657373" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2019/08/12/web-jquery-ajax-base/" title="jQuery &amp; Ajax 快速入门">
+  <strong>上一篇：</strong><br/>
+  <span>
+  jQuery &amp; Ajax 快速入门</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2019/07/02/web-cookie-session/"  title="Cookie &amp; Session 基础">
+ <strong>下一篇：</strong><br/> 
+ <span>Cookie &amp; Session 基础
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+<section id="comments" class="comment">
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript" target="_blank" rel="noopener">comments powered by Disqus.</a></noscript>
+  </div>
+</section>
+
+
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#JSP"><span class="toc-number">1.</span> <span class="toc-text">JSP</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#指令"><span class="toc-number">1.1.</span> <span class="toc-text">指令</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#作用"><span class="toc-number">1.1.1.</span> <span class="toc-text">作用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#格式"><span class="toc-number">1.1.2.</span> <span class="toc-text">格式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#分类"><span class="toc-number">1.1.3.</span> <span class="toc-text">分类</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#其他指令"><span class="toc-number">1.1.4.</span> <span class="toc-text">其他指令</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#注释"><span class="toc-number">1.2.</span> <span class="toc-text">注释</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#html注释"><span class="toc-number">1.2.1.</span> <span class="toc-text">html注释</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#jsp注释"><span class="toc-number">1.2.2.</span> <span class="toc-text">jsp注释</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#内置对象"><span class="toc-number">1.3.</span> <span class="toc-text">内置对象</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#详解"><span class="toc-number">1.3.1.</span> <span class="toc-text">详解</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#EL"><span class="toc-number">2.</span> <span class="toc-text">EL</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#语法"><span class="toc-number">2.1.</span> <span class="toc-text">语法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#运算符"><span class="toc-number">2.2.</span> <span class="toc-text">运算符</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#获取值"><span class="toc-number">2.3.</span> <span class="toc-text">获取值</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#语法-1"><span class="toc-number">2.3.1.</span> <span class="toc-text">语法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#隐式对象"><span class="toc-number">2.3.2.</span> <span class="toc-text">隐式对象</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#小结"><span class="toc-number">2.4.</span> <span class="toc-text">小结</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#getParameter-和-getAttribute-区别-？"><span class="toc-number">2.4.1.</span> <span class="toc-text">getParameter 和 getAttribute 区别 ？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#getParameter-与-getParamValues-的区别"><span class="toc-number">2.4.2.</span> <span class="toc-text">getParameter() 与 getParamValues() 的区别 ?</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#getHeader-与-getHeaderValues-区别"><span class="toc-number">2.4.3.</span> <span class="toc-text">getHeader() 与 getHeaderValues() 区别 ?</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#cookie"><span class="toc-number">2.4.4.</span> <span class="toc-text">cookie</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#initParam"><span class="toc-number">2.4.5.</span> <span class="toc-text">initParam</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#最常使用"><span class="toc-number">2.4.6.</span> <span class="toc-text">最常使用</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#注意"><span class="toc-number">2.5.</span> <span class="toc-text">注意</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#JSTL"><span class="toc-number">3.</span> <span class="toc-text">JSTL</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#使用步骤"><span class="toc-number">3.1.</span> <span class="toc-text">使用步骤</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#常用标签"><span class="toc-number">3.2.</span> <span class="toc-text">常用标签</span></a></li></ol></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+
+  
+<div class="github-card">
+<p class="asidetitle">Github Card</p>
+<div class="github-card" data-github="qiudengqiang" data-theme="medium"></div>
+<script type="text/javascript" src="//cdn.jsdelivr.net/github-cards/latest/widget.js" ></script>
+</div>
+
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">Categories</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/Daily/" title="Daily">Daily<sup>14</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/DataBase/" title="DataBase">DataBase<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Java/" title="Java">Java<sup>9</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Journey/" title="Journey">Journey<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Linux/" title="Linux">Linux<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/MySQL/" title="MySQL">MySQL<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/iOS/Objc/" title="Objc">Objc<sup>13</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Readed/" title="Readed">Readed<sup>5</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/VSCode/" title="VSCode">VSCode<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Web/" title="Web">Web<sup>5</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Xcode/" title="Xcode">Xcode<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/iOS/" title="iOS">iOS<sup>16</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/iOS/" title="iOS">iOS<sup>16</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Daily/" title="Daily">Daily<sup>14</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Objc/" title="Objc">Objc<sup>11</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Java/" title="Java">Java<sup>9</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Readed/" title="Readed">Readed<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Web/" title="Web">Web<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Thread/" title="Thread">Thread<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Network/" title="Network">Network<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Journey/" title="Journey">Journey<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/MySQL/" title="MySQL">MySQL<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Xcode/" title="Xcode">Xcode<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Category/" title="Category">Category<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/keywords/" title="keywords">keywords<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Idea/" title="Idea">Idea<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/KVC/" title="KVC">KVC<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/KVO/" title="KVO">KVO<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/NSThread/" title="NSThread">NSThread<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/NSURLRequest/" title="NSURLRequest">NSURLRequest<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/NSURLResponse/" title="NSURLResponse">NSURLResponse<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/NSURLSession/" title="NSURLSession">NSURLSession<sup>1</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+  <div class="weiboshow">
+  <p class="asidetitle">Weibo</p>
+    <iframe width="100%" height="120" class="share_self"  frameborder="0" scrolling="no" src="https://widget.weibo.com/weiboshow/index.php?language=&width=0&height=120&fansRow=2&ptype=1&speed=0&skin=9&isTitle=1&noborder=1&isWeibo=0&isFans=0&uid=6488657373&verifier=f458bf46&dpc=1"></iframe>
+</div>
+
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> You can&#39;t connect the dots looking forward <br/>
+			You can only connect them looking backwards.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		<a href="http://weibo.com/6488657373" target="_blank" class="icon-weibo" title="微博"></a>
+		
+		
+		<a href="https://github.com/qiudengqiang" target="_blank" class="icon-github" title="github"></a>
+		
+		
+		
+		<a href="https://twitter.com/murendless" target="_blank" class="icon-twitter" title="twitter"></a>
+		
+		
+		
+		
+		
+		
+		
+		<a href="mailto:qiudengqiang@gmail.com" target="_blank" class="icon-email" title="Email Me"></a>
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2022 
+		
+		<a href="/about" target="_blank" title="techbird">techbird</a>
+		
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+<script type="text/javascript">
+
+var disqus_shortname = 'techbird-1';
+
+(function(){
+  var dsq = document.createElement('script');
+  dsq.type = 'text/javascript';
+  dsq.async = true;
+  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+}());
+(function(){
+  var dsq = document.createElement('script');
+  dsq.type = 'text/javascript';
+  dsq.async = true;
+  dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+}());
+</script>
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

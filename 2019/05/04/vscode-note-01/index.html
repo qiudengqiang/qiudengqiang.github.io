@@ -1,0 +1,701 @@
+
+ <!DOCTYPE HTML>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+  
+    <title>VSCode 使用技巧(一) | techbird blog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="techbird">
+    
+
+    
+    <meta name="description" content="VS Code Note 01命令面板Cmd+Shift+P &#x2F; F1：打开命令面板，是VS Code的主要交互界面 界面概览文件资源管理器：Ctrl+Shift+E跨文件搜索：Ctrl+Shift+F源代码管理：Ctrl+Shift+G启动和调试：Ctrl+Shift+D管理扩展：Ctrl+Shift+X查看错误和警告：Ctrl+Shift+M 命令行的使用如果你是在 macOS 上使用，安装后">
+<meta property="og:type" content="article">
+<meta property="og:title" content="VSCode 使用技巧(一)">
+<meta property="og:url" content="https://hashcode.cn/2019/05/04/vscode-note-01/index.html">
+<meta property="og:site_name" content="techbird blog">
+<meta property="og:description" content="VS Code Note 01命令面板Cmd+Shift+P &#x2F; F1：打开命令面板，是VS Code的主要交互界面 界面概览文件资源管理器：Ctrl+Shift+E跨文件搜索：Ctrl+Shift+F源代码管理：Ctrl+Shift+G启动和调试：Ctrl+Shift+D管理扩展：Ctrl+Shift+X查看错误和警告：Ctrl+Shift+M 命令行的使用如果你是在 macOS 上使用，安装后">
+<meta property="og:image" content="https://hashcode.cn/images/tech/vs-view-preview.png">
+<meta property="og:image" content="https://hashcode.cn/images/tech/vs-shell-on-terminal.png">
+<meta property="og:image" content="https://hashcode.cn/images/tech/vs-keyboard-shortcuts.png">
+<meta property="og:image" content="https://hashcode.cn/images/tech/vs-bar-drag-and-drop.gif">
+<meta property="og:image" content="https://hashcode.cn/images/tech/vs-method-hover-window.gif">
+<meta property="og:image" content="https://hashcode.cn/images/tech/vs-method-hover-window-detail.gif">
+<meta property="og:image" content="https://hashcode.cn/images/tech/vs-field-hover-window.gif">
+<meta property="og:image" content="https://hashcode.cn/images/tech/vs-code-method-show-detail.gif">
+<meta property="og:image" content="https://hashcode.cn/images/tech/vs-markdown-open-linked.gif">
+<meta property="article:published_time" content="2019-05-04T02:01:47.000Z">
+<meta property="article:modified_time" content="2020-11-20T06:12:25.806Z">
+<meta property="article:author" content="techbird">
+<meta property="article:tag" content="VSCode">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://hashcode.cn/images/tech/vs-view-preview.png">
+<meta name="twitter:creator" content="@murendless">
+
+    
+    <link rel="alternative" href="/atom.xml" title="techbird blog" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    
+<link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="/%02.css">
+<link rel="stylesheet" href="/.css">
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.png" alt="techbird blog" title="techbird blog"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="techbird blog">techbird blog</a></h1>
+				<h2 class="blog-motto">timeline of growth</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives/">Archives</a></li>
+					
+						<li><a href="/about/">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:hashcode.cn">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2019/05/04/vscode-note-01/" title="VSCode 使用技巧(一)" itemprop="url">VSCode 使用技巧(一)</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="techbird" target="_blank" itemprop="author">techbird</a>
+		
+  <p class="article-time">
+    <time datetime="2019-05-04T02:01:47.000Z" itemprop="datePublished"> Published 2019-05-04 10:01</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#VS-Code-Note-01"><span class="toc-number">1.</span> <span class="toc-text">VS Code Note 01</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#命令面板"><span class="toc-number">1.1.</span> <span class="toc-text">命令面板</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#界面概览"><span class="toc-number">1.2.</span> <span class="toc-text">界面概览</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#命令行的使用"><span class="toc-number">1.3.</span> <span class="toc-text">命令行的使用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#OPTIONS（常用命令）"><span class="toc-number">1.4.</span> <span class="toc-text">OPTIONS（常用命令）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#通过命令行打开文件，并滚动至特定的行"><span class="toc-number">1.4.1.</span> <span class="toc-text">通过命令行打开文件，并滚动至特定的行</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#比较两个文件的内容"><span class="toc-number">1.4.2.</span> <span class="toc-text">比较两个文件的内容</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#打开管道内容"><span class="toc-number">1.4.3.</span> <span class="toc-text">打开管道内容</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#如何在终端和文件之间快速切换"><span class="toc-number">1.4.4.</span> <span class="toc-text">如何在终端和文件之间快速切换</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#VS-Code-Note-02"><span class="toc-number">2.</span> <span class="toc-text">VS Code Note 02</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#光标的快捷键移动操作"><span class="toc-number">2.1.</span> <span class="toc-text">光标的快捷键移动操作</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#文本选择"><span class="toc-number">2.2.</span> <span class="toc-text">文本选择</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#删除操作"><span class="toc-number">2.3.</span> <span class="toc-text">删除操作</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#自定义快捷键"><span class="toc-number">2.4.</span> <span class="toc-text">自定义快捷键</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#VS-Code-Note-03"><span class="toc-number">3.</span> <span class="toc-text">VS Code Note 03</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#代码行编辑"><span class="toc-number">3.1.</span> <span class="toc-text">代码行编辑</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#编程语言相关的命令"><span class="toc-number">3.2.</span> <span class="toc-text">编程语言相关的命令</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#其他小技巧"><span class="toc-number">3.3.</span> <span class="toc-text">其他小技巧</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#VS-Code-Note-04"><span class="toc-number">4.</span> <span class="toc-text">VS Code Note 04</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#创建多个光标"><span class="toc-number">4.1.</span> <span class="toc-text">创建多个光标</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#两个特别命令"><span class="toc-number">4.1.1.</span> <span class="toc-text">两个特别命令</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#快捷键跳转"><span class="toc-number">4.2.</span> <span class="toc-text">快捷键跳转</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#多文件跳转"><span class="toc-number">4.2.1.</span> <span class="toc-text">多文件跳转</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#行跳转"><span class="toc-number">4.2.2.</span> <span class="toc-text">行跳转</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#符号跳转"><span class="toc-number">4.2.3.</span> <span class="toc-text">符号跳转</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#定义-Definition-和实现-implementation-跳转"><span class="toc-number">4.2.4.</span> <span class="toc-text">定义 (Definition) 和实现 (implementation) 跳转</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#引用-Reference-跳转"><span class="toc-number">4.2.5.</span> <span class="toc-text">引用 (Reference) 跳转</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#VS-Code-Note-04-1"><span class="toc-number">5.</span> <span class="toc-text">VS Code Note 04</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#玩转鼠标"><span class="toc-number">5.1.</span> <span class="toc-text">玩转鼠标</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#选择文本"><span class="toc-number">5.1.1.</span> <span class="toc-text">选择文本</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#文本编辑"><span class="toc-number">5.1.2.</span> <span class="toc-text">文本编辑</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#悬停提示窗口"><span class="toc-number">5.1.3.</span> <span class="toc-text">悬停提示窗口</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#代码跳转和链接"><span class="toc-number">5.1.4.</span> <span class="toc-text">代码跳转和链接</span></a></li></ol></li></ol></li></ol>
+		
+		</div>
+		
+		<h1 id="VS-Code-Note-01"><a href="#VS-Code-Note-01" class="headerlink" title="VS Code Note 01"></a>VS Code Note 01</h1><h2 id="命令面板"><a href="#命令面板" class="headerlink" title="命令面板"></a>命令面板</h2><p><code>Cmd+Shift+P / F1</code>：打开命令面板，是VS Code的主要交互界面</p>
+<h2 id="界面概览"><a href="#界面概览" class="headerlink" title="界面概览"></a>界面概览</h2><p>文件资源管理器：<code>Ctrl+Shift+E</code><br>跨文件搜索：<code>Ctrl+Shift+F</code><br>源代码管理：<code>Ctrl+Shift+G</code><br>启动和调试：<code>Ctrl+Shift+D</code><br>管理扩展：<code>Ctrl+Shift+X</code><br>查看错误和警告：<code>Ctrl+Shift+M</code><br><img src="/images/tech/vs-view-preview.png" alt="vs-view-preview"></p>
+<h2 id="命令行的使用"><a href="#命令行的使用" class="headerlink" title="命令行的使用"></a>命令行的使用</h2><p>如果你是在 macOS 上使用，安装后打开命令面板，搜索<code>shell</code> 命令：在 PATH 中安装 <code>code</code> 命令并执行，然后重启终端模拟就可以了。<br><img src="/images/tech/vs-shell-on-terminal.png" alt="vs-shell-on-terminal"></p>
+<h2 id="OPTIONS（常用命令）"><a href="#OPTIONS（常用命令）" class="headerlink" title="OPTIONS（常用命令）"></a>OPTIONS（常用命令）</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">-n --new-window                   Force to open a new window..</span><br><span class="line">-r --reuse-window  Force to open a file or folder <span class="keyword">in</span> an already opened window.</span><br><span class="line">-g --goto &lt;file:line[:character]&gt; Open a file at the path on the specified line and character.</span><br><span class="line">-d --diff &lt;file&gt; &lt;file&gt;           Compare two files with each other.</span><br></pre></td></tr></table></figure>
+<h3 id="通过命令行打开文件，并滚动至特定的行"><a href="#通过命令行打开文件，并滚动至特定的行" class="headerlink" title="通过命令行打开文件，并滚动至特定的行"></a>通过命令行打开文件，并滚动至特定的<code>行</code></h3><p>比如输入<code>code -r -g package.json:128</code>命令，你就可以打开 package.json 这个文件，然后自动跳转到 128 行。适用于某文件错误的行数的快速定位</p>
+<h3 id="比较两个文件的内容"><a href="#比较两个文件的内容" class="headerlink" title="比较两个文件的内容"></a>比较两个文件的内容</h3><p>只需使用 <code>-d</code>参数，并传入两个文件路径，比如输入 <code>code -r -d a.txt b.txt</code>命令</p>
+<h3 id="打开管道内容"><a href="#打开管道内容" class="headerlink" title="打开管道内容"></a>打开管道内容</h3><p>将命令行 ls 的执行结果在 VS Code 的编辑器中打开 <code>ls | code -</code><br>注：<a href="https://zh.wikipedia.org/zh-hans/%E7%AE%A1%E9%81%93_(Unix" target="_blank" rel="noopener">管道的说明</a></p>
+<h3 id="如何在终端和文件之间快速切换"><a href="#如何在终端和文件之间快速切换" class="headerlink" title="如何在终端和文件之间快速切换"></a>如何在终端和文件之间快速切换</h3><p>快捷键：Ctrl + `</p>
+<h1 id="VS-Code-Note-02"><a href="#VS-Code-Note-02" class="headerlink" title="VS Code Note 02"></a>VS Code Note 02</h1><h2 id="光标的快捷键移动操作"><a href="#光标的快捷键移动操作" class="headerlink" title="光标的快捷键移动操作"></a>光标的快捷键移动操作</h2><ol>
+<li>首先是针对单词的光标移动: <code>Option + 左右方向键</code> 同时按住 Option 和方向键，那么光标移动的颗粒度就变成了单词，你就可以在文档中以单词为单位不停地移动光标了。</li>
+<li>第二种方式是把光标移动到行首或者行末：<code>Cmd + 左右方向键</code></li>
+<li>接下来一种是对于代码块的光标移动：<code>Cmd + Shift + \</code>，就可以在这对花括号之间跳转。</li>
+<li>最后是移动到文档的第一行或者最后一行：<code>Cmd + 上下方向键</code></li>
+</ol>
+<h2 id="文本选择"><a href="#文本选择" class="headerlink" title="文本选择"></a>文本选择</h2><p>基于以上快捷键，只需要多按一个 Shift 键，就可以在移动光标的同时选中其中的文本。</p>
+<h2 id="删除操作"><a href="#删除操作" class="headerlink" title="删除操作"></a>删除操作</h2><ol>
+<li>删除光标右侧所有内容：<code>Cmd + fn + delete</code></li>
+<li>删除光标左侧所有内容：<code>Cmd + delete</code></li>
+<li>删除单词内右侧的字符：<code>Option + fn + delete</code></li>
+<li>删除单词内左侧的字符：<code>Option + delete</code> </li>
+</ol>
+<h2 id="自定义快捷键"><a href="#自定义快捷键" class="headerlink" title="自定义快捷键"></a>自定义快捷键</h2><p>首先你可以打开命令面板（<code>Cmd + Shift + p</code>），搜索“打开键盘快捷方式”然后执行，这时你将看到相对应的界面。<br><img src="/images/tech/vs-keyboard-shortcuts.png" alt="vs-keyboard-shortcuts"></p>
+<p>比如，你可以搜索“选择括号内所有内容”，双击，按下<code>Cmd + Shift + ]</code>，然后按下回车，这个快捷键就绑定上了。<br>比如，你通过搜索 “cmd+backspace”这组快捷键，发现它对应的命令是“删除左侧所有内容”，但你不希望使用这个命令，那你就可以通过右键选择删除该快捷键的绑定。</p>
+<h1 id="VS-Code-Note-03"><a href="#VS-Code-Note-03" class="headerlink" title="VS Code Note 03"></a>VS Code Note 03</h1><h2 id="代码行编辑"><a href="#代码行编辑" class="headerlink" title="代码行编辑"></a>代码行编辑</h2><ol>
+<li>删除当前行代码： <code>Cmd + Shift + K</code></li>
+<li>剪切当前行代码： <code>Cmd + x</code></li>
+<li>在当前代码上面开始一行时：<code>Cmd + Shift + Enter</code></li>
+<li>在当前代码下面开始一行时：<code>Cmd + Enter</code></li>
+<li>移动当前选中行代码：<code>Option + 上下方向键</code></li>
+<li>赋值当前选中行代码：<code>Option + Shift + 上下方向键</code></li>
+</ol>
+<h2 id="编程语言相关的命令"><a href="#编程语言相关的命令" class="headerlink" title="编程语言相关的命令"></a>编程语言相关的命令</h2><ol>
+<li>添加注释：<code>Cmd + /</code></li>
+<li>代码格式化：<code>Option + Shift + F</code>，VS Code 也会根据你当前的语言，选择相关的插件。当然，前提条件是你已经安装了相关插件。</li>
+<li>选中的代码格式化：<code>Cmd + k</code> or <code>Cmd + F</code>，这样只有这段被选中的代码才会被格式化。</li>
+</ol>
+<h2 id="其他小技巧"><a href="#其他小技巧" class="headerlink" title="其他小技巧"></a>其他小技巧</h2><ol>
+<li>调换字符的位置：<code>Ctrl + t</code></li>
+<li>是调整字符的大小写：你可以选中一串字符，然后在命令面板里运行“转换为大写(transform to uppercase)”或 “转换为小写”, 来变换字符的大小写。</li>
+<li>是合并代码行：<code>Ctrl + j</code>，可以把较短的代码合并至一行，而不需要不断地调整光标、删除换行符。</li>
+<li>是撤销光标的移动和选择：<code>Cmd + U</code></li>
+</ol>
+<h1 id="VS-Code-Note-04"><a href="#VS-Code-Note-04" class="headerlink" title="VS Code Note 04"></a>VS Code Note 04</h1><h2 id="创建多个光标"><a href="#创建多个光标" class="headerlink" title="创建多个光标"></a>创建多个光标</h2><h3 id="两个特别命令"><a href="#两个特别命令" class="headerlink" title="两个特别命令"></a>两个特别命令</h3><ol>
+<li><code>Cmd + D</code> 适用情况比较特别：处理多次出现的“相同”单词。如果要处理的文本并不是相同的，那么这个方法就不适用了。</li>
+<li><code>Option + Shift + i</code> 首先选择多行代码，然后按下 “Option + Shift + i” ,这样操作的结果是：每一行的最后都会创建一个新的光标。</li>
+</ol>
+<h2 id="快捷键跳转"><a href="#快捷键跳转" class="headerlink" title="快捷键跳转"></a>快捷键跳转</h2><h3 id="多文件跳转"><a href="#多文件跳转" class="headerlink" title="多文件跳转"></a>多文件跳转</h3><ol>
+<li><code>Ctrl + Tab</code> 在正在操作的文件列表中切换文件</li>
+<li><code>Cmd + P</code> 打开最近的文件列表，并支持搜索功能<br>「小技巧」 <code>Cmd + Enter</code> 当找到文件后按下这个快捷键可在新窗口中打开该文件</li>
+</ol>
+<h3 id="行跳转"><a href="#行跳转" class="headerlink" title="行跳转"></a>行跳转</h3><p><code>Ctrl + G</code> 跳转到指定的代码行<br>「高级组合技巧」：按下<code>Cmd + P</code> 直接输入<code>文件名：行号</code> eg:<code>main.css:3</code></p>
+<h3 id="符号跳转"><a href="#符号跳转" class="headerlink" title="符号跳转"></a>符号跳转</h3><p><code>Cmd + R</code> 能够看到当前文件里的所有符号(包括类，方法等)。</p>
+<h3 id="定义-Definition-和实现-implementation-跳转"><a href="#定义-Definition-和实现-implementation-跳转" class="headerlink" title="定义 (Definition) 和实现 (implementation) 跳转"></a>定义 (Definition) 和实现 (implementation) 跳转</h3><p><code>Cmd + F12</code> 选中引用跳转到函数的实现位置</p>
+<h3 id="引用-Reference-跳转"><a href="#引用-Reference-跳转" class="headerlink" title="引用 (Reference) 跳转"></a>引用 (Reference) 跳转</h3><p><code>Shift + F12</code> 选中函数或类按下这个快捷键就可以出现一个引用的列表，选择后内嵌的编辑器里便展示相应的引用代码</p>
+<h1 id="VS-Code-Note-04-1"><a href="#VS-Code-Note-04-1" class="headerlink" title="VS Code Note 04"></a>VS Code Note 04</h1><h2 id="玩转鼠标"><a href="#玩转鼠标" class="headerlink" title="玩转鼠标"></a>玩转鼠标</h2><h3 id="选择文本"><a href="#选择文本" class="headerlink" title="选择文本"></a>选择文本</h3><ol>
+<li>在VS Code中，你单击鼠标左键就可以把光标移动到相应的位置。</li>
+<li>而双击鼠标左键，则会将当前光标下的单词选中。</li>
+<li>连续三次按下鼠标左键，则会选中当前这一行代码。</li>
+<li>最后是连续四次按下鼠标左键，则会选中整个文档。</li>
+</ol>
+<h3 id="文本编辑"><a href="#文本编辑" class="headerlink" title="文本编辑"></a>文本编辑</h3><p>在 VS Code中，我们除了能够使用鼠标来选择文本以外，还能够使用鼠标对文本进行一定程度的修改，我们把它称为拖放功能（drag and drop）。<br>比如在示例代码中，我们选中 bar 这个函数，然后将鼠标移到这段选中的代码之上，按下鼠标左键不松开。这时你可以看到，鼠标指针已经从一条竖线，变成了一个箭头。这时候我们移动鼠标的话，就可以把这段文本拖拽到我们想要的位置。<br><img src="/images/tech/vs-bar-drag-and-drop.gif" alt=""></p>
+<h3 id="悬停提示窗口"><a href="#悬停提示窗口" class="headerlink" title="悬停提示窗口"></a>悬停提示窗口</h3><p>在 VS Code 的编辑器里使用鼠标的过程中，当你的鼠标移动到某些文本上之后，稍待片刻就能看到一个悬停提示窗口。这个窗口里会显示跟鼠标下文本相关的信息。</p>
+<ul>
+<li>方法(Method)</li>
+</ul>
+<p>比如，在示例代码中，当我把鼠标移动到第五行 foo 上后，悬停提示窗口里展示了 foo的类型信息，它告诉我们 foo是一个函数，不需要任何的参数，返回值是 void。<br><img src="/images/tech/vs-method-hover-window.gif" alt=""></p>
+<p>如果我把鼠标移动到 foo 上面时，按下 Cmd 键，则能够在悬停提示窗口里直接看到 foo的实现。<br><img src="/images/tech/vs-method-hover-window-detail.gif" alt=""></p>
+<ul>
+<li>变量(Field)</li>
+</ul>
+<p>在 JavaScript 或者 Java 这样的编程语言中，当我们把鼠标移动到某个变量上时，我们能够看到这个变量的定义信息。而在 CSS 中，当我们把鼠标移动到一个 CSS 规则上时，我们能看到的则是一段能够让这个 CSS 规则生效的 HTML 的样例代码。<br><img src="/images/tech/vs-field-hover-window.gif" alt=""></p>
+<h3 id="代码跳转和链接"><a href="#代码跳转和链接" class="headerlink" title="代码跳转和链接"></a>代码跳转和链接</h3><p>我们还是把鼠标移动到示例代码的第五行 foo 上，然后按下 Cmd 键，这时候 foo下面出现了一个下划线。然后当我们按下鼠标左键，就跳转到了 foo函数的定义处。<br><img src="/images/tech/vs-code-method-show-detail.gif" alt=""><br>当我们在编写 Markdown 这样的非编程语言的文档时，也可以通过 <code>Cmd + 鼠标左键</code> 来打开超级链接。<br><img src="/images/tech/vs-markdown-open-linked.gif" alt=""></p>
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/VSCode/">VSCode</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/VSCode/">VSCode</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="https://hashcode.cn/2019/05/04/vscode-note-01/" data-title="VSCode 使用技巧(一) | techbird blog" data-tsina="6488657373" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2019/05/04/daily-2019-0504/" title="写在百年五四">
+  <strong>上一篇：</strong><br/>
+  <span>
+  写在百年五四</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2019/05/01/java-generic/"  title="Java - 泛型(Generic)">
+ <strong>下一篇：</strong><br/> 
+ <span>Java - 泛型(Generic)
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+<section id="comments" class="comment">
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript" target="_blank" rel="noopener">comments powered by Disqus.</a></noscript>
+  </div>
+</section>
+
+
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#VS-Code-Note-01"><span class="toc-number">1.</span> <span class="toc-text">VS Code Note 01</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#命令面板"><span class="toc-number">1.1.</span> <span class="toc-text">命令面板</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#界面概览"><span class="toc-number">1.2.</span> <span class="toc-text">界面概览</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#命令行的使用"><span class="toc-number">1.3.</span> <span class="toc-text">命令行的使用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#OPTIONS（常用命令）"><span class="toc-number">1.4.</span> <span class="toc-text">OPTIONS（常用命令）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#通过命令行打开文件，并滚动至特定的行"><span class="toc-number">1.4.1.</span> <span class="toc-text">通过命令行打开文件，并滚动至特定的行</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#比较两个文件的内容"><span class="toc-number">1.4.2.</span> <span class="toc-text">比较两个文件的内容</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#打开管道内容"><span class="toc-number">1.4.3.</span> <span class="toc-text">打开管道内容</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#如何在终端和文件之间快速切换"><span class="toc-number">1.4.4.</span> <span class="toc-text">如何在终端和文件之间快速切换</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#VS-Code-Note-02"><span class="toc-number">2.</span> <span class="toc-text">VS Code Note 02</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#光标的快捷键移动操作"><span class="toc-number">2.1.</span> <span class="toc-text">光标的快捷键移动操作</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#文本选择"><span class="toc-number">2.2.</span> <span class="toc-text">文本选择</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#删除操作"><span class="toc-number">2.3.</span> <span class="toc-text">删除操作</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#自定义快捷键"><span class="toc-number">2.4.</span> <span class="toc-text">自定义快捷键</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#VS-Code-Note-03"><span class="toc-number">3.</span> <span class="toc-text">VS Code Note 03</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#代码行编辑"><span class="toc-number">3.1.</span> <span class="toc-text">代码行编辑</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#编程语言相关的命令"><span class="toc-number">3.2.</span> <span class="toc-text">编程语言相关的命令</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#其他小技巧"><span class="toc-number">3.3.</span> <span class="toc-text">其他小技巧</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#VS-Code-Note-04"><span class="toc-number">4.</span> <span class="toc-text">VS Code Note 04</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#创建多个光标"><span class="toc-number">4.1.</span> <span class="toc-text">创建多个光标</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#两个特别命令"><span class="toc-number">4.1.1.</span> <span class="toc-text">两个特别命令</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#快捷键跳转"><span class="toc-number">4.2.</span> <span class="toc-text">快捷键跳转</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#多文件跳转"><span class="toc-number">4.2.1.</span> <span class="toc-text">多文件跳转</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#行跳转"><span class="toc-number">4.2.2.</span> <span class="toc-text">行跳转</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#符号跳转"><span class="toc-number">4.2.3.</span> <span class="toc-text">符号跳转</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#定义-Definition-和实现-implementation-跳转"><span class="toc-number">4.2.4.</span> <span class="toc-text">定义 (Definition) 和实现 (implementation) 跳转</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#引用-Reference-跳转"><span class="toc-number">4.2.5.</span> <span class="toc-text">引用 (Reference) 跳转</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#VS-Code-Note-04-1"><span class="toc-number">5.</span> <span class="toc-text">VS Code Note 04</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#玩转鼠标"><span class="toc-number">5.1.</span> <span class="toc-text">玩转鼠标</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#选择文本"><span class="toc-number">5.1.1.</span> <span class="toc-text">选择文本</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#文本编辑"><span class="toc-number">5.1.2.</span> <span class="toc-text">文本编辑</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#悬停提示窗口"><span class="toc-number">5.1.3.</span> <span class="toc-text">悬停提示窗口</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#代码跳转和链接"><span class="toc-number">5.1.4.</span> <span class="toc-text">代码跳转和链接</span></a></li></ol></li></ol></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+
+  
+<div class="github-card">
+<p class="asidetitle">Github Card</p>
+<div class="github-card" data-github="qiudengqiang" data-theme="medium"></div>
+<script type="text/javascript" src="//cdn.jsdelivr.net/github-cards/latest/widget.js" ></script>
+</div>
+
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">Categories</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/Daily/" title="Daily">Daily<sup>14</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/DataBase/" title="DataBase">DataBase<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Java/" title="Java">Java<sup>9</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Journey/" title="Journey">Journey<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Linux/" title="Linux">Linux<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/MySQL/" title="MySQL">MySQL<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/iOS/Objc/" title="Objc">Objc<sup>13</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Readed/" title="Readed">Readed<sup>5</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/VSCode/" title="VSCode">VSCode<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Web/" title="Web">Web<sup>5</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Xcode/" title="Xcode">Xcode<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/iOS/" title="iOS">iOS<sup>16</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/iOS/" title="iOS">iOS<sup>16</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Daily/" title="Daily">Daily<sup>14</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Objc/" title="Objc">Objc<sup>11</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Java/" title="Java">Java<sup>9</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Readed/" title="Readed">Readed<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Web/" title="Web">Web<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Thread/" title="Thread">Thread<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Network/" title="Network">Network<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Journey/" title="Journey">Journey<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/MySQL/" title="MySQL">MySQL<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Xcode/" title="Xcode">Xcode<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Category/" title="Category">Category<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/keywords/" title="keywords">keywords<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Idea/" title="Idea">Idea<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/KVC/" title="KVC">KVC<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/KVO/" title="KVO">KVO<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/NSThread/" title="NSThread">NSThread<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/NSURLRequest/" title="NSURLRequest">NSURLRequest<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/NSURLResponse/" title="NSURLResponse">NSURLResponse<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/NSURLSession/" title="NSURLSession">NSURLSession<sup>1</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+  <div class="weiboshow">
+  <p class="asidetitle">Weibo</p>
+    <iframe width="100%" height="120" class="share_self"  frameborder="0" scrolling="no" src="https://widget.weibo.com/weiboshow/index.php?language=&width=0&height=120&fansRow=2&ptype=1&speed=0&skin=9&isTitle=1&noborder=1&isWeibo=0&isFans=0&uid=6488657373&verifier=f458bf46&dpc=1"></iframe>
+</div>
+
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> You can&#39;t connect the dots looking forward <br/>
+			You can only connect them looking backwards.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		<a href="http://weibo.com/6488657373" target="_blank" class="icon-weibo" title="微博"></a>
+		
+		
+		<a href="https://github.com/qiudengqiang" target="_blank" class="icon-github" title="github"></a>
+		
+		
+		
+		<a href="https://twitter.com/murendless" target="_blank" class="icon-twitter" title="twitter"></a>
+		
+		
+		
+		
+		
+		
+		
+		<a href="mailto:qiudengqiang@gmail.com" target="_blank" class="icon-email" title="Email Me"></a>
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2022 
+		
+		<a href="/about" target="_blank" title="techbird">techbird</a>
+		
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+<script type="text/javascript">
+
+var disqus_shortname = 'techbird-1';
+
+(function(){
+  var dsq = document.createElement('script');
+  dsq.type = 'text/javascript';
+  dsq.async = true;
+  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+}());
+(function(){
+  var dsq = document.createElement('script');
+  dsq.type = 'text/javascript';
+  dsq.async = true;
+  dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+}());
+</script>
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

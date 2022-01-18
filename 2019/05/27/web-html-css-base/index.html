@@ -1,0 +1,673 @@
+
+ <!DOCTYPE HTML>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+  
+    <title>HTML 和 CSS 快速入门 | techbird blog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="techbird">
+    
+
+    
+    <meta name="description" content="HTMLhyper text markup language 超文本标记语言，是最基础的网页开发语言。网页文件后缀名以.html&#x2F;.htm结束。 基本标签文件标签&lt;!DOCTYPE html&gt;：html5 中定义该文档类型是html文档&lt;html&gt;：html 文档的根标签&lt;head&gt;：头标签，用于指定 html 文档的一些属性，引入外部的资源。&lt;title">
+<meta property="og:type" content="article">
+<meta property="og:title" content="HTML 和 CSS 快速入门">
+<meta property="og:url" content="https://hashcode.cn/2019/05/27/web-html-css-base/index.html">
+<meta property="og:site_name" content="techbird blog">
+<meta property="og:description" content="HTMLhyper text markup language 超文本标记语言，是最基础的网页开发语言。网页文件后缀名以.html&#x2F;.htm结束。 基本标签文件标签&lt;!DOCTYPE html&gt;：html5 中定义该文档类型是html文档&lt;html&gt;：html 文档的根标签&lt;head&gt;：头标签，用于指定 html 文档的一些属性，引入外部的资源。&lt;title">
+<meta property="article:published_time" content="2019-05-27T02:01:47.000Z">
+<meta property="article:modified_time" content="2020-11-20T06:12:25.807Z">
+<meta property="article:author" content="techbird">
+<meta property="article:tag" content="Web">
+<meta property="article:tag" content="HTML">
+<meta property="article:tag" content="CSS">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:creator" content="@murendless">
+
+    
+    <link rel="alternative" href="/atom.xml" title="techbird blog" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    
+<link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="/%02.css">
+<link rel="stylesheet" href="/.css">
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.png" alt="techbird blog" title="techbird blog"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="techbird blog">techbird blog</a></h1>
+				<h2 class="blog-motto">timeline of growth</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives/">Archives</a></li>
+					
+						<li><a href="/about/">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:hashcode.cn">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2019/05/27/web-html-css-base/" title="HTML 和 CSS 快速入门" itemprop="url">HTML 和 CSS 快速入门</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="techbird" target="_blank" itemprop="author">techbird</a>
+		
+  <p class="article-time">
+    <time datetime="2019-05-27T02:01:47.000Z" itemprop="datePublished"> Published 2019-05-27 10:01</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#HTML"><span class="toc-number">1.</span> <span class="toc-text">HTML</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#基本标签"><span class="toc-number">1.1.</span> <span class="toc-text">基本标签</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#文件标签"><span class="toc-number">1.1.1.</span> <span class="toc-text">文件标签</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#文本标签"><span class="toc-number">1.1.2.</span> <span class="toc-text">文本标签</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#属性定义"><span class="toc-number">1.1.3.</span> <span class="toc-text">属性定义</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#图片标签"><span class="toc-number">1.1.4.</span> <span class="toc-text">图片标签</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#列表标签"><span class="toc-number">1.1.5.</span> <span class="toc-text">列表标签</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#链接标签"><span class="toc-number">1.1.6.</span> <span class="toc-text">链接标签</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#div和span"><span class="toc-number">1.1.7.</span> <span class="toc-text">div和span</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#语义化标签"><span class="toc-number">1.1.8.</span> <span class="toc-text">语义化标签</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#表格标签"><span class="toc-number">1.1.9.</span> <span class="toc-text">表格标签</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#表单标签"><span class="toc-number">1.2.</span> <span class="toc-text">表单标签</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#表单体标签"><span class="toc-number">1.2.1.</span> <span class="toc-text">表单体标签</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#表单项标签"><span class="toc-number">1.2.2.</span> <span class="toc-text">表单项标签</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#CSS"><span class="toc-number">2.</span> <span class="toc-text">CSS</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#概念"><span class="toc-number">2.1.</span> <span class="toc-text">概念</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#使用"><span class="toc-number">2.2.</span> <span class="toc-text">使用</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#内联样式"><span class="toc-number">2.2.1.</span> <span class="toc-text">内联样式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#内部样式"><span class="toc-number">2.2.2.</span> <span class="toc-text">内部样式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#外部样式"><span class="toc-number">2.2.3.</span> <span class="toc-text">外部样式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#CSS语法"><span class="toc-number">2.2.4.</span> <span class="toc-text">CSS语法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#选择器"><span class="toc-number">2.2.5.</span> <span class="toc-text">选择器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#属性"><span class="toc-number">2.2.6.</span> <span class="toc-text">属性</span></a></li></ol></li></ol></li></ol>
+		
+		</div>
+		
+		<h1 id="HTML"><a href="#HTML" class="headerlink" title="HTML"></a>HTML</h1><p>hyper text markup language 超文本标记语言，是最基础的网页开发语言。网页文件后缀名以<code>.html</code>/<code>.htm</code>结束。</p>
+<h2 id="基本标签"><a href="#基本标签" class="headerlink" title="基本标签"></a>基本标签</h2><h3 id="文件标签"><a href="#文件标签" class="headerlink" title="文件标签"></a>文件标签</h3><p><code>&lt;!DOCTYPE html&gt;</code>：html5 中定义该文档类型是html文档<br><code>&lt;html&gt;</code>：html 文档的根标签<br><code>&lt;head&gt;</code>：头标签，用于指定 html 文档的一些属性，引入外部的资源。<br><code>&lt;title&gt;</code>：标题标签<br><code>&lt;body&gt;</code>：体标签</p>
+<h3 id="文本标签"><a href="#文本标签" class="headerlink" title="文本标签"></a>文本标签</h3><p><code>注释</code>：<code>&lt;!-- 注释内容 --&gt;</code><br><code>&lt;h1&gt; to &lt;h6&gt;</code>：标题标签，字体大小逐渐递增<br><code>&lt;p&gt;</code>：段落标签<br><code>&lt;br&gt;</code>：换行标签<br><code>&lt;hr&gt;</code>：水平线,属性：color,width,size,align(center,left,right)<br><code>&lt;b&gt;</code>：字体加粗<br><code>&lt;i&gt;</code>：字体斜体<br><code>&lt;font&gt;</code>：字体标签,属性：color,size,face<br><code>&lt;center&gt;</code>：文本居中</p>
+<h3 id="属性定义"><a href="#属性定义" class="headerlink" title="属性定义"></a>属性定义</h3><p><code>color</code>:<br>    1. 英文单词：red,green,blue<br>    2. rgb(值1,值2,值3)：值的取值范围：0<del>255。 如rgb(0,0,255)<br>    3. #值1值2值3：值的范围：00</del>FF之间。如 #00FF00<br><code>width</code>:<br>    1. 数值 width = ‘20’，数值的单位默认是px像素<br>    2. 数值%：占比相对于父元素的比例。</p>
+<h3 id="图片标签"><a href="#图片标签" class="headerlink" title="图片标签"></a>图片标签</h3><p><code>&lt;img&gt;</code>：图片标签，属性：src,alt,align,width,height<br><code>相对路径</code>：以<code>.</code>开头的路径，eg：<code>./</code>代表当前路径，<code>../</code>代表上一级目录</p>
+<h3 id="列表标签"><a href="#列表标签" class="headerlink" title="列表标签"></a>列表标签</h3><p><code>&lt;ol&gt;</code>：有序列表外层标签<br><code>&lt;ul&gt;</code>：无序列表外层标签<br><code>&lt;li&gt;</code>：条目标签，包含属性 type</p>
+<h3 id="链接标签"><a href="#链接标签" class="headerlink" title="链接标签"></a>链接标签</h3><p><code>&lt;a&gt;</code>：超链接标签<br>属性：<code>href</code>：访问资源的 URL ,<code>target</code>：打开资源的方式(<code>_self</code>默认值,<code>_blank</code>)</p>
+<h3 id="div和span"><a href="#div和span" class="headerlink" title="div和span"></a>div和span</h3><p><code>&lt;div&gt;</code>：每一个 div 占满一行，块级标签<br><code>&lt;span&gt;</code>：文本信息在一行展示，行内标签</p>
+<h3 id="语义化标签"><a href="#语义化标签" class="headerlink" title="语义化标签"></a>语义化标签</h3><p>语义化标签是 html5 之后出现的新特性，目的是为了提高程序的可读性<br><code>&lt;header&gt;</code>：页眉<br><code>&lt;footer&gt;</code>：页脚</p>
+<h3 id="表格标签"><a href="#表格标签" class="headerlink" title="表格标签"></a>表格标签</h3><p><code>&lt;table&gt;</code>：定义表格标签<br>属性：<br>width,border,bgcolor,align<br>cellpadding：单元格内容与单元格的距离<br>cellspacing：定义单元格之间的距离，如果指定为0，则单元格线会合并为一条<br><code>&lt;tr&gt;</code>：定义行<br><code>&lt;td&gt;</code>：定义单元格<br><code>&lt;th&gt;</code>：定义表头单元格<br><code>&lt;caption&gt;</code>：表格标题<br><code>&lt;thead&gt;</code>：表格中表头内容，类似语义化标签，目的为增强代码可读性<br><code>&lt;tbody&gt;</code>：表格表体内容<br><code>&lt;tfoot&gt;</code>：表格脚注</p>
+<h2 id="表单标签"><a href="#表单标签" class="headerlink" title="表单标签"></a>表单标签</h2><p>用户采集用户输入的数据，和服务器进行交互。</p>
+<h3 id="表单体标签"><a href="#表单体标签" class="headerlink" title="表单体标签"></a>表单体标签</h3><p><code>&lt;form&gt;</code>：可以定义一个范围，范围代表采集用户数据的范围。<br>属性：<br>     action<br>     method：请求方式有7种，一般使用 get，post<br>     name：(不指定无法提交表单项中的数据)</p>
+<h3 id="表单项标签"><a href="#表单项标签" class="headerlink" title="表单项标签"></a>表单项标签</h3><p><code>&lt;input&gt;</code>：可以通过 <code>type</code> 属性改变元素展示的样式。<br><code>type</code>属性值：<br>    text：文本<br>    password：密码<br>    radio(<code>value</code>属性指定提交的值,<code>checked</code>指定默认值),<br>    checkbox(<code>value</code>属性指定提交的值,<code>checke</code>d指定默认值),<br>    placeholder：提示文字<br>    file：选择文件框<br>    hidden：隐藏域，用于提交一些信息。<br>    submit：提交按钮<br>    button：普通按钮<br>    image：图片提交按钮，<code>src</code>属性选择图片路径<br>    color：取色器<br>    date：日期选择<br>    datetime-local：带时分日期选择<br>    email：邮箱<br>    number：数字选择<br><code>&lt;label&gt;</code>：指定输入项的文字描述信息，其<code>for</code>属性一般会和 input 的 id 属性对应。这样点击 label 后 input 则会获取到焦点。<br><code>&lt;select&gt;</code>：下拉列表<br><code>&lt;option&gt;</code>：下拉列表中的子选项,<code>value</code>属性用于指定提交的值<br><code>&lt;textarea&gt;</code>：多行输入框，属性<code>rows</code>，<code>cols</code>用于指定行数和每行显示的字符数。</p>
+<h1 id="CSS"><a href="#CSS" class="headerlink" title="CSS"></a>CSS</h1><h2 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h2><p>Cascading Style Sheets 层叠样式表，多个样式可作用在同一个 html 元素上，同时生效。</p>
+<h2 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h2><h3 id="内联样式"><a href="#内联样式" class="headerlink" title="内联样式"></a>内联样式</h3><p>在标签内使用<code>style</code>属性指定 css 代码<br>eg：</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">style</span>=<span class="string">"color:red;"</span>&gt;</span>hello css<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h3 id="内部样式"><a href="#内部样式" class="headerlink" title="内部样式"></a>内部样式</h3><p>在<code>head</code>标签内，定义<code>style</code>标签 style 标签体内容就是 css 代码<br>eg：</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">style</span>&gt;</span></span><br><span class="line">    div&#123;</span><br><span class="line"><span class="css">        <span class="selector-tag">color</span><span class="selector-pseudo">:blue</span>;</span></span><br><span class="line">    &#125;</span><br><span class="line"><span class="tag">&lt;/<span class="name">style</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span>&gt;</span>hello css<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h3 id="外部样式"><a href="#外部样式" class="headerlink" title="外部样式"></a>外部样式</h3><p>1.定义 css 资源文件<br>2.在<code>head</code>标签内，定义<code>link</code>标签，引入外部的资源文件<br>eg：<br>.css文件</p>
+<figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="selector-tag">div</span>&#123;</span><br><span class="line"> <span class="attribute">color</span>:green;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>.html文件</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">link</span> <span class="attr">rel</span>=<span class="string">"stylesheet"</span> <span class="attr">href</span>=<span class="string">"css/a.css"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span>&gt;</span>hello css<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h3 id="CSS语法"><a href="#CSS语法" class="headerlink" title="CSS语法"></a>CSS语法</h3><p>格式：</p>
+<figure class="highlight css"><table><tr><td class="code"><pre><span class="line">选择器 &#123;</span><br><span class="line">    属性名1:属性值1;</span><br><span class="line">    属性名1:属性值1;</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>注意</strong>：每一对属性需要使用<code>;</code>隔开，最后一对属性可以不加<code>;</code></p>
+<h3 id="选择器"><a href="#选择器" class="headerlink" title="选择器"></a>选择器</h3><p>筛选具有相似特征的元素</p>
+<ul>
+<li>基础选择器</li>
+</ul>
+<ol>
+<li>id选择器：选择具体的 id 属性值的元素，建议在 html 页面中 id 值唯一；语法：<code>#id属性值{}</code></li>
+<li>元素选择器：选择具有相同标签名称的元素；语法：<code>标签名称{}</code>，注意 id 选择器优先级高于元素选择器</li>
+<li>类选择器：选择具有相同的 class 属性值的元素<code>.class属性值{}</code>，注意类选择器优先级高于元素选择器，低于 id 选择器</li>
+</ol>
+<ul>
+<li>扩展选择器</li>
+</ul>
+<ol>
+<li>选择素有元素；语法：<code>*{}</code></li>
+<li>并集选择器；语法：<code>选择器1,选择器2{}</code></li>
+<li>子选择器：筛选选择器1元素下的选择器2元素；语法：<code>选择器1 选择器2{}</code></li>
+<li>父选择器：筛选选择器2的父元素选择器1；语法：<code>选择器1 &gt; 选择器2{}</code></li>
+<li>属性选择器：选择元素名称,属性名=属性值的元素；语法：<code>元素名称[属性名=&quot;属性值&quot;]{}</code></li>
+<li>伪类选择器：选择一些元素具有的状态；语法：<code>元素:状态{}</code></li>
+</ol>
+<h3 id="属性"><a href="#属性" class="headerlink" title="属性"></a>属性</h3><ol>
+<li>字体、文本<br><code>font-size</code>：字体大小<br><code>color</code>：文本颜色<br><code>text-align</code>：对齐方式<br><code>line-height</code>：行高</li>
+<li>背景<br><code>background</code>：背景，属性<code>url</code>可以指定图片路径</li>
+<li>边框<br><code>border</code>：设置边框，复合属性</li>
+<li>尺寸<br><code>width</code>：宽度<br><code>height</code>：高度</li>
+<li>盒子模型：控制布局<br><code>margin</code>：外边距<br><code>padding</code>：内边距，默认情况下调整内边距会影响整个盒子的大小，这时可设置<code>box-sizing:border-box;</code>确定盒子的指定宽高为最终大小<br><code>float</code>：left,right</li>
+</ol>
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/Web/">Web</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/Web/">Web</a><a href="/tags/HTML/">HTML</a><a href="/tags/CSS/">CSS</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="https://hashcode.cn/2019/05/27/web-html-css-base/" data-title="HTML 和 CSS 快速入门 | techbird blog" data-tsina="6488657373" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2019/06/01/daily-2019-0601/" title="游泳手记">
+  <strong>上一篇：</strong><br/>
+  <span>
+  游泳手记</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2019/05/25/java-jdbc/"  title="JDBC 基本使用">
+ <strong>下一篇：</strong><br/> 
+ <span>JDBC 基本使用
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+<section id="comments" class="comment">
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript" target="_blank" rel="noopener">comments powered by Disqus.</a></noscript>
+  </div>
+</section>
+
+
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#HTML"><span class="toc-number">1.</span> <span class="toc-text">HTML</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#基本标签"><span class="toc-number">1.1.</span> <span class="toc-text">基本标签</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#文件标签"><span class="toc-number">1.1.1.</span> <span class="toc-text">文件标签</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#文本标签"><span class="toc-number">1.1.2.</span> <span class="toc-text">文本标签</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#属性定义"><span class="toc-number">1.1.3.</span> <span class="toc-text">属性定义</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#图片标签"><span class="toc-number">1.1.4.</span> <span class="toc-text">图片标签</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#列表标签"><span class="toc-number">1.1.5.</span> <span class="toc-text">列表标签</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#链接标签"><span class="toc-number">1.1.6.</span> <span class="toc-text">链接标签</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#div和span"><span class="toc-number">1.1.7.</span> <span class="toc-text">div和span</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#语义化标签"><span class="toc-number">1.1.8.</span> <span class="toc-text">语义化标签</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#表格标签"><span class="toc-number">1.1.9.</span> <span class="toc-text">表格标签</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#表单标签"><span class="toc-number">1.2.</span> <span class="toc-text">表单标签</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#表单体标签"><span class="toc-number">1.2.1.</span> <span class="toc-text">表单体标签</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#表单项标签"><span class="toc-number">1.2.2.</span> <span class="toc-text">表单项标签</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#CSS"><span class="toc-number">2.</span> <span class="toc-text">CSS</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#概念"><span class="toc-number">2.1.</span> <span class="toc-text">概念</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#使用"><span class="toc-number">2.2.</span> <span class="toc-text">使用</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#内联样式"><span class="toc-number">2.2.1.</span> <span class="toc-text">内联样式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#内部样式"><span class="toc-number">2.2.2.</span> <span class="toc-text">内部样式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#外部样式"><span class="toc-number">2.2.3.</span> <span class="toc-text">外部样式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#CSS语法"><span class="toc-number">2.2.4.</span> <span class="toc-text">CSS语法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#选择器"><span class="toc-number">2.2.5.</span> <span class="toc-text">选择器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#属性"><span class="toc-number">2.2.6.</span> <span class="toc-text">属性</span></a></li></ol></li></ol></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+
+  
+<div class="github-card">
+<p class="asidetitle">Github Card</p>
+<div class="github-card" data-github="qiudengqiang" data-theme="medium"></div>
+<script type="text/javascript" src="//cdn.jsdelivr.net/github-cards/latest/widget.js" ></script>
+</div>
+
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">Categories</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/Daily/" title="Daily">Daily<sup>14</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/DataBase/" title="DataBase">DataBase<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Java/" title="Java">Java<sup>9</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Journey/" title="Journey">Journey<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Linux/" title="Linux">Linux<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/MySQL/" title="MySQL">MySQL<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/iOS/Objc/" title="Objc">Objc<sup>13</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Readed/" title="Readed">Readed<sup>5</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/VSCode/" title="VSCode">VSCode<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Web/" title="Web">Web<sup>5</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Xcode/" title="Xcode">Xcode<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/iOS/" title="iOS">iOS<sup>16</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/iOS/" title="iOS">iOS<sup>16</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Daily/" title="Daily">Daily<sup>14</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Objc/" title="Objc">Objc<sup>11</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Java/" title="Java">Java<sup>9</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Readed/" title="Readed">Readed<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Web/" title="Web">Web<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Thread/" title="Thread">Thread<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Network/" title="Network">Network<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Journey/" title="Journey">Journey<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/MySQL/" title="MySQL">MySQL<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Xcode/" title="Xcode">Xcode<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Category/" title="Category">Category<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/keywords/" title="keywords">keywords<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Idea/" title="Idea">Idea<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/KVC/" title="KVC">KVC<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/KVO/" title="KVO">KVO<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/NSThread/" title="NSThread">NSThread<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/NSURLRequest/" title="NSURLRequest">NSURLRequest<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/NSURLResponse/" title="NSURLResponse">NSURLResponse<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/NSURLSession/" title="NSURLSession">NSURLSession<sup>1</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+  <div class="weiboshow">
+  <p class="asidetitle">Weibo</p>
+    <iframe width="100%" height="120" class="share_self"  frameborder="0" scrolling="no" src="https://widget.weibo.com/weiboshow/index.php?language=&width=0&height=120&fansRow=2&ptype=1&speed=0&skin=9&isTitle=1&noborder=1&isWeibo=0&isFans=0&uid=6488657373&verifier=f458bf46&dpc=1"></iframe>
+</div>
+
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> You can&#39;t connect the dots looking forward <br/>
+			You can only connect them looking backwards.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		<a href="http://weibo.com/6488657373" target="_blank" class="icon-weibo" title="微博"></a>
+		
+		
+		<a href="https://github.com/qiudengqiang" target="_blank" class="icon-github" title="github"></a>
+		
+		
+		
+		<a href="https://twitter.com/murendless" target="_blank" class="icon-twitter" title="twitter"></a>
+		
+		
+		
+		
+		
+		
+		
+		<a href="mailto:qiudengqiang@gmail.com" target="_blank" class="icon-email" title="Email Me"></a>
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2022 
+		
+		<a href="/about" target="_blank" title="techbird">techbird</a>
+		
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+<script type="text/javascript">
+
+var disqus_shortname = 'techbird-1';
+
+(function(){
+  var dsq = document.createElement('script');
+  dsq.type = 'text/javascript';
+  dsq.async = true;
+  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+}());
+(function(){
+  var dsq = document.createElement('script');
+  dsq.type = 'text/javascript';
+  dsq.async = true;
+  dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+}());
+</script>
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

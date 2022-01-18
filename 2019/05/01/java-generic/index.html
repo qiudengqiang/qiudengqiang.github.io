@@ -1,0 +1,669 @@
+
+ <!DOCTYPE HTML>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+  
+    <title>Java - 泛型(Generic) | techbird blog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="techbird">
+    
+
+    
+    <meta name="description" content="定义泛型是一种未知的数据类型，当我们不知道使用什么数据类型的时候，可以使用泛型；也可以把泛型看做是一个变量，用来接收数据类型。泛型是提供给java编译器使用的，只在编译阶段可见，在源码文件编译为字节码文件的过程中，泛型会被移除掉，这个过程叫做泛型的擦除。 名词解释E:Element元素T:Type类型 ArrayList中的E称为Element类型参数变量ArrayList中的Integer称为实">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java - 泛型(Generic)">
+<meta property="og:url" content="https://hashcode.cn/2019/05/01/java-generic/index.html">
+<meta property="og:site_name" content="techbird blog">
+<meta property="og:description" content="定义泛型是一种未知的数据类型，当我们不知道使用什么数据类型的时候，可以使用泛型；也可以把泛型看做是一个变量，用来接收数据类型。泛型是提供给java编译器使用的，只在编译阶段可见，在源码文件编译为字节码文件的过程中，泛型会被移除掉，这个过程叫做泛型的擦除。 名词解释E:Element元素T:Type类型 ArrayList中的E称为Element类型参数变量ArrayList中的Integer称为实">
+<meta property="article:published_time" content="2019-05-01T02:01:47.000Z">
+<meta property="article:modified_time" content="2020-11-20T06:12:25.802Z">
+<meta property="article:author" content="techbird">
+<meta property="article:tag" content="Java">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:creator" content="@murendless">
+
+    
+    <link rel="alternative" href="/atom.xml" title="techbird blog" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    
+<link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="/%02.css">
+<link rel="stylesheet" href="/.css">
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.png" alt="techbird blog" title="techbird blog"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="techbird blog">techbird blog</a></h1>
+				<h2 class="blog-motto">timeline of growth</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives/">Archives</a></li>
+					
+						<li><a href="/about/">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:hashcode.cn">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2019/05/01/java-generic/" title="Java - 泛型(Generic)" itemprop="url">Java - 泛型(Generic)</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="techbird" target="_blank" itemprop="author">techbird</a>
+		
+  <p class="article-time">
+    <time datetime="2019-05-01T02:01:47.000Z" itemprop="datePublished"> Published 2019-05-01 10:01</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#定义"><span class="toc-number">1.</span> <span class="toc-text">定义</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#名词解释"><span class="toc-number">2.</span> <span class="toc-text">名词解释</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#集合泛型"><span class="toc-number">3.</span> <span class="toc-text">集合泛型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#自定义泛型"><span class="toc-number">4.</span> <span class="toc-text">自定义泛型</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#定义在方法上的泛型"><span class="toc-number">4.1.</span> <span class="toc-text">定义在方法上的泛型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#定义在类上的泛型"><span class="toc-number">4.2.</span> <span class="toc-text">定义在类上的泛型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#定义在接口上的泛型"><span class="toc-number">4.3.</span> <span class="toc-text">定义在接口上的泛型</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#泛型通配符"><span class="toc-number">5.</span> <span class="toc-text">泛型通配符</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#泛型的边界"><span class="toc-number">6.</span> <span class="toc-text">泛型的边界</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#泛型的上限"><span class="toc-number">6.1.</span> <span class="toc-text">泛型的上限</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#泛型的下限"><span class="toc-number">6.2.</span> <span class="toc-text">泛型的下限</span></a></li></ol></li></ol>
+		
+		</div>
+		
+		<h2 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h2><p>泛型是一种未知的数据类型，当我们不知道使用什么数据类型的时候，可以使用泛型；也可以把泛型看做是一个变量，用来接收数据类型。泛型是提供给java编译器使用的，只在编译阶段可见，在源码文件编译为字节码文件的过程中，泛型会被移除掉，这个过程叫做<strong>泛型的擦除</strong>。</p>
+<h2 id="名词解释"><a href="#名词解释" class="headerlink" title="名词解释"></a>名词解释</h2><p>E:Element元素<br>T:Type类型</p>
+<p>ArrayList<E>中的E称为Element类型参数变量<br>ArrayList<Integer>中的Integer称为实际类型参数</p>
+<p>整个称为ArrayList<E>泛型类型<br>整个ArrayList<Integer>称为参数化的类型ParameterizedType</p>
+<h2 id="集合泛型"><a href="#集合泛型" class="headerlink" title="集合泛型"></a>集合泛型</h2><p>在jdk1.5以前对象一旦存入集合就丢失了类型，在获取时需要进行强转，麻烦并且容易出错。<br>在jdk1.5以后提供了泛型技术，可以在定义泛型时明确指定存储的类型；如果不指定默认为Object，可以存储任意类型数据。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">List&lt;Integer&gt; list = <span class="keyword">new</span> ArrayList&lt;Integer&gt;();</span><br><span class="line"><span class="comment">//jdk1.7之后，后面的泛型可以说省略不写，会自动推导。</span></span><br><span class="line">List&lt;String&gt; list = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br></pre></td></tr></table></figure>
+<p><strong>注意</strong>：泛型不支持基本数据类型，但支持其包装类。</p>
+<h2 id="自定义泛型"><a href="#自定义泛型" class="headerlink" title="自定义泛型"></a>自定义泛型</h2><h3 id="定义在方法上的泛型"><a href="#定义在方法上的泛型" class="headerlink" title="定义在方法上的泛型"></a>定义在方法上的泛型</h3><p>作用范围是当前方法，在方法被调用时候，编译器会自动判断出泛型的具体类型。</p>
+<h3 id="定义在类上的泛型"><a href="#定义在类上的泛型" class="headerlink" title="定义在类上的泛型"></a>定义在类上的泛型</h3><p>作用范围是整个类，在创建类的对象时，就需要明确的指定泛型的具体类型；如果不指定默认为此泛型的上边界，如果没有上边界则默认上边界为Object。</p>
+<ul>
+<li>定义格式：<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">修饰符 class  类名&lt;代表泛型的变量&gt; &#123; &#125;</span><br></pre></td></tr></table></figure></li>
+<li>例如，API中的ArrayList集合<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ArrayList</span>&lt;<span class="title">E</span>&gt;</span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">add</span><span class="params">(E e)</span></span>&#123;&#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> E <span class="title">get</span><span class="params">(<span class="keyword">int</span> index)</span></span>&#123;&#125;</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li>使用格式：在使用时候在指定具体的泛型类型<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//具体为String</span></span><br><span class="line">List&lt;String&gt; list = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">list.add(<span class="string">"string"</span>);</span><br><span class="line"><span class="comment">//具体为Integer</span></span><br><span class="line">List&lt;Integer&gt; list = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">list.add(<span class="string">"integer"</span>);</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<p><strong>注意</strong>： 静态方法不能使用类定义的泛形，而应单独定义泛形</p>
+<h3 id="定义在接口上的泛型"><a href="#定义在接口上的泛型" class="headerlink" title="定义在接口上的泛型"></a>定义在接口上的泛型</h3><ul>
+<li>定义格式：<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">修饰符 <span class="class"><span class="keyword">interface</span> 接口名&lt;代表泛型的变量&gt; </span>&#123; &#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<ol>
+<li>第一种方式<br>eg：<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">MyGenericInterface</span>&lt;<span class="title">E</span>&gt;</span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title">add</span><span class="params">(E e)</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> E <span class="title">get</span><span class="params">()</span></span>; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ol>
+<ul>
+<li>使用格式：<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyImpl</span> <span class="keyword">implements</span> <span class="title">MyGenericInterface</span>&lt;<span class="title">String</span>&gt;</span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">add</span><span class="params">(String s)</span></span>&#123;&#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">get</span><span class="params">()</span></span>&#123;&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<ol start="2">
+<li>第二种方式，接口是什么类型，继承实现类还使用什么抽象类型。仿ArrayList<br>eg：<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">MyGenericInterface</span>&lt;<span class="title">I</span>&gt;</span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title">method</span><span class="params">(I i)</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ol>
+<ul>
+<li>使用格式：<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyImpl</span>&lt;<span class="title">I</span>&gt; <span class="keyword">implements</span> <span class="title">MyGenericInterface</span>&lt;<span class="title">I</span>&gt;</span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">method</span><span class="params">(I i)</span></span>&#123;&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h2 id="泛型通配符"><a href="#泛型通配符" class="headerlink" title="泛型通配符"></a>泛型通配符</h2><p>当使用泛型类或者接口时，传递的数据中，泛型的类型不确定，可以用通配符<code>&lt;?&gt;</code>表示。但是一旦使用泛型的通配符后，只能使用Object类中的共性方法，集合中自身元素方法无法使用。</p>
+<p>eg：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">List&lt;String&gt; list1 = <span class="keyword">new</span> ArrayList&lt;String&gt;();</span><br><span class="line">List&lt;Integer&gt; list2 = <span class="keyword">new</span> ArrayList&lt;Integer&gt;();</span><br><span class="line"></span><br><span class="line">List&lt;Object&gt; list0= <span class="keyword">null</span>;</span><br><span class="line">list0=list1;<span class="comment">//报错</span></span><br><span class="line">list0=list2;<span class="comment">//报错</span></span><br></pre></td></tr></table></figure>
+<p>list0 没有办法引用 list1 和 list2，这时该如何设计 list0 的泛型使他能够引用 list1 和 list2 呢?<br>此时引入泛型通配符可以写成：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">List&lt;?&gt; list0 = <span class="keyword">null</span>;</span><br></pre></td></tr></table></figure>
+<p>表明当前集合泛型的具体类型是不确定的，此时这个引用就可以接受任意具体类型泛型。</p>
+<h2 id="泛型的边界"><a href="#泛型的边界" class="headerlink" title="泛型的边界"></a>泛型的边界</h2><p>使用了泛型通配符以后，List&lt;?&gt; list0 就可以等于任意的类型了，但是有时我们还可能需要对这个引用可以接受的泛型类型进行一些限定：</p>
+<h3 id="泛型的上限"><a href="#泛型的上限" class="headerlink" title="泛型的上限"></a>泛型的上限</h3><ul>
+<li>格式：<code>类型名称 &lt;? extends 类&gt; 对象名称</code><br>也就是说，可以通过这种方式定义此泛型所接受的具体类型必须是限定的<code>该类型或其子类类型</code>。<br>在使用这个泛型时，可以使用这个泛型上边界所具有的方法；<br>如果不明确限定泛型的上边界，则上边界默认为Object。</li>
+</ul>
+<h3 id="泛型的下限"><a href="#泛型的下限" class="headerlink" title="泛型的下限"></a>泛型的下限</h3><ul>
+<li>格式：<code>类型名称 &lt;? super 类&gt; 对象名称</code><br>也就是说，可以通过这种方式定义此泛型接受的具体类型必须是限定的<code>该类型或其父类类型</code>。</li>
+</ul>
+<p>eg:Integer extends Number extends Object</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">Collection&lt;Integer&gt; list1 = <span class="keyword">new</span> ArrayList&lt;Integer&gt;</span><br><span class="line">Collection&lt;String&gt; list2 = <span class="keyword">new</span> ArrayList&lt;String&gt;</span><br><span class="line">Collection&lt;Number&gt; list3 = <span class="keyword">new</span> ArrayList&lt;Number&gt;</span><br><span class="line">Collection&lt;Object&gt; list4 = <span class="keyword">new</span> ArrayList&lt;Object&gt;</span><br><span class="line"></span><br><span class="line">getElement1(list1);</span><br><span class="line">getElement1(list2);<span class="comment">//报错</span></span><br><span class="line">getElement1(list3);</span><br><span class="line">getElement1(list3);<span class="comment">//报错</span></span><br><span class="line"></span><br><span class="line">getElement2(list1);<span class="comment">//报错</span></span><br><span class="line">getElement2(list2);<span class="comment">//报错</span></span><br><span class="line">getElement2(list3);</span><br><span class="line">getElement2(list4);</span><br><span class="line"><span class="comment">//泛型的上限：此时的泛型? 必须是Number类型或者Number类型的子类</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">getElement1</span><span class="params">(Collection&lt;? extends Number&gt; coll)</span></span>&#123;&#125;</span><br><span class="line"><span class="comment">//泛型的下限：此时的泛型? 必须是Number类型或者Number类型的父类</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">getElement2</span><span class="params">(Collection&lt;? <span class="keyword">super</span> Number&gt; coll)</span></span>&#123;&#125;</span><br></pre></td></tr></table></figure>
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/Java/">Java</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/Java/">Java</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="https://hashcode.cn/2019/05/01/java-generic/" data-title="Java - 泛型(Generic) | techbird blog" data-tsina="6488657373" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2019/05/04/vscode-note-01/" title="VSCode 使用技巧(一)">
+  <strong>上一篇：</strong><br/>
+  <span>
+  VSCode 使用技巧(一)</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2019/04/30/java-annotation/"  title="Java - 注解(Annotation)">
+ <strong>下一篇：</strong><br/> 
+ <span>Java - 注解(Annotation)
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+<section id="comments" class="comment">
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript" target="_blank" rel="noopener">comments powered by Disqus.</a></noscript>
+  </div>
+</section>
+
+
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#定义"><span class="toc-number">1.</span> <span class="toc-text">定义</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#名词解释"><span class="toc-number">2.</span> <span class="toc-text">名词解释</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#集合泛型"><span class="toc-number">3.</span> <span class="toc-text">集合泛型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#自定义泛型"><span class="toc-number">4.</span> <span class="toc-text">自定义泛型</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#定义在方法上的泛型"><span class="toc-number">4.1.</span> <span class="toc-text">定义在方法上的泛型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#定义在类上的泛型"><span class="toc-number">4.2.</span> <span class="toc-text">定义在类上的泛型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#定义在接口上的泛型"><span class="toc-number">4.3.</span> <span class="toc-text">定义在接口上的泛型</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#泛型通配符"><span class="toc-number">5.</span> <span class="toc-text">泛型通配符</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#泛型的边界"><span class="toc-number">6.</span> <span class="toc-text">泛型的边界</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#泛型的上限"><span class="toc-number">6.1.</span> <span class="toc-text">泛型的上限</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#泛型的下限"><span class="toc-number">6.2.</span> <span class="toc-text">泛型的下限</span></a></li></ol></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+
+  
+<div class="github-card">
+<p class="asidetitle">Github Card</p>
+<div class="github-card" data-github="qiudengqiang" data-theme="medium"></div>
+<script type="text/javascript" src="//cdn.jsdelivr.net/github-cards/latest/widget.js" ></script>
+</div>
+
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">Categories</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/Daily/" title="Daily">Daily<sup>14</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/DataBase/" title="DataBase">DataBase<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Java/" title="Java">Java<sup>9</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Journey/" title="Journey">Journey<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Linux/" title="Linux">Linux<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/MySQL/" title="MySQL">MySQL<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/iOS/Objc/" title="Objc">Objc<sup>13</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Readed/" title="Readed">Readed<sup>5</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/VSCode/" title="VSCode">VSCode<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Web/" title="Web">Web<sup>5</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Xcode/" title="Xcode">Xcode<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/iOS/" title="iOS">iOS<sup>16</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/iOS/" title="iOS">iOS<sup>16</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Daily/" title="Daily">Daily<sup>14</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Objc/" title="Objc">Objc<sup>11</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Java/" title="Java">Java<sup>9</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Readed/" title="Readed">Readed<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Web/" title="Web">Web<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Thread/" title="Thread">Thread<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Network/" title="Network">Network<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Journey/" title="Journey">Journey<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/MySQL/" title="MySQL">MySQL<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Xcode/" title="Xcode">Xcode<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Category/" title="Category">Category<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/keywords/" title="keywords">keywords<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Idea/" title="Idea">Idea<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/KVC/" title="KVC">KVC<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/KVO/" title="KVO">KVO<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/NSThread/" title="NSThread">NSThread<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/NSURLRequest/" title="NSURLRequest">NSURLRequest<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/NSURLResponse/" title="NSURLResponse">NSURLResponse<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/NSURLSession/" title="NSURLSession">NSURLSession<sup>1</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+  <div class="weiboshow">
+  <p class="asidetitle">Weibo</p>
+    <iframe width="100%" height="120" class="share_self"  frameborder="0" scrolling="no" src="https://widget.weibo.com/weiboshow/index.php?language=&width=0&height=120&fansRow=2&ptype=1&speed=0&skin=9&isTitle=1&noborder=1&isWeibo=0&isFans=0&uid=6488657373&verifier=f458bf46&dpc=1"></iframe>
+</div>
+
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> You can&#39;t connect the dots looking forward <br/>
+			You can only connect them looking backwards.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		<a href="http://weibo.com/6488657373" target="_blank" class="icon-weibo" title="微博"></a>
+		
+		
+		<a href="https://github.com/qiudengqiang" target="_blank" class="icon-github" title="github"></a>
+		
+		
+		
+		<a href="https://twitter.com/murendless" target="_blank" class="icon-twitter" title="twitter"></a>
+		
+		
+		
+		
+		
+		
+		
+		<a href="mailto:qiudengqiang@gmail.com" target="_blank" class="icon-email" title="Email Me"></a>
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2022 
+		
+		<a href="/about" target="_blank" title="techbird">techbird</a>
+		
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+<script type="text/javascript">
+
+var disqus_shortname = 'techbird-1';
+
+(function(){
+  var dsq = document.createElement('script');
+  dsq.type = 'text/javascript';
+  dsq.async = true;
+  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+}());
+(function(){
+  var dsq = document.createElement('script');
+  dsq.type = 'text/javascript';
+  dsq.async = true;
+  dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+}());
+</script>
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

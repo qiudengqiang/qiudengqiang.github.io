@@ -1,0 +1,685 @@
+
+ <!DOCTYPE HTML>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+  
+    <title>Java 7、8、9+版本的一些新特性 | techbird blog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="techbird">
+    
+
+    
+    <meta name="description" content="集合JDK1.7之前，创建集合对象必须把前后的泛型都写上；JDK1.7之后，后面的反省可省略，会自动推导。 内部类从JDK1.8开始只要局部变量事实上不变，那么内部类访问外部变量时，final关键字可以省略。 哈希表JDK1.8之前是哈希表&#x3D;数组+链表结构。从JDK1.8开始，哈希表&#x3D;数组+链表&#x2F;红黑树（提高查询的速度），如果链表的长度超过了8位，就会把链表转换为红黑树结构。 Objects类在J">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java 7、8、9+版本的一些新特性">
+<meta property="og:url" content="https://hashcode.cn/2019/04/10/java-upgrade-note/index.html">
+<meta property="og:site_name" content="techbird blog">
+<meta property="og:description" content="集合JDK1.7之前，创建集合对象必须把前后的泛型都写上；JDK1.7之后，后面的反省可省略，会自动推导。 内部类从JDK1.8开始只要局部变量事实上不变，那么内部类访问外部变量时，final关键字可以省略。 哈希表JDK1.8之前是哈希表&#x3D;数组+链表结构。从JDK1.8开始，哈希表&#x3D;数组+链表&#x2F;红黑树（提高查询的速度），如果链表的长度超过了8位，就会把链表转换为红黑树结构。 Objects类在J">
+<meta property="og:image" content="https://hashcode.cn/images/tech/java_hashtable_structure.png">
+<meta property="article:published_time" content="2019-04-10T02:01:47.000Z">
+<meta property="article:modified_time" content="2020-11-20T06:12:25.804Z">
+<meta property="article:author" content="techbird">
+<meta property="article:tag" content="Java">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://hashcode.cn/images/tech/java_hashtable_structure.png">
+<meta name="twitter:creator" content="@murendless">
+
+    
+    <link rel="alternative" href="/atom.xml" title="techbird blog" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    
+<link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="/%02.css">
+<link rel="stylesheet" href="/.css">
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.png" alt="techbird blog" title="techbird blog"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="techbird blog">techbird blog</a></h1>
+				<h2 class="blog-motto">timeline of growth</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives/">Archives</a></li>
+					
+						<li><a href="/about/">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:hashcode.cn">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2019/04/10/java-upgrade-note/" title="Java 7、8、9+版本的一些新特性" itemprop="url">Java 7、8、9+版本的一些新特性</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="techbird" target="_blank" itemprop="author">techbird</a>
+		
+  <p class="article-time">
+    <time datetime="2019-04-10T02:01:47.000Z" itemprop="datePublished"> Published 2019-04-10 10:01</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#集合"><span class="toc-number">1.</span> <span class="toc-text">集合</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#内部类"><span class="toc-number">2.</span> <span class="toc-text">内部类</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#哈希表"><span class="toc-number">3.</span> <span class="toc-text">哈希表</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Objects类"><span class="toc-number">4.</span> <span class="toc-text">Objects类</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#IO流异常"><span class="toc-number">5.</span> <span class="toc-text">IO流异常</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#JDK1-7之前的写法："><span class="toc-number">5.1.</span> <span class="toc-text">JDK1.7之前的写法：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#JDK1-7之后的写法："><span class="toc-number">5.2.</span> <span class="toc-text">JDK1.7之后的写法：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#JDK1-9之后："><span class="toc-number">5.3.</span> <span class="toc-text">JDK1.9之后：</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Lambda表达式"><span class="toc-number">6.</span> <span class="toc-text">Lambda表达式</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Lambda接口"><span class="toc-number">6.1.</span> <span class="toc-text">Lambda接口</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#FunctionalInterface"><span class="toc-number">6.2.</span> <span class="toc-text">@FunctionalInterface</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#调用Lambda的标准格式："><span class="toc-number">6.3.</span> <span class="toc-text">调用Lambda的标准格式：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#特性：可推导，可省略"><span class="toc-number">6.4.</span> <span class="toc-text">特性：可推导，可省略</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#常用的函数式接口"><span class="toc-number">6.5.</span> <span class="toc-text">常用的函数式接口</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#使用前提"><span class="toc-number">6.6.</span> <span class="toc-text">使用前提</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#方法引用-Method-Reference"><span class="toc-number">7.</span> <span class="toc-text">方法引用(Method Reference)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#对象名引用成员方法"><span class="toc-number">7.1.</span> <span class="toc-text">对象名引用成员方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#类名引用静态方法"><span class="toc-number">7.2.</span> <span class="toc-text">类名引用静态方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#this引用本类成员方法"><span class="toc-number">7.3.</span> <span class="toc-text">this引用本类成员方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#super引用父类成员方法"><span class="toc-number">7.4.</span> <span class="toc-text">super引用父类成员方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#类构造器引用"><span class="toc-number">7.5.</span> <span class="toc-text">类构造器引用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#数组构造器引用"><span class="toc-number">7.6.</span> <span class="toc-text">数组构造器引用</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Stream流"><span class="toc-number">8.</span> <span class="toc-text">Stream流</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#延迟方法"><span class="toc-number">8.1.</span> <span class="toc-text">延迟方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#终结方法"><span class="toc-number">8.2.</span> <span class="toc-text">终结方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#静态方法"><span class="toc-number">8.3.</span> <span class="toc-text">静态方法</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Interface-接口"><span class="toc-number">9.</span> <span class="toc-text">Interface(接口)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#在Java-9-的版本中，接口包含的内容有如下："><span class="toc-number">9.1.</span> <span class="toc-text">在Java 9+的版本中，接口包含的内容有如下：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#注意："><span class="toc-number">9.2.</span> <span class="toc-text">注意：</span></a></li></ol></li></ol>
+		
+		</div>
+		
+		<h2 id="集合"><a href="#集合" class="headerlink" title="集合"></a>集合</h2><p>JDK1.7之前，创建集合对象必须把前后的泛型都写上；JDK1.7之后，后面的反省可省略，会自动推导。</p>
+<h2 id="内部类"><a href="#内部类" class="headerlink" title="内部类"></a>内部类</h2><p>从JDK1.8开始只要局部变量事实上不变，那么内部类访问外部变量时，<code>final</code>关键字可以省略。</p>
+<h2 id="哈希表"><a href="#哈希表" class="headerlink" title="哈希表"></a>哈希表</h2><p>JDK1.8之前是哈希表=数组+链表结构。从JDK1.8开始，哈希表=数组+链表/红黑树（提高查询的速度），如果链表的长度超过了8位，就会把链表转换为红黑树结构。<br><img src="/images/tech/java_hashtable_structure.png" alt="hashtable-structure"></p>
+<h2 id="Objects类"><a href="#Objects类" class="headerlink" title="Objects类"></a>Objects类</h2><p>在JDK1.7添加了一个<code>Objects</code>工具类，它提供了一些方法来操作对象，它由一些静态的使用方法组成。<br>这些方法是<code>null-save</code>(空指针安全)、<code>null-tolerant</code>（容忍空指针），用于计算对象的<code>hashcode</code>，返回对象的字符串形式、比较两个对象。<br>在比较两个对象的时候<code>Object</code>的<code>equals</code>方法容易抛出空指针异常，而<code>Objects</code>类中的<code>equals</code>就优化了这个问题，方法如下:</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">boolean</span> <span class="title">equals</span><span class="params">(Object a, Object b)</span></span>&#123;</span><br><span class="line">     <span class="keyword">return</span> (a == b) || (a != <span class="keyword">null</span> &amp;&amp; a.euals(b));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="IO流异常"><a href="#IO流异常" class="headerlink" title="IO流异常"></a>IO流异常</h2><h3 id="JDK1-7之前的写法："><a href="#JDK1-7之前的写法：" class="headerlink" title="JDK1.7之前的写法："></a>JDK1.7之前的写法：</h3><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">try</span>&#123;</span><br><span class="line">&#125;<span class="keyword">catch</span>(异常类变量 变量名)&#123;</span><br><span class="line">&#125;<span class="keyword">finally</span>&#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="JDK1-7之后的写法："><a href="#JDK1-7之后的写法：" class="headerlink" title="JDK1.7之后的写法："></a>JDK1.7之后的写法：</h3><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">try</span>(定义对象<span class="number">1</span>;定义对象<span class="number">2</span>;...)&#123;</span><br><span class="line">     <span class="comment">//定义的对象作用范围仅在此大括号内</span></span><br><span class="line">&#125;<span class="keyword">catch</span>(异常类变量 变量名)&#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="JDK1-9之后："><a href="#JDK1-9之后：" class="headerlink" title="JDK1.9之后："></a>JDK1.9之后：</h3><p><code>try</code>前面也可以定义流对象，在<code>try</code>后面的<code>()</code>中可以直接引入流对象的名称(变量名)；在<code>try</code>执行完毕后，流对象也可以释放掉，不用写<code>finally</code>。但是比较麻烦的是既需要 <code>throws</code> 也需要<code>try catch</code>。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">A a = <span class="keyword">new</span> A();</span><br><span class="line">B b = <span class="keyword">new</span> B();</span><br><span class="line">tru(a,b)&#123;</span><br><span class="line">&#125;<span class="keyword">catch</span>(异常类变量 变量名)&#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="Lambda表达式"><a href="#Lambda表达式" class="headerlink" title="Lambda表达式"></a>Lambda表达式</h2><p>JDK1.8开始，Oracle加入了<strong>Lambda表达式</strong>重量级新特性；函数式接口在Java中是指，有且仅有一个<strong>抽象方法</strong>的接口，称为<strong>函数式接口</strong>；即适用于函数式编程场景的接口，在Java中函数是编程体现就是<code>Lambda</code>，所以函数式接口就是可以适用于<code>Lambda</code>使用的接口，只有确保接口中有且只有一个抽象方法，Java中的<code>Lambda</code>才能顺利的进行推导。</p>
+<h3 id="Lambda接口"><a href="#Lambda接口" class="headerlink" title="Lambda接口"></a>Lambda接口</h3><figure class="highlight java"><table><tr><td class="code"><pre><span class="line">修饰符 <span class="class"><span class="keyword">interface</span> 接口名称</span>&#123;</span><br><span class="line">     [<span class="keyword">public</span>] [<span class="keyword">abstract</span>] 返回值类型 方法名称(可选参数信息);</span><br><span class="line">     <span class="comment">//其他非抽象方法(默认，静态，私有)</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="FunctionalInterface"><a href="#FunctionalInterface" class="headerlink" title="@FunctionalInterface"></a>@FunctionalInterface</h3><p>这个注解可以确保我们定义的接口是一个函数式接口，也就是接口中有且必须只有一个抽象方法。 </p>
+<h3 id="调用Lambda的标准格式："><a href="#调用Lambda的标准格式：" class="headerlink" title="调用Lambda的标准格式："></a>调用Lambda的标准格式：</h3><ul>
+<li>由三部分组成：<br>   a. 一些参数<br>   b. 一个箭头<br>   c. 一段代码</li>
+</ul>
+<p><strong>格式</strong>：（参数列表）-&gt; {一些重写方法的代码};</p>
+<h3 id="特性：可推导，可省略"><a href="#特性：可推导，可省略" class="headerlink" title="特性：可推导，可省略"></a>特性：可推导，可省略</h3><ul>
+<li>可省略的内容：<ol>
+<li>(参数列表)：括号中参数列表的数据类型，可以省略不写</li>
+<li>(参数列表)：括号中参数如果只有一个，那么类型和()都可省略</li>
+<li>{一些代码}：如果{}中代码只有一行，无论是否有返回值，都可以省略({},return,分号)<br>注意：要省略{},return,分号必须一起省略</li>
+</ol>
+</li>
+</ul>
+<h3 id="常用的函数式接口"><a href="#常用的函数式接口" class="headerlink" title="常用的函数式接口"></a>常用的函数式接口</h3><p>JDK提供了大量常用的函数式接口以丰富Lambda的典型使用场景，他们主要在<code>java.util.function</code> 包中被提供。</p>
+<ul>
+<li>eg:<br><code>Supelier</code> 中方法有：get()<br><code>Consumer</code> 中方法有：andThen(Consumer)、accept(T)<br><code>Predicte</code> 中方法有：and(Predicte)、or(Predicte)、negate()、test(T)、isEqual(Object)<br><code>Function</code> 中方法有：andThen(Funtion)、apply(T)、conpose(Function)、identity()</li>
+</ul>
+<h3 id="使用前提"><a href="#使用前提" class="headerlink" title="使用前提"></a>使用前提</h3><ol>
+<li>使用<code>Lambda</code>必须具有接口，且要求接口中有且仅有一个抽象方法。<br>无论是JDK内置的<code>Runnable</code>、<code>Comparator</code>接口还是自定义的接口，只有当接口中的抽象方法存在且唯一时，才可以使用<code>Lambda</code></li>
+<li>使用<code>Lambda</code>必须具有上下文<strong>上下文推断</strong>。<br>也就是方法的参数或局部变量类型必须为<code>Lambda</code>对应的接口类型，才能使用<code>Lambda</code>作为该接口的实例。</li>
+</ol>
+<h2 id="方法引用-Method-Reference"><a href="#方法引用-Method-Reference" class="headerlink" title="方法引用(Method Reference)"></a>方法引用(Method Reference)</h2><h3 id="对象名引用成员方法"><a href="#对象名引用成员方法" class="headerlink" title="对象名引用成员方法"></a>对象名引用成员方法</h3><p>对象引用::实例方法名 <code>obj::method</code></p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Demo</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">printString</span><span class="params">(Printable lambda)</span></span>&#123;</span><br><span class="line">        lambda.print(<span class="string">"Hello"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        Demo obj = <span class="keyword">new</span> Demo();</span><br><span class="line">        obj.printString(System.out::print);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="类名引用静态方法"><a href="#类名引用静态方法" class="headerlink" title="类名引用静态方法"></a>类名引用静态方法</h3><p>类名::静态方法名 <code>Class::method</code></p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> <span class="title">method</span><span class="params">(<span class="keyword">int</span> num,Calcable lambda)</span></span>&#123;</span><br><span class="line">   <span class="keyword">return</span> lambda.calcAbs(num);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> number1 = method(-<span class="number">10</span>, (num) -&gt; &#123;</span><br><span class="line">        <span class="keyword">return</span> Math.abs(num);</span><br><span class="line">    &#125;);</span><br><span class="line">    System.out.println(number1);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//省略写法</span></span><br><span class="line">    <span class="keyword">int</span> number2 = method(-<span class="number">10</span>, num -&gt; Math.abs(num));</span><br><span class="line">    System.out.println(number2);</span><br><span class="line"></span><br><span class="line">     <span class="comment">//静态方法引用</span></span><br><span class="line">    <span class="keyword">int</span> number3 =method(-<span class="number">10</span>,Math::abs);</span><br><span class="line">    System.out.println(number3);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="this引用本类成员方法"><a href="#this引用本类成员方法" class="headerlink" title="this引用本类成员方法"></a>this引用本类成员方法</h3><p><code>this::method</code></p>
+<h3 id="super引用父类成员方法"><a href="#super引用父类成员方法" class="headerlink" title="super引用父类成员方法"></a>super引用父类成员方法</h3><p><code>super::method</code></p>
+<h3 id="类构造器引用"><a href="#类构造器引用" class="headerlink" title="类构造器引用"></a>类构造器引用</h3><p><code>类名::new</code></p>
+<h3 id="数组构造器引用"><a href="#数组构造器引用" class="headerlink" title="数组构造器引用"></a>数组构造器引用</h3><p><code>类型[]::new</code></p>
+<h2 id="Stream流"><a href="#Stream流" class="headerlink" title="Stream流"></a>Stream流</h2><p>说到<code>Stream</code>很容易联想到<code>I/O Stream</code>，实际上两者是完全不同的概念。在JDK1.8中，得益于<code>Lambda</code>所带来的<strong>函数式编程</strong>，引入了一种<strong>全新的Stream概念</strong>，用于解决已有集合类库/数组既有的弊端。<br>eg:</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">list.stream().filter(name-&gt;name.starWith(<span class="string">"zhang"</span>))</span><br><span class="line">             .filter(name-&gt;name.length == <span class="number">3</span>)</span><br><span class="line">             .forEach(name-&gt;System.out.println(name));</span><br></pre></td></tr></table></figure>
+<h3 id="延迟方法"><a href="#延迟方法" class="headerlink" title="延迟方法"></a>延迟方法</h3><p>返回值类型仍然是<code>Stream</code>接口自身类型的方法，因此支持链式调用。（除了终结方法外，其他均为延迟方法）<br>例如：<code>filter</code>、<code>map</code>、<code>skip</code>、<code>limit</code>等</p>
+<h3 id="终结方法"><a href="#终结方法" class="headerlink" title="终结方法"></a>终结方法</h3><p>返回值类型不再是<code>Stream</code>自身接口类型的方法，因此不再支持<code>StringBuilder</code>那样的链式调用。<br>例如：<code>forEach</code>和<code>count</code></p>
+<h3 id="静态方法"><a href="#静态方法" class="headerlink" title="静态方法"></a>静态方法</h3><figure class="highlight java"><table><tr><td class="code"><pre><span class="line">Stream.of(<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>)<span class="comment">//把Int数组转为Stream流</span></span><br><span class="line">Stream.concat(stream1,stream2);<span class="comment">//合并两个流为一个</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="Interface-接口"><a href="#Interface-接口" class="headerlink" title="Interface(接口)"></a>Interface(接口)</h2><h3 id="在Java-9-的版本中，接口包含的内容有如下："><a href="#在Java-9-的版本中，接口包含的内容有如下：" class="headerlink" title="在Java 9+的版本中，接口包含的内容有如下："></a>在Java 9+的版本中，接口包含的内容有如下：</h3><ol>
+<li><p>成员变量其实是常量，格式：<br>[public] [static] [final] 数据类型 常量名称 = 数据值;<br>注意：常量必须进行赋值，而且一旦赋值不能改变。<br>  常量名称完全大写，用下划线进行分割。</p>
+</li>
+<li><p>接口中最重要的就是抽象方法，格式：<br>[public] [abstract] 返回值类型 方法名称（参数列表);<br>注意：实现类必须覆盖重写接口所有的抽象方法，除非实现类是抽象类。</p>
+</li>
+<li><p>从Java 8开始，接口里允许定义默认方法，格式：<br>[public] default 返回值类型 方法名称（参数列表）{方法体}<br>注意：默认方法也可以被覆盖重写</p>
+</li>
+<li><p>从Java 8开始，接口里允许定义静态方法，格式：<br>public static 返回值类型 方法名称（参数列表）{方法体}<br>注意：应该通过接口名称进行调用，不能通过实现类对象调用静态方法（因为多实现中可能存在相同的方法）</p>
+</li>
+<li><p>从Java 9开始，接口里允许定义私有方法，格式：<br>普通的私有方法：private 返回值类型 方法名称（参数列表){方法体}<br>静态的私有方法：private static 返回值类型 方法名称(参数列表){方法体}<br>注意：private的私有方法只有接口自己才能调用，不能被实现类或别人使用。</p>
+</li>
+</ol>
+<h3 id="注意："><a href="#注意：" class="headerlink" title="注意："></a>注意：</h3><ol>
+<li>接口中没有静态代码块或者构造方法</li>
+<li>接口中没有静态代码块或者构造方法</li>
+</ol>
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/Java/">Java</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/Java/">Java</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="https://hashcode.cn/2019/04/10/java-upgrade-note/" data-title="Java 7、8、9+版本的一些新特性 | techbird blog" data-tsina="6488657373" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2019/04/11/idea-shortcuts/" title="Idea快速入门">
+  <strong>上一篇：</strong><br/>
+  <span>
+  Idea快速入门</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2019/04/10/java-memo-devide/"  title="Java 内存划分">
+ <strong>下一篇：</strong><br/> 
+ <span>Java 内存划分
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+<section id="comments" class="comment">
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript" target="_blank" rel="noopener">comments powered by Disqus.</a></noscript>
+  </div>
+</section>
+
+
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#集合"><span class="toc-number">1.</span> <span class="toc-text">集合</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#内部类"><span class="toc-number">2.</span> <span class="toc-text">内部类</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#哈希表"><span class="toc-number">3.</span> <span class="toc-text">哈希表</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Objects类"><span class="toc-number">4.</span> <span class="toc-text">Objects类</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#IO流异常"><span class="toc-number">5.</span> <span class="toc-text">IO流异常</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#JDK1-7之前的写法："><span class="toc-number">5.1.</span> <span class="toc-text">JDK1.7之前的写法：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#JDK1-7之后的写法："><span class="toc-number">5.2.</span> <span class="toc-text">JDK1.7之后的写法：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#JDK1-9之后："><span class="toc-number">5.3.</span> <span class="toc-text">JDK1.9之后：</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Lambda表达式"><span class="toc-number">6.</span> <span class="toc-text">Lambda表达式</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Lambda接口"><span class="toc-number">6.1.</span> <span class="toc-text">Lambda接口</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#FunctionalInterface"><span class="toc-number">6.2.</span> <span class="toc-text">@FunctionalInterface</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#调用Lambda的标准格式："><span class="toc-number">6.3.</span> <span class="toc-text">调用Lambda的标准格式：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#特性：可推导，可省略"><span class="toc-number">6.4.</span> <span class="toc-text">特性：可推导，可省略</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#常用的函数式接口"><span class="toc-number">6.5.</span> <span class="toc-text">常用的函数式接口</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#使用前提"><span class="toc-number">6.6.</span> <span class="toc-text">使用前提</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#方法引用-Method-Reference"><span class="toc-number">7.</span> <span class="toc-text">方法引用(Method Reference)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#对象名引用成员方法"><span class="toc-number">7.1.</span> <span class="toc-text">对象名引用成员方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#类名引用静态方法"><span class="toc-number">7.2.</span> <span class="toc-text">类名引用静态方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#this引用本类成员方法"><span class="toc-number">7.3.</span> <span class="toc-text">this引用本类成员方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#super引用父类成员方法"><span class="toc-number">7.4.</span> <span class="toc-text">super引用父类成员方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#类构造器引用"><span class="toc-number">7.5.</span> <span class="toc-text">类构造器引用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#数组构造器引用"><span class="toc-number">7.6.</span> <span class="toc-text">数组构造器引用</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Stream流"><span class="toc-number">8.</span> <span class="toc-text">Stream流</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#延迟方法"><span class="toc-number">8.1.</span> <span class="toc-text">延迟方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#终结方法"><span class="toc-number">8.2.</span> <span class="toc-text">终结方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#静态方法"><span class="toc-number">8.3.</span> <span class="toc-text">静态方法</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Interface-接口"><span class="toc-number">9.</span> <span class="toc-text">Interface(接口)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#在Java-9-的版本中，接口包含的内容有如下："><span class="toc-number">9.1.</span> <span class="toc-text">在Java 9+的版本中，接口包含的内容有如下：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#注意："><span class="toc-number">9.2.</span> <span class="toc-text">注意：</span></a></li></ol></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+
+  
+<div class="github-card">
+<p class="asidetitle">Github Card</p>
+<div class="github-card" data-github="qiudengqiang" data-theme="medium"></div>
+<script type="text/javascript" src="//cdn.jsdelivr.net/github-cards/latest/widget.js" ></script>
+</div>
+
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">Categories</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/Daily/" title="Daily">Daily<sup>14</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/DataBase/" title="DataBase">DataBase<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Java/" title="Java">Java<sup>9</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Journey/" title="Journey">Journey<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Linux/" title="Linux">Linux<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/MySQL/" title="MySQL">MySQL<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/iOS/Objc/" title="Objc">Objc<sup>13</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Readed/" title="Readed">Readed<sup>5</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/VSCode/" title="VSCode">VSCode<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Web/" title="Web">Web<sup>5</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Xcode/" title="Xcode">Xcode<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/iOS/" title="iOS">iOS<sup>16</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/iOS/" title="iOS">iOS<sup>16</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Daily/" title="Daily">Daily<sup>14</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Objc/" title="Objc">Objc<sup>11</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Java/" title="Java">Java<sup>9</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Readed/" title="Readed">Readed<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Web/" title="Web">Web<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Thread/" title="Thread">Thread<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Network/" title="Network">Network<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Journey/" title="Journey">Journey<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/MySQL/" title="MySQL">MySQL<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Xcode/" title="Xcode">Xcode<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Category/" title="Category">Category<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/keywords/" title="keywords">keywords<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Idea/" title="Idea">Idea<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/KVC/" title="KVC">KVC<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/KVO/" title="KVO">KVO<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/NSThread/" title="NSThread">NSThread<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/NSURLRequest/" title="NSURLRequest">NSURLRequest<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/NSURLResponse/" title="NSURLResponse">NSURLResponse<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/NSURLSession/" title="NSURLSession">NSURLSession<sup>1</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+  <div class="weiboshow">
+  <p class="asidetitle">Weibo</p>
+    <iframe width="100%" height="120" class="share_self"  frameborder="0" scrolling="no" src="https://widget.weibo.com/weiboshow/index.php?language=&width=0&height=120&fansRow=2&ptype=1&speed=0&skin=9&isTitle=1&noborder=1&isWeibo=0&isFans=0&uid=6488657373&verifier=f458bf46&dpc=1"></iframe>
+</div>
+
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> You can&#39;t connect the dots looking forward <br/>
+			You can only connect them looking backwards.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		<a href="http://weibo.com/6488657373" target="_blank" class="icon-weibo" title="微博"></a>
+		
+		
+		<a href="https://github.com/qiudengqiang" target="_blank" class="icon-github" title="github"></a>
+		
+		
+		
+		<a href="https://twitter.com/murendless" target="_blank" class="icon-twitter" title="twitter"></a>
+		
+		
+		
+		
+		
+		
+		
+		<a href="mailto:qiudengqiang@gmail.com" target="_blank" class="icon-email" title="Email Me"></a>
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2022 
+		
+		<a href="/about" target="_blank" title="techbird">techbird</a>
+		
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+<script type="text/javascript">
+
+var disqus_shortname = 'techbird-1';
+
+(function(){
+  var dsq = document.createElement('script');
+  dsq.type = 'text/javascript';
+  dsq.async = true;
+  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+}());
+(function(){
+  var dsq = document.createElement('script');
+  dsq.type = 'text/javascript';
+  dsq.async = true;
+  dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+}());
+</script>
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

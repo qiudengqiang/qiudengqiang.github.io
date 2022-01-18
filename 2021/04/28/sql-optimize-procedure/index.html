@@ -1,0 +1,788 @@
+
+ <!DOCTYPE HTML>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+  
+    <title>SQL调优的流程 | techbird blog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="techbird">
+    
+
+    
+    <meta name="description" content="SQL调优无论在实际工作中还是在面试过程中都是考查的重点，在文章中我将从慢查询分析和索引两个角度来介绍SQL调优的一点思路。 慢查询分析SQL优化并不是漫无目的一条条去 explain SQL语句，需要具备针对性，所以我们只需要对执行时间超出我们预期的SQL进行针对的调整，那么慢查询分析日志就是帮我们快速定位超预期执行时间的SQL的一个有力工具。 打开慢查询分析日志开关打开慢查询分析日志的开关的两">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SQL调优的流程">
+<meta property="og:url" content="https://hashcode.cn/2021/04/28/sql-optimize-procedure/index.html">
+<meta property="og:site_name" content="techbird blog">
+<meta property="og:description" content="SQL调优无论在实际工作中还是在面试过程中都是考查的重点，在文章中我将从慢查询分析和索引两个角度来介绍SQL调优的一点思路。 慢查询分析SQL优化并不是漫无目的一条条去 explain SQL语句，需要具备针对性，所以我们只需要对执行时间超出我们预期的SQL进行针对的调整，那么慢查询分析日志就是帮我们快速定位超预期执行时间的SQL的一个有力工具。 打开慢查询分析日志开关打开慢查询分析日志的开关的两">
+<meta property="og:image" content="https://hashcode.cn/images/tech/image-20210401173711705.png">
+<meta property="og:image" content="https://hashcode.cn/images/tech/image-20210402080934143.png">
+<meta property="og:image" content="https://hashcode.cn/images/tech/image-20210401174931790.png">
+<meta property="og:image" content="https://hashcode.cn/images/tech/image-20210401175722407.png">
+<meta property="article:published_time" content="2021-04-28T02:01:47.000Z">
+<meta property="article:modified_time" content="2021-08-23T14:38:01.022Z">
+<meta property="article:author" content="techbird">
+<meta property="article:tag" content="MySQL">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://hashcode.cn/images/tech/image-20210401173711705.png">
+<meta name="twitter:creator" content="@murendless">
+
+    
+    <link rel="alternative" href="/atom.xml" title="techbird blog" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    
+<link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="/%02.css">
+<link rel="stylesheet" href="/.css">
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.png" alt="techbird blog" title="techbird blog"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="techbird blog">techbird blog</a></h1>
+				<h2 class="blog-motto">timeline of growth</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives/">Archives</a></li>
+					
+						<li><a href="/about/">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:hashcode.cn">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2021/04/28/sql-optimize-procedure/" title="SQL调优的流程" itemprop="url">SQL调优的流程</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="techbird" target="_blank" itemprop="author">techbird</a>
+		
+  <p class="article-time">
+    <time datetime="2021-04-28T02:01:47.000Z" itemprop="datePublished"> Published 2021-04-28 10:01</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#慢查询分析"><span class="toc-number">1.</span> <span class="toc-text">慢查询分析</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#打开慢查询分析日志开关"><span class="toc-number">1.1.</span> <span class="toc-text">打开慢查询分析日志开关</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#更改慢查询分析的默认时间"><span class="toc-number">1.2.</span> <span class="toc-text">更改慢查询分析的默认时间</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#构造一个慢的SQL测试语句"><span class="toc-number">1.3.</span> <span class="toc-text">构造一个慢的SQL测试语句</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#查看慢查询分析的日志文件"><span class="toc-number">1.4.</span> <span class="toc-text">查看慢查询分析的日志文件</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#索引"><span class="toc-number">2.</span> <span class="toc-text">索引</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#相关概念"><span class="toc-number">2.1.</span> <span class="toc-text">相关概念</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#最左前缀-Leftmost-Prefixing"><span class="toc-number">2.2.</span> <span class="toc-text">最左前缀(Leftmost Prefixing)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#执行计划-explain"><span class="toc-number">2.3.</span> <span class="toc-text">执行计划(explain)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#索引失效的常见情况"><span class="toc-number">2.4.</span> <span class="toc-text">索引失效的常见情况</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#常见优化索引的方法"><span class="toc-number">2.5.</span> <span class="toc-text">常见优化索引的方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#小结"><span class="toc-number">2.6.</span> <span class="toc-text">小结</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#参考资料"><span class="toc-number">3.</span> <span class="toc-text">参考资料</span></a></li></ol>
+		
+		</div>
+		
+		<p>SQL调优无论在实际工作中还是在面试过程中都是考查的重点，在文章中我将从慢查询分析和索引两个角度来介绍SQL调优的一点思路。</p>
+<h2 id="慢查询分析"><a href="#慢查询分析" class="headerlink" title="慢查询分析"></a>慢查询分析</h2><p>SQL优化并不是漫无目的一条条去 <code>explain</code> SQL语句，需要具备针对性，所以我们只需要对执行时间超出我们预期的SQL进行针对的调整，那么慢查询分析日志就是帮我们快速定位超预期执行时间的SQL的一个有力工具。</p>
+<h3 id="打开慢查询分析日志开关"><a href="#打开慢查询分析日志开关" class="headerlink" title="打开慢查询分析日志开关"></a>打开慢查询分析日志开关</h3><p>打开慢查询分析日志的开关的两种方式：1.修改配置文件，2.设置参数。我们下面使用设置参数的方式来演示：</p>
+<ul>
+<li><p>登入MySQL(略)</p>
+</li>
+<li><p>查看慢查询日志分析文件的配置信息：</p>
+</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">show</span> <span class="keyword">variables</span> <span class="keyword">like</span> <span class="string">'slow_query%'</span>;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>得到如下的配置信息：</li>
+</ul>
+<figure class="highlight console"><table><tr><td class="code"><pre><span class="line">+---------------------+-------------------------------------------------+</span><br><span class="line">| Variable_name       | Value                                           |</span><br><span class="line">+---------------------+-------------------------------------------------+</span><br><span class="line">| slow_query_log      | OFF                                             |</span><br><span class="line">| slow_query_log_file | /usr/local/mysql/data/TechBird-Macbook-slow.log |</span><br><span class="line">+---------------------+-------------------------------------------------+</span><br><span class="line">2 rows in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+
+<p>把<code>slow_query_log</code> 的值 OFF 设置为 ON，即打开慢查询分析日志记录。记录的日志文件会保存在<code>slow_query_log_file</code> 的 Value 所指向的路径文件中，如果需要也可以对其进行修改。</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">set</span> <span class="keyword">global</span> slow_query_log = <span class="string">'ON'</span>;</span><br></pre></td></tr></table></figure>
+
+<h3 id="更改慢查询分析的默认时间"><a href="#更改慢查询分析的默认时间" class="headerlink" title="更改慢查询分析的默认时间"></a>更改慢查询分析的默认时间</h3><p>MySQL默认是的时间是 10 sec，显然时间太长了，我们可以修改这个参数为自己的心里预期时间：</p>
+<p>查看默认时间配置：</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">show</span> <span class="keyword">variables</span> <span class="keyword">like</span> <span class="string">'long_query%'</span>;</span><br></pre></td></tr></table></figure>
+
+<p>得到如下的配置信息：</p>
+<figure class="highlight console"><table><tr><td class="code"><pre><span class="line">+-----------------+-----------+</span><br><span class="line">| Variable_name   | Value     |</span><br><span class="line">+-----------------+-----------+</span><br><span class="line">| long_query_time | 10.000000 |</span><br><span class="line">+-----------------+-----------+</span><br><span class="line">1 row in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+
+<p>修改默认的时间（单位：秒），一般在项目中可以设置为0.1秒，即100毫秒。为了演示方便下面将其设置为1秒：</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">set</span> <span class="keyword">global</span> long_query_time = <span class="number">1</span>;</span><br></pre></td></tr></table></figure>
+
+<p>修改完所有参数之后要<code>quit;</code>重新登入数据库才能保证已设置的参数生效。</p>
+<h3 id="构造一个慢的SQL测试语句"><a href="#构造一个慢的SQL测试语句" class="headerlink" title="构造一个慢的SQL测试语句"></a>构造一个慢的SQL测试语句</h3><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="keyword">sleep</span>(<span class="number">3</span>);</span><br></pre></td></tr></table></figure>
+
+<h3 id="查看慢查询分析的日志文件"><a href="#查看慢查询分析的日志文件" class="headerlink" title="查看慢查询分析的日志文件"></a>查看慢查询分析的日志文件</h3><p>温馨提示：在查看慢查询分析文件之前要<code>quit;</code> MySQL。</p>
+<p>通过查看慢查询分析的日志文件，我们可以了解项目中哪些SQL超出了我们设置的预期执行时间，然后针对其进行优化：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">tail &#x2F;var&#x2F;lib&#x2F;mysql&#x2F;TechBird-Macbook-slow.log</span><br></pre></td></tr></table></figure>
+
+<p>日志如下：</p>
+<figure class="highlight console"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> Time: 2021-04-01T06:59:15.149853Z</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> User@Host: root[root] @ localhost [] Id:  419</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> Query_time: 3.005275 Lock_time: 0.000000 Rows_sent: 1 Rows_examined: 0</span></span><br><span class="line">SET timestamp=1617260355;</span><br><span class="line">select sleep(3);</span><br></pre></td></tr></table></figure>
+
+<p>通过查看日志，可以准确的定位出是这条<code>select sleep(3);</code>执行超出了预期时间，从而利用下文所介绍的方法针对其进行优化。</p>
+<h2 id="索引"><a href="#索引" class="headerlink" title="索引"></a>索引</h2><p>我们已经定位出了执行超出预期时间的SQL语句，一般来说可以使用<code>explain</code>工具对其进行分析定位问题，总结起来就是如下几点：</p>
+<ol>
+<li><p>理解 MySQL InnoDB 的索引原理</p>
+</li>
+<li><p>掌握 MySQL 执行计划的方法</p>
+</li>
+<li><p>掌握导致索引失效的常见情况</p>
+</li>
+<li><p>掌握实际工作中常用的建立高效索引的技巧（如前缀索引、建立覆盖索引等）</p>
+</li>
+</ol>
+<p>在这之前我们需要先介绍一下索引相关的概念和知识。</p>
+<h3 id="相关概念"><a href="#相关概念" class="headerlink" title="相关概念"></a>相关概念</h3><p>在实际应用中，InnoDB 是 MySQL 建表时默认的存储引擎，B+Tree 索引类型也是 MySQL 存储引擎采用最多的索引类型。</p>
+<p>在创建表时，InnoDB 存储引擎默认使用表的主键作为主键索引，该主键索引就是<strong>聚簇索引</strong>（Clustered Index），如果表没有定义主键，InnoDB 就自己产生一个隐藏的 6 个字节的主键 ID 值作为主键索引，<strong>而创建的主键索引默认使用的是 B+Tree 索引</strong>。</p>
+<ol>
+<li><p>索引分类：<strong>普通索引</strong>、<strong>唯一索引</strong>、全文索引、空间索引</p>
+<ul>
+<li>在MySQL的官方文档中，create [option] index语法中，[option]就是用来修饰索引。</li>
+<li><strong>缺省</strong>代表普通索引</li>
+<li><strong>unique</strong>代表唯一索引</li>
+<li><strong>fulltext</strong>代表全文索引，全文索引目前通常采用ElasticSearch来实现，而不是在数据库内部来做</li>
+<li><strong>spatial</strong>代表空间索引，而空间索引在一些老的MySQL版本中是不支持的，一般用于存储一些地址坐标数据</li>
+</ul>
+</li>
+<li><p>存储方式：<strong>B-Tree</strong>、Hash</p>
+<ul>
+<li>InnoDB支持B-Tree，不支持Hash</li>
+<li>InnoDB 选择 B+Tree 当默认的索引数据结构</li>
+<li>数据存储有序（最左前缀与此息息相关）</li>
+<li>每个叶子节点到根的距离相同</li>
+</ul>
+</li>
+<li><p>依赖列数：单列索引、组合索引</p>
+</li>
+<li><p>数据分布：<strong>聚簇索引</strong>、<strong>二级（辅助）索引</strong></p>
+<ul>
+<li>所谓聚簇索引就是指实际的数据行直接存到了叶子节点当中，而主键索引是聚簇索引的一个通常的形式。</li>
+<li>通过主键查询数据，不需要回表，直接就可以得到数据行，效率较高。</li>
+<li>非聚簇（主键）索引（辅助索引），叶子节点保存的不是最终的数据行，而只是一个主键值，需要通过主键值再去主键（聚簇）索引里查询最终叶子节点的数据行。因此需要走两次索引，是索引的索引，所以称为二级索引或辅助索引。这个过程叫<strong>回表</strong>。</li>
+</ul>
+</li>
+<li><p>回表情况：<strong>覆盖索引</strong></p>
+<ul>
+<li><p>当一个索引包含（覆盖）了需要查询的字段值时，称其为覆盖索引</p>
+</li>
+<li><p>只有select、where中出现的列被索引覆盖的情况才是覆盖索引</p>
+</li>
+<li><p>此时如果使用 explain 分析可以看到 Extra 的值为Using index</p>
+</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">colums: a b c d e</span><br><span class="line">index(a,b,c)</span><br><span class="line"><span class="keyword">select</span> a,b,c <span class="keyword">from</span> T <span class="keyword">where</span> a=<span class="string">""</span> <span class="keyword">and</span> b=<span class="string">""</span>;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<h3 id="最左前缀-Leftmost-Prefixing"><a href="#最左前缀-Leftmost-Prefixing" class="headerlink" title="最左前缀(Leftmost Prefixing)"></a>最左前缀(Leftmost Prefixing)</h3><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">table T,index(a,b,c)</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 全值匹配</span></span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> T <span class="keyword">where</span> a=<span class="string">''</span> <span class="keyword">and</span> b=<span class="string">''</span> <span class="keyword">and</span> c=<span class="string">''</span>; <span class="comment">-- YES</span></span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> T <span class="keyword">where</span> c=<span class="string">''</span> <span class="keyword">and</span> b=<span class="string">''</span> <span class="keyword">and</span> a=<span class="string">''</span>; <span class="comment">-- YES</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 匹配左前缀</span></span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> T <span class="keyword">where</span> a=<span class="string">''</span>; <span class="comment">-- YES</span></span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> T <span class="keyword">where</span> b=<span class="string">''</span>; <span class="comment">-- NO</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 匹配列前缀</span></span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> T <span class="keyword">where</span> a <span class="keyword">like</span> <span class="string">'x%'</span>; <span class="comment">-- YES</span></span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> T <span class="keyword">where</span> a <span class="keyword">like</span> <span class="string">'%x'</span>; <span class="comment">-- NO</span></span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> T <span class="keyword">where</span> b <span class="keyword">like</span> <span class="string">'x%'</span>; <span class="comment">-- NO</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 匹配范围值</span></span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> T <span class="keyword">where</span> a <span class="keyword">between</span> <span class="string">''</span> <span class="keyword">and</span> <span class="string">''</span>; <span class="comment">-- YES</span></span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> T <span class="keyword">where</span> b <span class="keyword">between</span> <span class="string">''</span> <span class="keyword">and</span> <span class="string">''</span>; <span class="comment">-- NO</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 全值匹配 + 范围值匹配</span></span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> T <span class="keyword">where</span> a=<span class="string">''</span> <span class="keyword">and</span> b <span class="keyword">between</span> <span class="string">''</span> <span class="keyword">and</span> <span class="string">''</span>; <span class="comment">-- YES</span></span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> T <span class="keyword">where</span> b=<span class="string">''</span> <span class="keyword">and</span> c <span class="keyword">between</span> <span class="string">''</span> <span class="keyword">and</span> <span class="string">''</span>; <span class="comment">-- NO</span></span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> T <span class="keyword">where</span> a <span class="keyword">between</span> <span class="string">''</span> <span class="keyword">and</span> <span class="string">''</span> <span class="keyword">and</span> b=<span class="string">''</span>; <span class="comment">-- NO</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="执行计划-explain"><a href="#执行计划-explain" class="headerlink" title="执行计划(explain)"></a>执行计划(explain)</h3><p>了解完上面的概念之后，我们来介绍一下在实际工作中如何查看索引的执行计划。</p>
+<p>我这里有一张存储用户信息的演示表 tab_user：</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> <span class="string">`tab_user`</span></span><br><span class="line">(</span><br><span class="line">   <span class="string">`uid`</span>                 <span class="built_in">int</span>(<span class="number">11</span>) <span class="keyword">not</span> <span class="literal">null</span>,</span><br><span class="line">   <span class="string">`username`</span>            <span class="built_in">varchar</span>(<span class="number">255</span>) <span class="keyword">default</span> <span class="literal">null</span>,</span><br><span class="line">   <span class="string">`password`</span>            <span class="built_in">varchar</span>(<span class="number">255</span>) <span class="keyword">default</span> <span class="literal">null</span>,</span><br><span class="line">   <span class="string">`name`</span>                <span class="built_in">varchar</span>(<span class="number">255</span>) <span class="keyword">default</span> <span class="literal">null</span>,   </span><br><span class="line">    primary <span class="keyword">key</span> (<span class="string">`uid`</span>) <span class="keyword">using</span> btree,</span><br><span class="line">	  <span class="keyword">key</span> <span class="string">'index_name'</span> (<span class="string">'name'</span>),</span><br><span class="line">    <span class="keyword">key</span> <span class="string">'index_uid_name'</span> (<span class="string">'uid'</span>,<span class="string">'name'</span>)</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+
+<p>表中包含了主键索引、name 字段上的普通索引，以及 uid 和 name 两个字段的联合索引。现在我们来看一条简单查询语句的执行计划：</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">explain</span> <span class="keyword">select</span> uid,<span class="keyword">name</span> <span class="keyword">from</span> tab_user <span class="keyword">where</span> uid=<span class="string">'1'</span>;</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/tech/image-20210401173711705.png" alt="explain-sql"></p>
+<p>对于执行计划，参数有 possible_keys 字段表示可能用到的索引，key 字段表示实际用的索引，key_len 表示索引的长度，rows 表示扫描的数据行数，filtered表示覆盖率%。Extra表示额外的信息说明。</p>
+<p><strong>这其中需要重点关注type字段</strong>，表示数据扫描类型，也就是描述了找到所需数据时使用的扫描方式是什么，常见扫描类型的执行效率从低到高的顺序为（考虑到查询效率问题，全表扫描和全索引扫描要尽量避免）：</p>
+<ul>
+<li><p>ALL（全表扫描）；</p>
+</li>
+<li><p>index（全索引扫描）；</p>
+</li>
+<li><p>range（索引范围扫描）；</p>
+</li>
+<li><p>ref（非唯一索引扫描）；</p>
+</li>
+<li><p>eq_ref（唯一索引扫描）；</p>
+</li>
+<li><p>const（结果只有一条的主键或唯一索引扫描）。</p>
+</li>
+</ul>
+<p>总的来说，执行计划是研发工程师分析索引详情必会的技能（很多大厂公司招聘 JD 上写着“SQL 语句调优” ），所以你在面试时也要知道执行计划核心参数的含义，如 type。在回答时，也要以重点参数为切入点，再扩展到其他参数，然后再说自己是怎么做 SQL 优化工作的（讲个故事）。</p>
+<h3 id="索引失效的常见情况"><a href="#索引失效的常见情况" class="headerlink" title="索引失效的常见情况"></a>索引失效的常见情况</h3><p>在工作中，我们经常会碰到 SQL 语句不适用已有索引的情况，来看一个索引失效的例子：</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> tab_user <span class="keyword">where</span> <span class="keyword">name</span> <span class="keyword">like</span> <span class="string">'%z'</span></span><br></pre></td></tr></table></figure>
+
+<p>这条带有 like 查询的 SQL 语句，没有用到 tab_user 表中的 index_name 索引。</p>
+<p><img src="/images/tech/image-20210402080934143.png" alt="explain-sql2"></p>
+<p>我们结合普通索引的B+Tree结构来分析一下索引失效的原因：当MySQL优化器根据name like ‘%z’这个条件，到索引index_name的B+Tree结构上去查询评估时，发现当前节点的左右子节点的值都有可能符合’%z’这个条件，于是优化器判定当前索引需要扫描整个索引，而且还要回表查询，不如直接全表扫描。</p>
+<p>当然还有其他类似的索引失效的情况：</p>
+<ol>
+<li>索引列上做了表达式计算、函数、隐式类型转换操作，这些情况下索引失效是因为查询过程需要扫描整个索引并回表，代价高于直接全表扫描；</li>
+<li>like匹配使用了左模糊查询（’%abc’）或左右模糊查询（’%abc%’）；</li>
+<li>字符串不加引号导致隐式类型转换；</li>
+<li>被使用的索引字段不是联合索引的最左字段</li>
+</ol>
+<p>总结：如果MySQL查询优化器预估走索引的代价比全表扫描的代价还要大，则不走对应的索引，直接扫描全表。如果走索引比全表扫描代价小，则使用索引。</p>
+<h3 id="常见优化索引的方法"><a href="#常见优化索引的方法" class="headerlink" title="常见优化索引的方法"></a>常见优化索引的方法</h3><ul>
+<li><p>前缀索引优化</p>
+<ul>
+<li><p>前缀索引就是用某个字段中，字符串的前几个字符建立索引；使用前缀索引是为了减小索引字段大小，可以增加一个索引页中存储的索引值，有效提高索引的查询速度。在一些大字符串的字段作为索引时，使用前缀索引可以帮助我们减小索引项的大小。</p>
+</li>
+<li><p>但是前缀索引有一定的局限性，例如 <strong>order by 就无法使用前缀索引</strong>，无法把前缀索引用作覆盖索引。</p>
+</li>
+</ul>
+</li>
+<li><p>覆盖索引优化</p>
+<ul>
+<li><p><strong>覆盖索引是指 SQL 中 query 的所有字段，在索引 B+ Tree 的叶子节点上都能找得到的那些索引，从辅助索引中查询得到记录，而不需要通过聚簇索引查询获得。</strong></p>
+</li>
+<li><p>假设我们只需要查询商品的名称、价格，有什么方式可以避免回表呢？</p>
+<p>我们可以建立一个组合索引，即商品ID、名称、价格作为一个组合索引。如果索引中存在这些数据，查询将不会再次检索主键索引，从而避免回表。所以，使用覆盖索引的好处很明显，即不需要查询出包含整行记录的所有信息，也就减少了大量的 I/O 操作。</p>
+</li>
+</ul>
+</li>
+<li><p>联合索引</p>
+<ul>
+<li><strong>联合索引时，存在最左匹配原则，也就是按照最左优先的方式进行索引的匹配。</strong></li>
+<li>建立联合索引时的字段顺序，对索引效率也有很大影响。越靠前的字段被用于索引过滤的概率越高，实际开发工作中建立联合索引时，要把区分度大的字段排在前面，这样区分度大的字段越有可能被更多的 SQL 使用到。</li>
+<li><img src="/images/tech/image-20210401174931790.png" alt="distinct"></li>
+<li>区分度就是某个字段 column 不同值的个数除以表的总行数，比如性别的区分度就很小，不适合建立索引或不适合排在联合索引列的靠前的位置，而 uuid 这类字段就比较适合做索引或排在联合索引列的靠前的位置。</li>
+</ul>
+</li>
+</ul>
+<h3 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h3><p><img src="/images/tech/image-20210401175722407.png" alt="summary"></p>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><p><a href="https://mp.weixin.qq.com/s/xaJg28qXCAC4XR2mTm4xUg" target="_blank" rel="noopener">https://mp.weixin.qq.com/s/xaJg28qXCAC4XR2mTm4xUg</a></p>
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/MySQL/">MySQL</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/MySQL/">MySQL</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="https://hashcode.cn/2021/04/28/sql-optimize-procedure/" data-title="SQL调优的流程 | techbird blog" data-tsina="6488657373" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2022/01/18/daily-2022-0118/" title="daily-2022-0118">
+  <strong>上一篇：</strong><br/>
+  <span>
+  daily-2022-0118</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2021/02/24/java-lambda/"  title="Java Lambda 表达式详解">
+ <strong>下一篇：</strong><br/> 
+ <span>Java Lambda 表达式详解
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+<section id="comments" class="comment">
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript" target="_blank" rel="noopener">comments powered by Disqus.</a></noscript>
+  </div>
+</section>
+
+
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#慢查询分析"><span class="toc-number">1.</span> <span class="toc-text">慢查询分析</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#打开慢查询分析日志开关"><span class="toc-number">1.1.</span> <span class="toc-text">打开慢查询分析日志开关</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#更改慢查询分析的默认时间"><span class="toc-number">1.2.</span> <span class="toc-text">更改慢查询分析的默认时间</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#构造一个慢的SQL测试语句"><span class="toc-number">1.3.</span> <span class="toc-text">构造一个慢的SQL测试语句</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#查看慢查询分析的日志文件"><span class="toc-number">1.4.</span> <span class="toc-text">查看慢查询分析的日志文件</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#索引"><span class="toc-number">2.</span> <span class="toc-text">索引</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#相关概念"><span class="toc-number">2.1.</span> <span class="toc-text">相关概念</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#最左前缀-Leftmost-Prefixing"><span class="toc-number">2.2.</span> <span class="toc-text">最左前缀(Leftmost Prefixing)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#执行计划-explain"><span class="toc-number">2.3.</span> <span class="toc-text">执行计划(explain)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#索引失效的常见情况"><span class="toc-number">2.4.</span> <span class="toc-text">索引失效的常见情况</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#常见优化索引的方法"><span class="toc-number">2.5.</span> <span class="toc-text">常见优化索引的方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#小结"><span class="toc-number">2.6.</span> <span class="toc-text">小结</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#参考资料"><span class="toc-number">3.</span> <span class="toc-text">参考资料</span></a></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+
+  
+<div class="github-card">
+<p class="asidetitle">Github Card</p>
+<div class="github-card" data-github="qiudengqiang" data-theme="medium"></div>
+<script type="text/javascript" src="//cdn.jsdelivr.net/github-cards/latest/widget.js" ></script>
+</div>
+
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">Categories</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/Daily/" title="Daily">Daily<sup>14</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/DataBase/" title="DataBase">DataBase<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Java/" title="Java">Java<sup>9</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Journey/" title="Journey">Journey<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Linux/" title="Linux">Linux<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/MySQL/" title="MySQL">MySQL<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/iOS/Objc/" title="Objc">Objc<sup>13</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Readed/" title="Readed">Readed<sup>5</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/VSCode/" title="VSCode">VSCode<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Web/" title="Web">Web<sup>5</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Xcode/" title="Xcode">Xcode<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/iOS/" title="iOS">iOS<sup>16</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/iOS/" title="iOS">iOS<sup>16</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Daily/" title="Daily">Daily<sup>14</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Objc/" title="Objc">Objc<sup>11</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Java/" title="Java">Java<sup>9</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Readed/" title="Readed">Readed<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Web/" title="Web">Web<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Thread/" title="Thread">Thread<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Network/" title="Network">Network<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Journey/" title="Journey">Journey<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/MySQL/" title="MySQL">MySQL<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Xcode/" title="Xcode">Xcode<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Category/" title="Category">Category<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/keywords/" title="keywords">keywords<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Idea/" title="Idea">Idea<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/KVC/" title="KVC">KVC<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/KVO/" title="KVO">KVO<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/NSThread/" title="NSThread">NSThread<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/NSURLRequest/" title="NSURLRequest">NSURLRequest<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/NSURLResponse/" title="NSURLResponse">NSURLResponse<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/NSURLSession/" title="NSURLSession">NSURLSession<sup>1</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+  <div class="weiboshow">
+  <p class="asidetitle">Weibo</p>
+    <iframe width="100%" height="120" class="share_self"  frameborder="0" scrolling="no" src="https://widget.weibo.com/weiboshow/index.php?language=&width=0&height=120&fansRow=2&ptype=1&speed=0&skin=9&isTitle=1&noborder=1&isWeibo=0&isFans=0&uid=6488657373&verifier=f458bf46&dpc=1"></iframe>
+</div>
+
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> You can&#39;t connect the dots looking forward <br/>
+			You can only connect them looking backwards.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		<a href="http://weibo.com/6488657373" target="_blank" class="icon-weibo" title="微博"></a>
+		
+		
+		<a href="https://github.com/qiudengqiang" target="_blank" class="icon-github" title="github"></a>
+		
+		
+		
+		<a href="https://twitter.com/murendless" target="_blank" class="icon-twitter" title="twitter"></a>
+		
+		
+		
+		
+		
+		
+		
+		<a href="mailto:qiudengqiang@gmail.com" target="_blank" class="icon-email" title="Email Me"></a>
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2022 
+		
+		<a href="/about" target="_blank" title="techbird">techbird</a>
+		
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+<script type="text/javascript">
+
+var disqus_shortname = 'techbird-1';
+
+(function(){
+  var dsq = document.createElement('script');
+  dsq.type = 'text/javascript';
+  dsq.async = true;
+  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+}());
+(function(){
+  var dsq = document.createElement('script');
+  dsq.type = 'text/javascript';
+  dsq.async = true;
+  dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+}());
+</script>
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

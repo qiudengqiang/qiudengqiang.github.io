@@ -1,0 +1,856 @@
+
+ <!DOCTYPE HTML>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+  
+    <title>jQuery &amp; Ajax 快速入门 | techbird blog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="techbird">
+    
+
+    
+    <meta name="description" content="jQueryjQuery是一个快速、简洁的JavaScript框架，是继Prototype之后又一个优秀的JavaScript代码库（或JavaScript框架）。jQuery设计的宗旨    是“write Less，Do More”，即倡导写更少的代码，做更多的事情。它封装JavaScript常用的功能代码，提供一种简便的JavaScript设计模式，优化HTML文档操作、事件处理、动画设计和">
+<meta property="og:type" content="article">
+<meta property="og:title" content="jQuery &amp; Ajax 快速入门">
+<meta property="og:url" content="https://hashcode.cn/2019/08/12/web-jquery-ajax-base/index.html">
+<meta property="og:site_name" content="techbird blog">
+<meta property="og:description" content="jQueryjQuery是一个快速、简洁的JavaScript框架，是继Prototype之后又一个优秀的JavaScript代码库（或JavaScript框架）。jQuery设计的宗旨    是“write Less，Do More”，即倡导写更少的代码，做更多的事情。它封装JavaScript常用的功能代码，提供一种简便的JavaScript设计模式，优化HTML文档操作、事件处理、动画设计和">
+<meta property="og:image" content="https://hashcode.cn/images/tech/web-ajax-xmlhttprequest-method.png">
+<meta property="article:published_time" content="2019-08-12T02:01:47.000Z">
+<meta property="article:modified_time" content="2020-11-20T06:12:25.807Z">
+<meta property="article:author" content="techbird">
+<meta property="article:tag" content="Web，jQuery，Ajax">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://hashcode.cn/images/tech/web-ajax-xmlhttprequest-method.png">
+<meta name="twitter:creator" content="@murendless">
+
+    
+    <link rel="alternative" href="/atom.xml" title="techbird blog" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    
+<link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="/%02.css">
+<link rel="stylesheet" href="/.css">
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.png" alt="techbird blog" title="techbird blog"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="techbird blog">techbird blog</a></h1>
+				<h2 class="blog-motto">timeline of growth</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives/">Archives</a></li>
+					
+						<li><a href="/about/">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:hashcode.cn">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2019/08/12/web-jquery-ajax-base/" title="jQuery &amp; Ajax 快速入门" itemprop="url">jQuery &amp; Ajax 快速入门</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="techbird" target="_blank" itemprop="author">techbird</a>
+		
+  <p class="article-time">
+    <time datetime="2019-08-12T02:01:47.000Z" itemprop="datePublished"> Published 2019-08-12 10:01</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#jQuery"><span class="toc-number">1.</span> <span class="toc-text">jQuery</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#JavaScript-回顾"><span class="toc-number">1.1.</span> <span class="toc-text">JavaScript 回顾</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#jQuery-基础"><span class="toc-number">1.2.</span> <span class="toc-text">jQuery 基础</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#快速入门"><span class="toc-number">1.2.1.</span> <span class="toc-text">快速入门</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#目前jQuery有三个大版本："><span class="toc-number">1.2.1.1.</span> <span class="toc-text">目前jQuery有三个大版本：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#jquery-xxx-js-与-jquery-xxx-min-js区别："><span class="toc-number">1.2.1.2.</span> <span class="toc-text">jquery-xxx.js 与 jquery-xxx.min.js区别：</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#选择器"><span class="toc-number">1.2.2.</span> <span class="toc-text">选择器</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#基础选择器"><span class="toc-number">1.2.2.1.</span> <span class="toc-text">基础选择器</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#层次选择器"><span class="toc-number">1.2.2.2.</span> <span class="toc-text">层次选择器</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#基本操作"><span class="toc-number">1.2.2.3.</span> <span class="toc-text">基本操作</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#过滤器"><span class="toc-number">1.2.3.</span> <span class="toc-text">过滤器</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#基础过滤器"><span class="toc-number">1.2.3.1.</span> <span class="toc-text">基础过滤器</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#内容过滤器"><span class="toc-number">1.2.3.2.</span> <span class="toc-text">内容过滤器</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#可见度过滤器"><span class="toc-number">1.2.3.3.</span> <span class="toc-text">可见度过滤器</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#属性过滤器"><span class="toc-number">1.2.3.4.</span> <span class="toc-text">属性过滤器</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#子元素过滤器"><span class="toc-number">1.2.3.5.</span> <span class="toc-text">子元素过滤器</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#表单对象属性过滤器"><span class="toc-number">1.2.3.6.</span> <span class="toc-text">表单对象属性过滤器</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#表单过滤器"><span class="toc-number">1.2.3.7.</span> <span class="toc-text">表单过滤器</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#DOM-操作"><span class="toc-number">1.2.4.</span> <span class="toc-text">DOM 操作</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#外部插入"><span class="toc-number">1.2.4.1.</span> <span class="toc-text">外部插入</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#内部插入"><span class="toc-number">1.2.4.2.</span> <span class="toc-text">内部插入</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#查找节点"><span class="toc-number">1.2.4.3.</span> <span class="toc-text">查找节点</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#创建节点"><span class="toc-number">1.2.4.4.</span> <span class="toc-text">创建节点</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#删除节点"><span class="toc-number">1.2.4.5.</span> <span class="toc-text">删除节点</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#内容操作"><span class="toc-number">1.2.4.6.</span> <span class="toc-text">内容操作</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#属性操作"><span class="toc-number">1.2.4.7.</span> <span class="toc-text">属性操作</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#JQuery对象和JS对象区别与转换"><span class="toc-number">1.3.</span> <span class="toc-text">JQuery对象和JS对象区别与转换</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#jQuery-高级"><span class="toc-number">1.4.</span> <span class="toc-text">jQuery 高级</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#动画"><span class="toc-number">1.4.1.</span> <span class="toc-text">动画</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#遍历"><span class="toc-number">1.4.2.</span> <span class="toc-text">遍历</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#事件绑定"><span class="toc-number">1.4.3.</span> <span class="toc-text">事件绑定</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#插件"><span class="toc-number">1.4.4.</span> <span class="toc-text">插件</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Ajax"><span class="toc-number">2.</span> <span class="toc-text">Ajax</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#概述"><span class="toc-number">2.1.</span> <span class="toc-text">概述</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#XMLHttpRequest-对象初始化"><span class="toc-number">2.2.</span> <span class="toc-text">XMLHttpRequest 对象初始化</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#XMLHttpRequest对象方法"><span class="toc-number">2.2.1.</span> <span class="toc-text">XMLHttpRequest对象方法</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#服务器端向客户端进行响应-注册监听"><span class="toc-number">2.3.</span> <span class="toc-text">服务器端向客户端进行响应(注册监听)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#客户端与服务器端建立连接"><span class="toc-number">2.4.</span> <span class="toc-text">客户端与服务器端建立连接</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#客户端向服务器端发送请求"><span class="toc-number">2.5.</span> <span class="toc-text">客户端向服务器端发送请求</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#GET方式"><span class="toc-number">2.5.1.</span> <span class="toc-text">GET方式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#POST方式"><span class="toc-number">2.5.2.</span> <span class="toc-text">POST方式</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#jQuery实现Ajax"><span class="toc-number">2.6.</span> <span class="toc-text">jQuery实现Ajax</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#ajax"><span class="toc-number">2.6.1.</span> <span class="toc-text">$.ajax()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#get"><span class="toc-number">2.6.2.</span> <span class="toc-text">$.get()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#post"><span class="toc-number">2.6.3.</span> <span class="toc-text">$.post()</span></a></li></ol></li></ol></li></ol>
+		
+		</div>
+		
+		<h1 id="jQuery"><a href="#jQuery" class="headerlink" title="jQuery"></a>jQuery</h1><p>jQuery是一个快速、简洁的JavaScript框架，是继Prototype之后又一个优秀的JavaScript代码库（或JavaScript框架）。jQuery设计的宗旨    是“write Less，Do More”，即倡导写更少的代码，做更多的事情。它封装JavaScript常用的功能代码，提供一种简便的JavaScript设计模式，优化HTML文档操作、事件处理、动画设计和Ajax交互。</p>
+<h2 id="JavaScript-回顾"><a href="#JavaScript-回顾" class="headerlink" title="JavaScript 回顾"></a>JavaScript 回顾</h2><p>JavaScript核心 — JavaScript 语言的核心，定义了语言中基本语法<br>DOM  — Document Object Model 文档对象模型 w3c<br>BOM  — Broswer Object Model 浏览器对象模型</p>
+<h2 id="jQuery-基础"><a href="#jQuery-基础" class="headerlink" title="jQuery 基础"></a>jQuery 基础</h2><h3 id="快速入门"><a href="#快速入门" class="headerlink" title="快速入门"></a>快速入门</h3><ol>
+<li>下载JQuery<h4 id="目前jQuery有三个大版本："><a href="#目前jQuery有三个大版本：" class="headerlink" title="目前jQuery有三个大版本："></a>目前jQuery有三个大版本：</h4><pre><code>1.x：兼容ie678,使用最为广泛的，官方只做BUG维护，
+        功能不再新增。因此一般项目来说，使用1.x版本就可以了，
+        最终版本：1.12.4 (2016年5月20日)
+2.x：不兼容ie678，很少有人使用，官方只做BUG维护，
+        功能不再新增。如果不考虑兼容低版本的浏览器可以使用2.x，
+        最终版本：2.2.4 (2016年5月20日)
+3.x：不兼容ie678，只支持最新的浏览器。除非特殊要求，
+        一般不会使用3.x版本的，很多老的jQuery插件不支持这个版本。
+        目前该版本是官方主要更新维护的版本。最新版本：3.2.1（2017年3月20日）</code></pre><h4 id="jquery-xxx-js-与-jquery-xxx-min-js区别："><a href="#jquery-xxx-js-与-jquery-xxx-min-js区别：" class="headerlink" title="jquery-xxx.js 与 jquery-xxx.min.js区别："></a>jquery-xxx.js 与 jquery-xxx.min.js区别：</h4><pre><code>1. jquery-xxx.js：开发版本。给程序员使用，有良好的缩进和注释。体积大一些
+2. jquery-xxx.min.js：生产版本。程序中使用，没有缩进。体积小一些。程序加载更快</code></pre></li>
+<li>引入jQuery<br>直接将 jQuery 核心 js 文件加入到工程，一般放置在 web 应用的非 WEB-INF 文件夹，在 html 页面中使用以下代码引入就可以在这个页面中使用 jQuery 了。<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"jquery.js文件所在的位置"</span>/&gt;</span></span><br></pre></td></tr></table></figure></li>
+<li>使用<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> div1 = $(<span class="string">"#div1"</span>);</span><br><span class="line">alert(div1.html());</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<h3 id="选择器"><a href="#选择器" class="headerlink" title="选择器"></a>选择器</h3><h4 id="基础选择器"><a href="#基础选择器" class="headerlink" title="基础选择器"></a>基础选择器</h4><ol>
+<li><code>#id</code><br> 用法:<code>$(&quot;#myDiv&quot;)</code>  ;  返回值 : 单个元素的组成的集合<br> 说明: 这个就是直接选择 html 中的<code>id=&quot;myDiv&quot;</code></li>
+<li><code>Element</code><br> 用法: <code>$(&quot;div&quot;)</code> ;    返回值 : 集合元素<br> 说明: element 的英文翻译过来是「元素」，所以 element 其实就是 html 已经定义的标签元素，例如 div， input， a等等</li>
+<li><code>class</code><br> 用法: <code>$(&quot;.myClass&quot;)</code> ;     返回值 : 集合元素<br> 说明: 这个标签是直接选择 html 代码中<code>class=&quot;myClass&quot;</code>的元素或元素组（因为在同一html页面中class是可以存在多个同样值的）</li>
+<li><code>*</code><br> 用法: <code>$(&quot;*&quot;)</code> ;     返回值 : 集合元素<br> 说明: 匹配所有元素，多用于结合上下文来搜索</li>
+<li><code>selector1, selector2, selectorN</code><br> 用法: <code>$(&quot;div,span,p.myClass&quot;)</code>;    返回值 : 集合元素<br> 说明: 将每一个选择器匹配到的元素合并后一起返回。可以指定任意多个选择器， 并将匹配到的元素合并到一个结果内。其中<code>p.myClass</code>是表示匹配元素</li>
+</ol>
+<h4 id="层次选择器"><a href="#层次选择器" class="headerlink" title="层次选择器"></a>层次选择器</h4><ol start="6">
+<li><code>ancestor descendant</code><br> 用法: <code>$(&quot;form input&quot;)</code> ;   返回值 : 集合元素<br> 说明: 在给定的祖先元素下匹配所有后代元素。这个要和下面的<code>parent &gt; child</code>区分开.</li>
+<li><code>parent &gt; child</code><br> 用法: <code>$(&quot;form &gt; input&quot;)</code> ;    返回值 : 集合元素<br> 说明: 在给定的父元素下匹配所有子元素。注意:要区分好后代元素与子元素</li>
+<li><code>prev + next</code><br> 用法: <code>$(&quot;label + input&quot;)</code> ;   返回值 : 集合元素<br> 说明: 匹配所有紧接在 prev 元素后的 next 元素</li>
+<li><code>prev ~ siblings</code><br> 用法: <code>$(&quot;form ~ input&quot;)</code> ;    返回值 : 集合元素<br> 说明: 匹配 prev 元素之后的所有 siblings 元素。<br> 注意: 是匹配之后的元素，不包含该元素在内，并且 siblings 匹配的是和 prev 同辈的元素，其后辈元素不被匹配。</li>
+</ol>
+<h4 id="基本操作"><a href="#基本操作" class="headerlink" title="基本操作"></a>基本操作</h4><ol>
+<li><p>事件绑定</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">//1.获取b1按钮</span></span><br><span class="line">$(<span class="string">"#b1"</span>).click(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    alert(<span class="string">"abc"</span>);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>入口函数</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">//以下方法等同于window.onload</span></span><br><span class="line">$(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></li>
+</ol>
+<p><strong>[注意]</strong>：<code>window.onload</code>  和 <code>$(function)</code> 区别<br>    * window.onload 只能定义一次,如果定义多次，后边的会将前边的覆盖掉<br>    * $(function)可以定义多次的。</p>
+<ol start="3">
+<li>样式控制：css方法<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// $("#div1").css("background-color","red");</span></span><br><span class="line">$(<span class="string">"#div1"</span>).css(<span class="string">"backgroundColor"</span>,<span class="string">"pink"</span>);</span><br></pre></td></tr></table></figure>
+<h3 id="过滤器"><a href="#过滤器" class="headerlink" title="过滤器"></a>过滤器</h3><h4 id="基础过滤器"><a href="#基础过滤器" class="headerlink" title="基础过滤器"></a>基础过滤器</h4></li>
+<li><code>:first</code><br> 用法: <code>$(&quot;tr:first&quot;)</code> ;   返回值:  单个元素的组成的集合<br> 说明: 匹配找到的第一个元素</li>
+<li><code>:last</code><br> 用法: <code>$(&quot;tr:last&quot;)</code>;  返回值  集合元素<br> 说明: 匹配找到的最后一个元素，与 <code>:first</code> 相对应</li>
+<li><code>:not(selector)</code><br> 用法: <code>$(&quot;input:not(:checked)&quot;)</code>; 返回值:  集合元素<br> 说明: 去除所有与给定选择器匹配的元素。有点类似于「非」，意思是没有被选中的 input (当 input 的<code>type=&quot;checkbox&quot;</code>).</li>
+<li><code>:even</code><br> 用法: <code>$(&quot;tr:even&quot;)</code> ;  返回值:  集合元素<br> 说明: 匹配所有索引值为偶数的元素，从 0 开始计数。js的数组都是从0开始计数的。例如要选择table中的行，因为是从0开始计数，所以 table 中的第一个 tr 就为偶数0.</li>
+<li><code>:odd</code><br>用法: <code>$(&quot;tr:odd&quot;)</code>; 返回值 : 集合元素<br>说明: 匹配所有索引值为奇数的元素，和<code>:even</code>对应，从 0 开始计数.</li>
+<li><code>:eq(index)</code><br> 用法: <code>$(&quot;tr:eq(0)&quot;)</code> ;   返回值:  集合元素<br> 说明: 匹配一个给定索引值的元素<code>.eq(0)</code>就是获取第一个 tr 元素。括号里面的是索引值，不是元素排列数</li>
+<li><code>:gt(index)</code><br> 用法: <code>$(&quot;tr:gt(0)&quot;)</code>;   返回值 : 集合元素<br> 说明: 匹配所有大于给定索引值的元素.</li>
+<li><code>:lt(index)</code><br> 用法: <code>$(&quot;tr:lt(2)&quot;)</code> ;   返回值 : 集合元素<br> 说明: 匹配所有小于给定索引值的元素.</li>
+<li><code>:header(固定写法)</code><br> 用法: <code>$(&quot;:header&quot;).css(&quot;background&quot;， “#EEE&quot;)</code>;    返回值 : 集合元素<br> 说明: 获得标题（h1~h6）元素，固定写法</li>
+<li><code>:animated(固定写法)</code> ;  返回值 : 集合元素<br>说明: 匹配所有正在执行动画效果的元素</li>
+</ol>
+<h4 id="内容过滤器"><a href="#内容过滤器" class="headerlink" title="内容过滤器"></a>内容过滤器</h4><ol>
+<li><code>:contains(text)</code><br> 用法: <code>$(&quot;div:contains(&#39;John&#39;)&quot;)</code>  ;  返回值 : 集合元素<br> 说明: 匹配包含给定文本的元素。这个选择器比较有用，当我们要选择的不是dom标签元素时，它就派上了用场了，它的作用是查找被标签「围」起来的文本内容是否符合指定的内容</li>
+<li><code>:empty</code><br> 用法: <code>$(&quot;td:empty&quot;)</code> ;  返回值 : 集合元素<br> 说明: 匹配所有不包含子元素或者文本的空元素</li>
+<li><code>:has(selector)</code><br> 用法: <code>$(&quot;div:has(p)&quot;).addClass(&quot;test&quot;)</code> ;  返回值 : 集合元素<br> 说明: 匹配含有选择器所匹配的元素的元素。这个解释需要好好琢磨，但是一旦看了使用的例子就完全清楚了，就是给所有包含 p 元素的 div标签加上<code>class=&quot;test&quot;</code></li>
+<li><code>:parent</code><br> 用法:<code>$(&quot;td:parent&quot;)</code> ; 返回值 : 集合元素<br> 说明: 匹配含有子元素或者文本的元素。注意:这里是<code>:parent</code>，可不是<code>.parent</code>。与上面的<code>:empty</code>形成反义</li>
+</ol>
+<h4 id="可见度过滤器"><a href="#可见度过滤器" class="headerlink" title="可见度过滤器"></a>可见度过滤器</h4><ol>
+<li><code>:hidden</code><br> 用法: <code>$(&quot;tr:hidden&quot;)</code> ; 返回值 : 集合元素<br> 说明: 匹配所有的不可见元素，input 元素的 type 属性为 <code>hidden</code> 的话也会被匹配到；意思是 CSS 中<code>display:none</code>和<code>input type=&quot;hidden&quot;</code>的都会被匹配到。同样，要彻底分清楚冒号<code>:</code>点号<code>.</code>和逗号<code>，</code>的区别</li>
+<li><code>:visible</code><br> 用法: <code>$(&quot;tr:visible&quot;)</code>;  返回值 : 集合元素<br> 说明: 匹配所有的可见元素</li>
+</ol>
+<h4 id="属性过滤器"><a href="#属性过滤器" class="headerlink" title="属性过滤器"></a>属性过滤器</h4><ol>
+<li><code>[attribute]</code><br> 用法: <code>$(&quot;div[id]&quot;)</code> ;  返回值 : 集合元素<br> 说明: 匹配包含给定属性的元素。例如：选取所有带 id 属性的 div 标签</li>
+<li><code>[attribute=value]</code><br> 用法: <code>$(&quot;input[name=&#39;newsletter&#39;]“).attr(&quot;checked&quot;， true);</code>   ; 返回值 : 集合元素<br> 说明: 匹配给定的属性是某个特定值的元素。例如：选取所有 name 属性是 newsletter 的 input 元素.</li>
+<li><code>[attribute!=value]</code><br> 用法: <code>$(&quot;input[name!=&#39;newsletter&#39;]&quot;).attr(&quot;checked&quot;， true);</code> ;   返回值 : 集合元素<br> 说明: 匹配所有不含有指定的属性，或者属性不等于特定值的元素。此选择器等价于<code>:not([attr=value])</code>，要匹配含有特定属性但不等于特定值的元素，请使用<code>[attr]:not([attr=value])</code>。之前看到的 <code>:not</code> 派上了用场</li>
+<li><code>[attribute^=value]</code><br> 用法: <code>$(&quot;input[name^=&#39;news&#39;]&quot;)</code> ; 返回值 : 集合元素<br> 说明: 匹配给定的属性是以某些值开始的元素</li>
+<li><code>[attribute$=value]</code><br> 用法: <code>$(&quot;input[name$=&#39;letter&#39;]&quot;)</code> ; 返回值 : 集合元素<br> 说明: 匹配给定的属性是以某些值结尾的元素</li>
+<li><code>[attribute*=value]</code><br> 用法: <code>$(&quot;input[name*=&#39;man&#39;]&quot;)</code> ;  返回值 : 集合元素<br> 说明: 匹配给定的属性是以包含某些值的元素</li>
+<li><code>[attributeFilter1][attributeFilter2][attributeFilterN]</code><br> 用法: <code>$(&quot;input[id][name$=&#39;man&#39;]&quot;)</code> ; 返回值 : 集合元素<br> 说明: 复合属性选择器，需要同时满足多个条件时使用；又是一个组合，这种情况实际使用的时候很常用。这个例子中选择的是所有含有 id 属性，并且它的 name 属性是以 man 结尾的元素。</li>
+</ol>
+<h4 id="子元素过滤器"><a href="#子元素过滤器" class="headerlink" title="子元素过滤器"></a>子元素过滤器</h4><ol>
+<li><p><code>:nth-child(index/even/odd/equation)</code><br> 用法: <code>$(&quot;ul li:nth-child(2)&quot;)</code>   返回值 : 集合元素<br> 说明: 匹配其父元素下的第N个子或奇偶元素。这个选择器和之前说的基础过滤(Basic Filters)中的 <code>eq()</code> 有些类似，不同的地方就是：前者是从 0 开始，后者是从 1 开始。</p>
+</li>
+<li><p><code>:first-child</code><br> 用法: <code>$(&quot;ul li:first-child&quot;)</code>;   返回值 : 集合元素<br> 说明: 匹配第一个子元素；<code>:first</code> 只匹配一个元素，而此选择符将为每个父元素匹配一个子元素，这里需要<strong>特别</strong>的记忆下区别</p>
+</li>
+<li><p><code>:last-child</code><br> 用法: <code>$(&quot;ul li:last-child&quot;)</code>  ;    返回值 : 集合元素<br> 说明: 匹配最后一个子元素；<code>:last</code>只匹配一个元素，而此选择符将为每个父元素匹配一个子元素</p>
+</li>
+</ol>
+<ol start="4">
+<li><code>:only-child</code><br> 用法: <code>$(&quot;ul li:only-child&quot;)</code> ;  返回值 : 集合元素<br> 说明: 如果某个元素是父元素中唯一的子元素，那将会被匹配；如果父元素中含有其他元素，那将不会被匹配；意思就是:只有一个子元素的才会被匹配</li>
+</ol>
+<h4 id="表单对象属性过滤器"><a href="#表单对象属性过滤器" class="headerlink" title="表单对象属性过滤器"></a>表单对象属性过滤器</h4><ol>
+<li><code>:enabled</code><br> 用法: <code>$(&quot;input:enabled&quot;)</code> ;   返回值 : 集合元素<br> 说明: 匹配所有可用元素；意思是查找所有input中不带有<code>disabled=&quot;disabled&quot;</code>的input；不为disabled，当然就为enabled</li>
+<li><code>:disabled</code><br> 用法: <code>$(&quot;input:disabled&quot;)</code>  ;  返回值 : 集合元素<br> 说明: 匹配所有不可用元素。与上面的那个是相对应的</li>
+<li><code>:checked</code><br> 用法: <code>$(&quot;input:checked&quot;)</code> ;  返回值 : 集合元素<br> 说明: 匹配所有选中的被选中元素(复选框、单选框等，不包括select中的option)</li>
+<li><code>:selected</code><br> 用法: <code>$(&quot;select option:selected&quot;)</code> ;  返回值 : 集合元素<br> 说明: 匹配所有选中的option元素</li>
+</ol>
+<h4 id="表单过滤器"><a href="#表单过滤器" class="headerlink" title="表单过滤器"></a>表单过滤器</h4><ol>
+<li><code>:input</code><br> 用法:<code>$(&quot;:input&quot;)</code> ;   返回值 : 集合元素<br> 说明:匹配所有 input， textarea， select 和 button 元素</li>
+<li><code>:text</code><br> 用法: <code>$(&quot;:text&quot;)</code> ;  返回值 : 集合元素<br> 说明: 匹配所有的单行文本框</li>
+<li><code>:password</code><br> 用法: <code>$(&quot;:password&quot;)</code> ; 返回值 : 集合元素<br> 说明: 匹配所有密码框</li>
+<li><code>:radio</code><br> 用法: <code>$(&quot;:radio&quot;)</code> ; 返回值 : 集合元素<br> 说明: 匹配所有单选按钮</li>
+<li><code>:checkbox</code><br> 用法: <code>$(&quot;:checkbox&quot;)</code> ; 返回值 : 集合元素<br> 说明: 匹配所有复选框</li>
+<li><code>:submit</code><br> 用法: <code>$(&quot;:submit&quot;)</code> ;   返回值 : 集合元素<br> 说明: 匹配所有提交按钮</li>
+</ol>
+<h3 id="DOM-操作"><a href="#DOM-操作" class="headerlink" title="DOM 操作"></a>DOM 操作</h3><h4 id="外部插入"><a href="#外部插入" class="headerlink" title="外部插入"></a>外部插入</h4><p><code>after(content)</code> :在每个匹配的元素之后插入内容<br><code>before(content)</code>:在每个匹配的元素之前插入内容<br><code>insertAfter(content)</code>:把所有匹配的元素插入到另一个、指定的元素元素集合的后面<br><code>insertBefore(content)</code> :把所有匹配的元素插入到另一个、指定的元素元素集合的前面</p>
+<h4 id="内部插入"><a href="#内部插入" class="headerlink" title="内部插入"></a>内部插入</h4><p><code>append(content)</code> :向每个匹配的元素的内部的结尾处追加内容<br><code>appendTo(content)</code> :将每个匹配的元素追加到指定的元素中的内部结尾处<br><code>prepend(content)</code>:向每个匹配的元素的内部的开始处插入内容<br><code>prependTo(content)</code> :将每个匹配的元素插入到指定的元素内部的开始处</p>
+<h4 id="查找节点"><a href="#查找节点" class="headerlink" title="查找节点"></a>查找节点</h4><p>选择器/过滤器 可以实现查找节点<br><code>attr(&quot;name&quot;)</code><br><code>attr(&quot;name&quot;，&quot;value&quot;)</code><br><code>removeAttr(&quot;name&quot;)</code></p>
+<h4 id="创建节点"><a href="#创建节点" class="headerlink" title="创建节点"></a>创建节点</h4><p>使用 jQuery 的工厂函数 <code>$()</code>:<code>$(html)</code>; 会根据传入的 html 标记字符串创建一个 DOM 对象， 并把这个 DOM 对象包装成一个 jQuery 对象返回</p>
+<h4 id="删除节点"><a href="#删除节点" class="headerlink" title="删除节点"></a>删除节点</h4><p><code>remove()</code>: 从 DOM 中删除所有匹配的元素， 传入的参数用于根据 jQuery 表达式来筛选元素；当某个节点用 remove() 方法删除后， 该节点所包含的所有后代节点将被同时删，这个方法的返回值是一个指向已被删除的节点的引用<br><code>empty()</code>: 清空节点 – 清空元素中的所有后代节点(不包含属性节点)</p>
+<h4 id="内容操作"><a href="#内容操作" class="headerlink" title="内容操作"></a>内容操作</h4><ol>
+<li><code>html()</code>: 获取/设置元素的标签体内容   <figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">a</span>&gt;</span><span class="tag">&lt;<span class="name">font</span>&gt;</span>内容<span class="tag">&lt;/<span class="name">font</span>&gt;</span><span class="tag">&lt;/<span class="name">a</span>&gt;</span>  --&gt; <span class="tag">&lt;<span class="name">font</span>&gt;</span>内容<span class="tag">&lt;/<span class="name">font</span>&gt;</span></span><br></pre></td></tr></table></figure></li>
+<li><code>text()</code>: 获取/设置元素的标签体纯文本内容  <figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">a</span>&gt;</span><span class="tag">&lt;<span class="name">font</span>&gt;</span>内容<span class="tag">&lt;/<span class="name">font</span>&gt;</span><span class="tag">&lt;/<span class="name">a</span>&gt;</span> --&gt; 内容</span><br></pre></td></tr></table></figure></li>
+<li><code>val()</code>： 获取/设置元素的value属性值</li>
+</ol>
+<h4 id="属性操作"><a href="#属性操作" class="headerlink" title="属性操作"></a>属性操作</h4><ul>
+<li>通用属性操作</li>
+</ul>
+<ol>
+<li><code>attr()</code>: 获取/设置元素的属性</li>
+<li><code>removeAttr()</code>:删除属性</li>
+<li><code>prop()</code>:获取/设置元素的属性</li>
+<li><code>removeProp()</code>:删除属性</li>
+</ol>
+<p><strong>[注意]</strong>：attr 和 prop 区别？<br>    1. 如果操作的是元素的固有属性，则建议使用prop<br>    2. 如果操作的是元素自定义的属性，则建议使用attr</p>
+<ul>
+<li>对class属性操作</li>
+</ul>
+<ol>
+<li><code>addClass()</code>:添加class属性值</li>
+<li><code>removeClass()</code>:删除class属性值</li>
+<li><code>toggleClass()</code>:切换class属性<br> <code>toggleClass(&quot;one&quot;)</code>: 判断如果元素对象上存在class=”one”，则将属性值one删除掉。  如果元素对象上不存在 class=”one”，则添加</li>
+<li><code>css()</code>:获取css样式</li>
+</ol>
+<h2 id="JQuery对象和JS对象区别与转换"><a href="#JQuery对象和JS对象区别与转换" class="headerlink" title="JQuery对象和JS对象区别与转换"></a>JQuery对象和JS对象区别与转换</h2><ol>
+<li>JQuery对象在操作时，更加方便。</li>
+<li>JQuery对象和js对象方法不通用的。</li>
+<li>两者相互转换<ul>
+<li>jq – &gt; js : <code>jq对象[索引]</code> 或者 <code>jq对象.get(索引)</code></li>
+<li>js – &gt; jq : <code>$(js对象)</code></li>
+</ul>
+</li>
+</ol>
+<h2 id="jQuery-高级"><a href="#jQuery-高级" class="headerlink" title="jQuery 高级"></a>jQuery 高级</h2><h3 id="动画"><a href="#动画" class="headerlink" title="动画"></a>动画</h3><p>三种方式显示和隐藏元素动画</p>
+<ol>
+<li>默认显示和隐藏方式</li>
+</ol>
+<ul>
+<li><p><code>show([speed,[easing],[fn]])</code></p>
+<pre><code>参数：
+1. speed：动画的速度。三个预定义的值(&quot;slow&quot;,&quot;normal&quot;, &quot;fast&quot;)或表示动画时长的毫秒数值(如：1000)
+2. easing：用来指定切换效果，默认是&quot;swing&quot;，可用参数&quot;linear&quot;
+    * swing：动画执行时效果是 先慢，中间快，最后又慢
+    * linear：动画执行时速度是匀速的
+3. fn：在动画完成时执行的函数，每个元素执行一次。</code></pre></li>
+<li><p><code>hide([speed,[easing],[fn]])</code></p>
+</li>
+<li><p><code>toggle([speed],[easing],[fn])</code></p>
+</li>
+</ul>
+<ol start="2">
+<li>滑动显示和隐藏方式</li>
+</ol>
+<ul>
+<li><code>slideDown([speed],[easing],[fn])</code></li>
+<li><code>slideUp([speed,[easing],[fn]])</code></li>
+<li><code>slideToggle([speed],[easing],[fn])</code></li>
+</ul>
+<ol start="3">
+<li>淡入淡出显示和隐藏方式</li>
+</ol>
+<ul>
+<li><code>fadeIn([speed],[easing],[fn])</code></li>
+<li><code>fadeOut([speed],[easing],[fn])</code></li>
+<li><code>fadeToggle([speed,[easing],[fn]])</code></li>
+</ul>
+<h3 id="遍历"><a href="#遍历" class="headerlink" title="遍历"></a>遍历</h3><ol>
+<li>javascript的遍历方式<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span>(初始化值;循环结束条件;步长)</span><br></pre></td></tr></table></figure></li>
+<li>jquery的遍历方式</li>
+</ol>
+<ul>
+<li><code>jq对象.each(callback)</code><figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="number">1.</span> 语法：</span><br><span class="line">    jquery对象.each(<span class="function"><span class="keyword">function</span>(<span class="params">index,element</span>)</span>&#123;&#125;);</span><br><span class="line">        * index:就是元素在集合中的索引</span><br><span class="line">        * element：就是集合中的每一个元素对象</span><br><span class="line"></span><br><span class="line">        * <span class="keyword">this</span>：集合中的每一个元素对象</span><br><span class="line"><span class="number">2.</span> 回调函数返回值：</span><br><span class="line">    * <span class="literal">true</span>:如果当前<span class="function"><span class="keyword">function</span>返回为<span class="title">false</span>，则结束循环(<span class="params">break</span>)。</span></span><br><span class="line"><span class="function">    * <span class="title">false</span>:如果当前<span class="title">function</span>返回为<span class="title">true</span>，则结束本次循环，继续下次循环(<span class="params">continue</span>)</span></span><br></pre></td></tr></table></figure></li>
+<li><code>$.each(object, [callback])</code></li>
+<li><code>for..of</code> jquery 3.0 版本之后提供的方式<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span>(元素对象 <span class="keyword">of</span> 容器对象)</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h3 id="事件绑定"><a href="#事件绑定" class="headerlink" title="事件绑定"></a>事件绑定</h3><ol>
+<li>jquery标准的绑定方式<br><code>jq对象.事件方法(回调函数)</code>；<br>注：如果调用事件方法，不传递回调函数，则会触发浏览器默认行为。<br> <code>表单对象.submit()</code>;//让表单提交</li>
+<li>on绑定事件/off解除绑定<br><code>jq对象.on(&quot;事件名称&quot;,回调函数)</code><br><code>jq对象.off(&quot;事件名称&quot;)</code><br> 如果off方法不传递任何参数，则将组件上的所有事件全部解绑</li>
+<li>事件切换：toggle<br><code>jq对象.toggle(fn1,fn2...)</code><br> 当单击jq对象对应的组件后，会执行fn1；第二次点击会执行fn2…..</li>
+</ol>
+<p><strong>注意</strong>：1.9版本 <code>.toggle()</code> 方法删除，jQuery Migrate（迁移）插件可以恢复此功能。</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"../js/jquery-migrate-1.0.0.js"</span> <span class="attr">type</span>=<span class="string">"text/javascript"</span> <span class="attr">charset</span>=<span class="string">"utf-8"</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="插件"><a href="#插件" class="headerlink" title="插件"></a>插件</h3><p>增强JQuery的功能，实现方式如下：</p>
+<ol>
+<li><code>$.fn.extend(object)</code><br> 增强通过Jquery获取的对象的功能 <code>$(&quot;#id&quot;)</code></li>
+<li><code>$.extend(object)</code><br> 增强JQeury对象自身的功能 <code>$/jQuery</code></li>
+</ol>
+<h1 id="Ajax"><a href="#Ajax" class="headerlink" title="Ajax"></a>Ajax</h1><p> AJAX 即“Asynchronous JavaScript and XML”（异步JavaScript和XML)，AJAX 并非缩写词，而是由Jesse James Gaiiett创造的名词，是指一种创建交互式网页应用的网页开发技术。WEB2.0</p>
+<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>使用javascript向服务器提出请求并处理响应而不阻塞用户，核心对象 XMLHTTPRequest。通过这个对象，JavaScript 可在不重载页面的情况与Web服务器交换数据。<br>AJAX 在浏览器与 Web 服务器之间使用异步数据传输（HTTP 请求），这样就可使网页从服务器请求少量的信息，而不是整个页面。<br>AJAX 可使因特网应用程序更小、更快、更友好。</p>
+<h2 id="XMLHttpRequest-对象初始化"><a href="#XMLHttpRequest-对象初始化" class="headerlink" title="XMLHttpRequest 对象初始化"></a>XMLHttpRequest 对象初始化</h2><p>为了应对所有的现代浏览器，包括 IE5 和 IE6，请检查浏览器是否支持 XMLHttpRequest 对象。如果支持，则创建 XMLHttpRequest 对象。如果不支持，则创建 ActiveXObject ：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">//创建XMLHttpRequest对象</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">ajaxFunction</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="keyword">var</span> xmlHttp;   </span><br><span class="line">    <span class="keyword">try</span>&#123; <span class="comment">// Firefox, Opera 8.0+, Safari</span></span><br><span class="line">            xmlHttp=<span class="keyword">new</span> XMLHttpRequest();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">catch</span> (e)&#123;</span><br><span class="line">            <span class="keyword">try</span>&#123;<span class="comment">// Internet Explorer</span></span><br><span class="line">                xmlHttp=<span class="keyword">new</span> ActiveXObject(<span class="string">"Msxml2.XMLHTTP"</span>);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">catch</span> (e)&#123;</span><br><span class="line">            <span class="keyword">try</span>&#123;</span><br><span class="line">                xmlHttp=<span class="keyword">new</span> ActiveXObject(<span class="string">"Microsoft.XMLHTTP"</span>);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">catch</span> (e)&#123;&#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> xmlHttp;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="XMLHttpRequest对象方法"><a href="#XMLHttpRequest对象方法" class="headerlink" title="XMLHttpRequest对象方法"></a>XMLHttpRequest对象方法</h3><p> <img src="/images/tech/web-ajax-xmlhttprequest-method.png" alt="method"></p>
+<h2 id="服务器端向客户端进行响应-注册监听"><a href="#服务器端向客户端进行响应-注册监听" class="headerlink" title="服务器端向客户端进行响应(注册监听)"></a>服务器端向客户端进行响应(注册监听)</h2><figure class="highlight js"><table><tr><td class="code"><pre><span class="line">xhr.onreadystatechange=<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(xhr.readyState==<span class="number">4</span>)&#123;</span><br><span class="line">        <span class="keyword">if</span>(xhr.status==<span class="number">200</span>||xhr.status==<span class="number">304</span>)&#123;</span><br><span class="line">                <span class="keyword">var</span> data = xhr.responseText;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>readyState</code>： 属性表示Ajax请求的当前状态。它的值用数字代表。<br>               0 代表未初始化。 还没有调用 open 方法<br>               1 代表正在加载。 open 方法已被调用，但 send 方法还没有被调用<br>               2 代表已加载完毕。send 已被调用。请求已经开始<br>               3 代表交互中。服务器正在发送响应<br>               4 代表完成。响应发送完毕</p>
+<p><code>xhr.status</code>：<br>    常用状态码及其含义：<br>    404 没找到页面(not found)<br>    403 禁止访问(forbidden)<br>    500 内部服务器出错(internal service error)<br>    200 一切正常(ok)<br>    304 没有被修改(not modified)（服务器返回304状态，表示源文件没有被修改)</p>
+<p><code>xhr.responseText</code>： 服务器发回的响应结果，字符串<br><code>xhr.responseXML</code>： 服务器返回的响应结果，XML对象</p>
+<h2 id="客户端与服务器端建立连接"><a href="#客户端与服务器端建立连接" class="headerlink" title="客户端与服务器端建立连接"></a>客户端与服务器端建立连接</h2><p>使用的是 XMLHttpRequest 对象的 <code>open(method, url, asynch)</code>方法</p>
+<ul>
+<li><code>method</code>：请求类型，类似 “GET”或”POST”的字符串。</li>
+<li><code>url</code>：路径字符串，指向你所请求的服务器上的那个文件。可以是绝对路径或相对路径。</li>
+<li><code>asynch</code>：表示请求是否要异步传输，默认值为true(异步)。<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">xhr.open(<span class="string">"GET"</span>,<span class="string">"../testServlet?timeStamp="</span>+<span class="keyword">new</span> <span class="built_in">Date</span>().getTime()+<span class="string">"&amp;c=19"</span>,<span class="literal">true</span>);</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h2 id="客户端向服务器端发送请求"><a href="#客户端向服务器端发送请求" class="headerlink" title="客户端向服务器端发送请求"></a>客户端向服务器端发送请求</h2><p>使用的是 XMLHttpRequest 对象的<code>send()</code>方法</p>
+<ul>
+<li>如果请求类型是GET方式的话，使用send()方法发送请求数据，服务器端接收不到</li>
+<li>该步骤不能被省略，只能写成<code>xhr.send(null)</code>;</li>
+</ul>
+<h3 id="GET方式"><a href="#GET方式" class="headerlink" title="GET方式"></a>GET方式</h3><figure class="highlight js"><table><tr><td class="code"><pre><span class="line">xhr.send(<span class="literal">null</span>);</span><br></pre></td></tr></table></figure>
+
+<h3 id="POST方式"><a href="#POST方式" class="headerlink" title="POST方式"></a>POST方式</h3><p>如果请求类型是POST的话，需要设置请求首部信息</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">xhr.setRequestHeader(<span class="string">"Content-Type"</span>,<span class="string">"application/json"</span>);</span><br><span class="line">xhr.send(<span class="string">"a=7&amp;b=8"</span>);</span><br></pre></td></tr></table></figure>
+
+<h2 id="jQuery实现Ajax"><a href="#jQuery实现Ajax" class="headerlink" title="jQuery实现Ajax"></a>jQuery实现Ajax</h2><h3 id="ajax"><a href="#ajax" class="headerlink" title="$.ajax()"></a>$.ajax()</h3><ul>
+<li>语法：<code>$.ajax({键值对});</code><figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">//使用$.ajax()发送异步请求</span></span><br><span class="line">$.ajax(&#123;</span><br><span class="line">    url:<span class="string">"ajaxServlet1111"</span> , <span class="comment">// 请求路径</span></span><br><span class="line">    type:<span class="string">"POST"</span> , <span class="comment">//请求方式</span></span><br><span class="line">    <span class="comment">//data: "username=jack&amp;age=23",//请求参数</span></span><br><span class="line">    data:&#123;<span class="string">"username"</span>:<span class="string">"jack"</span>,<span class="string">"age"</span>:<span class="number">23</span>&#125;,</span><br><span class="line">    success:<span class="function"><span class="keyword">function</span> (<span class="params">data</span>) </span>&#123;</span><br><span class="line">        alert(data);</span><br><span class="line">    &#125;,<span class="comment">//响应成功后的回调函数</span></span><br><span class="line">    error:<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">        alert(<span class="string">"出错啦..."</span>)</span><br><span class="line">    &#125;,<span class="comment">//表示如果请求响应出现错误，会执行的回调函数</span></span><br><span class="line"></span><br><span class="line">    dataType:<span class="string">"text"</span><span class="comment">//设置接受到的响应数据的格式</span></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<h3 id="get"><a href="#get" class="headerlink" title="$.get()"></a>$.get()</h3></li>
+<li>语法：<code>$.get(url, [data], [callback], [type])</code></li>
+<li>参数：<pre><code>* url：请求路径
+* data：请求参数
+* callback：回调函数
+* type：响应结果的类型</code></pre></li>
+</ul>
+<h3 id="post"><a href="#post" class="headerlink" title="$.post()"></a>$.post()</h3><ul>
+<li>语法：<code>$.post(url, [data], [callback], [type])</code></li>
+<li>参数：<pre><code>* url：请求路径
+* data：请求参数
+* callback：回调函数
+* type：响应结果的类型</code></pre></li>
+</ul>
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/Web/">Web</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/Web，jQuery，Ajax/">Web，jQuery，Ajax</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="https://hashcode.cn/2019/08/12/web-jquery-ajax-base/" data-title="jQuery &amp; Ajax 快速入门 | techbird blog" data-tsina="6488657373" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2019/08/13/web-redis-base/" title="Redis 使用快速入门">
+  <strong>上一篇：</strong><br/>
+  <span>
+  Redis 使用快速入门</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2019/07/08/web-jsp-el-jstl-base/"  title="JSP/EL/JSTL 快速入门">
+ <strong>下一篇：</strong><br/> 
+ <span>JSP/EL/JSTL 快速入门
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+<section id="comments" class="comment">
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript" target="_blank" rel="noopener">comments powered by Disqus.</a></noscript>
+  </div>
+</section>
+
+
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#jQuery"><span class="toc-number">1.</span> <span class="toc-text">jQuery</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#JavaScript-回顾"><span class="toc-number">1.1.</span> <span class="toc-text">JavaScript 回顾</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#jQuery-基础"><span class="toc-number">1.2.</span> <span class="toc-text">jQuery 基础</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#快速入门"><span class="toc-number">1.2.1.</span> <span class="toc-text">快速入门</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#目前jQuery有三个大版本："><span class="toc-number">1.2.1.1.</span> <span class="toc-text">目前jQuery有三个大版本：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#jquery-xxx-js-与-jquery-xxx-min-js区别："><span class="toc-number">1.2.1.2.</span> <span class="toc-text">jquery-xxx.js 与 jquery-xxx.min.js区别：</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#选择器"><span class="toc-number">1.2.2.</span> <span class="toc-text">选择器</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#基础选择器"><span class="toc-number">1.2.2.1.</span> <span class="toc-text">基础选择器</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#层次选择器"><span class="toc-number">1.2.2.2.</span> <span class="toc-text">层次选择器</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#基本操作"><span class="toc-number">1.2.2.3.</span> <span class="toc-text">基本操作</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#过滤器"><span class="toc-number">1.2.3.</span> <span class="toc-text">过滤器</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#基础过滤器"><span class="toc-number">1.2.3.1.</span> <span class="toc-text">基础过滤器</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#内容过滤器"><span class="toc-number">1.2.3.2.</span> <span class="toc-text">内容过滤器</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#可见度过滤器"><span class="toc-number">1.2.3.3.</span> <span class="toc-text">可见度过滤器</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#属性过滤器"><span class="toc-number">1.2.3.4.</span> <span class="toc-text">属性过滤器</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#子元素过滤器"><span class="toc-number">1.2.3.5.</span> <span class="toc-text">子元素过滤器</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#表单对象属性过滤器"><span class="toc-number">1.2.3.6.</span> <span class="toc-text">表单对象属性过滤器</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#表单过滤器"><span class="toc-number">1.2.3.7.</span> <span class="toc-text">表单过滤器</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#DOM-操作"><span class="toc-number">1.2.4.</span> <span class="toc-text">DOM 操作</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#外部插入"><span class="toc-number">1.2.4.1.</span> <span class="toc-text">外部插入</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#内部插入"><span class="toc-number">1.2.4.2.</span> <span class="toc-text">内部插入</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#查找节点"><span class="toc-number">1.2.4.3.</span> <span class="toc-text">查找节点</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#创建节点"><span class="toc-number">1.2.4.4.</span> <span class="toc-text">创建节点</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#删除节点"><span class="toc-number">1.2.4.5.</span> <span class="toc-text">删除节点</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#内容操作"><span class="toc-number">1.2.4.6.</span> <span class="toc-text">内容操作</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#属性操作"><span class="toc-number">1.2.4.7.</span> <span class="toc-text">属性操作</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#JQuery对象和JS对象区别与转换"><span class="toc-number">1.3.</span> <span class="toc-text">JQuery对象和JS对象区别与转换</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#jQuery-高级"><span class="toc-number">1.4.</span> <span class="toc-text">jQuery 高级</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#动画"><span class="toc-number">1.4.1.</span> <span class="toc-text">动画</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#遍历"><span class="toc-number">1.4.2.</span> <span class="toc-text">遍历</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#事件绑定"><span class="toc-number">1.4.3.</span> <span class="toc-text">事件绑定</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#插件"><span class="toc-number">1.4.4.</span> <span class="toc-text">插件</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Ajax"><span class="toc-number">2.</span> <span class="toc-text">Ajax</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#概述"><span class="toc-number">2.1.</span> <span class="toc-text">概述</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#XMLHttpRequest-对象初始化"><span class="toc-number">2.2.</span> <span class="toc-text">XMLHttpRequest 对象初始化</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#XMLHttpRequest对象方法"><span class="toc-number">2.2.1.</span> <span class="toc-text">XMLHttpRequest对象方法</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#服务器端向客户端进行响应-注册监听"><span class="toc-number">2.3.</span> <span class="toc-text">服务器端向客户端进行响应(注册监听)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#客户端与服务器端建立连接"><span class="toc-number">2.4.</span> <span class="toc-text">客户端与服务器端建立连接</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#客户端向服务器端发送请求"><span class="toc-number">2.5.</span> <span class="toc-text">客户端向服务器端发送请求</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#GET方式"><span class="toc-number">2.5.1.</span> <span class="toc-text">GET方式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#POST方式"><span class="toc-number">2.5.2.</span> <span class="toc-text">POST方式</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#jQuery实现Ajax"><span class="toc-number">2.6.</span> <span class="toc-text">jQuery实现Ajax</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#ajax"><span class="toc-number">2.6.1.</span> <span class="toc-text">$.ajax()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#get"><span class="toc-number">2.6.2.</span> <span class="toc-text">$.get()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#post"><span class="toc-number">2.6.3.</span> <span class="toc-text">$.post()</span></a></li></ol></li></ol></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+
+  
+<div class="github-card">
+<p class="asidetitle">Github Card</p>
+<div class="github-card" data-github="qiudengqiang" data-theme="medium"></div>
+<script type="text/javascript" src="//cdn.jsdelivr.net/github-cards/latest/widget.js" ></script>
+</div>
+
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">Categories</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/Daily/" title="Daily">Daily<sup>14</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/DataBase/" title="DataBase">DataBase<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Java/" title="Java">Java<sup>9</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Journey/" title="Journey">Journey<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Linux/" title="Linux">Linux<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/MySQL/" title="MySQL">MySQL<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/iOS/Objc/" title="Objc">Objc<sup>13</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Readed/" title="Readed">Readed<sup>5</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/VSCode/" title="VSCode">VSCode<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Web/" title="Web">Web<sup>5</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Xcode/" title="Xcode">Xcode<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/iOS/" title="iOS">iOS<sup>16</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/iOS/" title="iOS">iOS<sup>16</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Daily/" title="Daily">Daily<sup>14</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Objc/" title="Objc">Objc<sup>11</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Java/" title="Java">Java<sup>9</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Readed/" title="Readed">Readed<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Web/" title="Web">Web<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Thread/" title="Thread">Thread<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Network/" title="Network">Network<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Journey/" title="Journey">Journey<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/MySQL/" title="MySQL">MySQL<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Xcode/" title="Xcode">Xcode<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Category/" title="Category">Category<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/keywords/" title="keywords">keywords<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Idea/" title="Idea">Idea<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/KVC/" title="KVC">KVC<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/KVO/" title="KVO">KVO<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/NSThread/" title="NSThread">NSThread<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/NSURLRequest/" title="NSURLRequest">NSURLRequest<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/NSURLResponse/" title="NSURLResponse">NSURLResponse<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/NSURLSession/" title="NSURLSession">NSURLSession<sup>1</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+  <div class="weiboshow">
+  <p class="asidetitle">Weibo</p>
+    <iframe width="100%" height="120" class="share_self"  frameborder="0" scrolling="no" src="https://widget.weibo.com/weiboshow/index.php?language=&width=0&height=120&fansRow=2&ptype=1&speed=0&skin=9&isTitle=1&noborder=1&isWeibo=0&isFans=0&uid=6488657373&verifier=f458bf46&dpc=1"></iframe>
+</div>
+
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> You can&#39;t connect the dots looking forward <br/>
+			You can only connect them looking backwards.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		<a href="http://weibo.com/6488657373" target="_blank" class="icon-weibo" title="微博"></a>
+		
+		
+		<a href="https://github.com/qiudengqiang" target="_blank" class="icon-github" title="github"></a>
+		
+		
+		
+		<a href="https://twitter.com/murendless" target="_blank" class="icon-twitter" title="twitter"></a>
+		
+		
+		
+		
+		
+		
+		
+		<a href="mailto:qiudengqiang@gmail.com" target="_blank" class="icon-email" title="Email Me"></a>
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2022 
+		
+		<a href="/about" target="_blank" title="techbird">techbird</a>
+		
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+<script type="text/javascript">
+
+var disqus_shortname = 'techbird-1';
+
+(function(){
+  var dsq = document.createElement('script');
+  dsq.type = 'text/javascript';
+  dsq.async = true;
+  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+}());
+(function(){
+  var dsq = document.createElement('script');
+  dsq.type = 'text/javascript';
+  dsq.async = true;
+  dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+}());
+</script>
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>
