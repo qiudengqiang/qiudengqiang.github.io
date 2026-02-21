@@ -6,30 +6,22 @@ date: 2016-04-23 10:15:17
 
 ## 简介
 
-```swift
+```bash
 Programmer{
-    name = "dengqiangqiu"
     gender = "Male"
     born = "1994"
-    hobby = "Read、Code、Run、Cook"
-    skills = "Java、Python、iOS、Android"
+    hobby = "Reading、Coding、Running"
+    skills = "Java、Python、iOS、Android、Golang"
 }
 ```
 
 ## 更多信息
 
-```swift
+```bash
 extention{
     description = "
     欢迎来到我的站 :)
-    也许你在这里能读到的
-    只是中国千千万工科生中最普通的一员
-    在面对万千事物时
-    所能写下的茫然和转化
-    只想多年以后
-    读起年青时写下的憋足文字时
-    是别样的思绪万千
-    只因这里真实的记录了我的生活，我的成长...
+    这里记录了我的生活，成长...
     "
 }
 ```
