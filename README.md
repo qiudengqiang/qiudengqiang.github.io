@@ -1,56 +1,43 @@
-## 发布状态
-![](https://travis-ci.com/qiudengqiang/qiudengqiang.github.io.svg?branch=source)
+# Chirpy Starter
 
-## 日常操作
+[![Gem Version](https://img.shields.io/gem/v/jekyll-theme-chirpy)][gem]&nbsp;
+[![GitHub license](https://img.shields.io/github/license/cotes2020/chirpy-starter.svg?color=blue)][mit]
 
- * 发布新文章: `hexo new 文件名`
- * 预览: `hexo s`
- * 生成文件到 public 目录: `hexo g`
- * 发布: `hexo d`
+When installing the [**Chirpy**][chirpy] theme through [RubyGems.org][gem], Jekyll can only read files in the folders
+`_data`, `_layouts`, `_includes`, `_sass` and `assets`, as well as a small part of options of the `_config.yml` file
+from the theme's gem. If you have ever installed this theme gem, you can use the command
+`bundle info --path jekyll-theme-chirpy` to locate these files.
 
-## 在新的电脑上部署我的博客项目
+The Jekyll team claims that this is to leave the ball in the user’s court, but this also results in users not being
+able to enjoy the out-of-the-box experience when using feature-rich themes.
 
-首先，去 [Nodejs 官网](https://nodejs.org/en/) 下载安装 node。
+To fully use all the features of **Chirpy**, you need to copy the other critical files from the theme's gem to your
+Jekyll site. The following is a list of targets:
 
-``` bash
-git clone git@github.com:qiudengqiang/qiudengqiang.github.io.git
-git checkout source
-git submodule init
-git submodule update
-npm install -g hexo-cli
-npm install
+```shell
+.
+├── _config.yml
+├── _plugins
+├── _tabs
+└── index.html
 ```
 
-## 一些 Note
+To save you time, and also in case you lose some files while copying, we extract those files/configurations of the
+latest version of the **Chirpy** theme and the [CD][CD] workflow to here, so that you can start writing in minutes.
 
-有些时候文章中出现一些奇怪字符会造成发布失败，可以用 detect_code.cpp 来检查。
+## Usage
 
-brew install 安装的 node 有问题，需要自己去 [Nodejs 官网](https://nodejs.org/en/)下载 .pkg 格式的安装包安装。
+Check out the [theme's docs](https://github.com/cotes2020/jekyll-theme-chirpy/wiki).
 
-重新安装的时候，git clone 下来，执行 npm install.
+## Contributing
 
-如果要修改 archive 的每页文章条数：
-/Users/qiudengqiang/work/git/hexo/node_modules/hexo-generator-archive/index.js:
-/Users/qiudengqiang/work/git/hexo/node_modules/hexo-generator-category/index.js
-/Users/qiudengqiang/work/git/hexo/node_modules/hexo-generator-tag/index.js
+This repository is automatically updated with new releases from the theme repository. If you encounter any issues or want to contribute to its improvement, please visit the [theme repository][chirpy] to provide feedback.
 
-## 初使化
-```
-npm install -g hexo-cli
-cd <blog folder>
-npm install
-```
+## License
 
+This work is published under [MIT][mit] License.
 
-## 设置发布
-```
-npm install hexo-deployer-git --save
-git clone git@github.com:qiudengqiang/qiudengqiang.github.io.git public
-```
-
-## 设置皮肤
-```
-mkdir themes
-cd themes
-git clone git@github.com:qiudengqiang/jacman.git
-```
+[gem]: https://rubygems.org/gems/jekyll-theme-chirpy
+[chirpy]: https://github.com/cotes2020/jekyll-theme-chirpy/
+[CD]: https://en.wikipedia.org/wiki/Continuous_deployment
+[mit]: https://github.com/cotes2020/chirpy-starter/blob/master/LICENSE
