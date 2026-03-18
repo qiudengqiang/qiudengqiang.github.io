@@ -1,7 +1,6 @@
-
 ---
-title: Kind单机Kubernetes环境搭建
-date: 2026-03-18 16:01:47
+title: 基于Kind搭建单机Kubernetes环境
+date: 2026-03-17 16:01:47
 tags: [Kubernetes]
 categories: k8s
 ---
@@ -42,10 +41,13 @@ mkdir -p /work/{bin,src,lab/{kind,kubeadm,manifests},data}
 
 ## 3.安装 Docker
 
+```bash
+
 apt update
 apt install -y docker.io
 systemctl enable --now docker
 
+```
 配置镜像加速：
 
 ```bash 
@@ -105,9 +107,11 @@ docker tag m.daocloud.io/docker.io/kindest/node:v1.29.2 kindest/node:v1.29.2
 ```
 
 ## 7.创建kind集群配置
-
-/work/lab/kind/kind.yaml
-
+创建kind.yaml
+```bash
+vim /work/lab/kind/kind.yaml
+```
+写入配置
 ```yaml
 kind: Cluster
 apiVersion: kind.x-k8s.io/v1alpha4
@@ -147,6 +151,7 @@ kubectl get pods -A
 ```bash
 kind delete cluster --name dev
 ```
+
 查看日志：
 ```bash
 kind export logs ./kind-logs
