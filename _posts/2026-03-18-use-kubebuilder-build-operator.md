@@ -1,6 +1,6 @@
 ---
 title: 使用Kubebuilder创建Operator
-date: 2026-03-18 16:20:47
+date: 2026-03-18 08:20:47
 tags: [Kubernetes]
 categories: k8s
 ---
