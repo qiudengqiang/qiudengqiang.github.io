@@ -12,8 +12,6 @@ categories: k8s
 - 本地运行调试（make run）
 - 明确工具链（controller-gen）
 
----
-
 ## 2. 安装 Go（>=1.23）
 
 ```bash
@@ -23,7 +21,6 @@ tar -C /usr/local -xzf go1.23.7.linux-amd64.tar.gz
 ```
 
 配置环境变量:
-
 ```bash
 cat >> ~/.bashrc <<'EOF'
 export GOROOT=/usr/local/go
