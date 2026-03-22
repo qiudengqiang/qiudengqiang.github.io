@@ -1,6 +1,6 @@
 ---
 title: 基于Kind搭建单机Kubernetes环境
-date: 2026-03-17 16:01:47
+date: 2026-03-17 14:01:47
 tags: [Kubernetes]
 categories: k8s
 ---
