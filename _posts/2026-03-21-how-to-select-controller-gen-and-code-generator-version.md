@@ -5,12 +5,11 @@ tags: [Kubernetes]
 categories: k8s
 ---
 
-
-## 版本选错会有什么问题
+## 版本选错有什么问题?
 - code-generator 选错版本容易出现 编译错误、类型不兼容、生成代码不可用等问题。
 - controller-gen 选错版本更容易出现 CRD YAML 生成结果和集群不兼容、apply 时报错、未来埋雷。
 
-## 如何选择正确的版本
+## 如何选择正确的版本?
 
 k8s，controller-gen，code-generator版本关系参考的官方资料：
 - https://github.com/kubernetes/code-generator
@@ -20,6 +19,7 @@ k8s，controller-gen，code-generator版本关系参考的官方资料：
 - https://github.com/kubernetes-sigs/controller-tools
 
 
+## code-generator
 code-generator工具集中包含了client-gen、lister-gen、informer-gen、deepcopy-gen、conversion-gen等工具
 
 而code-generator、client-go、apimachinery都是kubernetes的staging项目中的子项目。K8s发版时会同时更新。
@@ -28,9 +28,10 @@ k8s是v1.x，他们就是v0.x，严格跟 K8s 版本一一对应。例如：
 - K8s (v1.31) → code-generator、client-go、 apimachinery（v0.31.x）→  controller-gen (v0.16.0)
 
 
+## controller-tools
 controller-tools 版本与 kubebuilder 版本绑定，而 kubebuilder 又与 Kubernetes 版本相关，虽然controller-gen 没有官方的“K8s版本对应表”，但可以通过它依赖的 apimachinery 版本，反推出它属于哪个 Kubernetes 时代。controller-gen 不只是要求某代K8s版本（某代指不需要关注major.minor.patch版本号中的patch），同时要求最低Go版本。
 
-可以直接去看 controller-tools 的go.mod，其中包含k8s.io/apimachinery版本和go版本。而k8s.io/apimachinery版本是可以直接对应到k8s某一代版本的。
+最简单的方法是可以直接去看 controller-tools 的go.mod，其中包含k8s.io/apimachinery版本和go版本。而k8s.io/apimachinery版本是可以直接对应到k8s某一代版本的。
 下面是v0.16.0版本的controller-tools的go.mod：
 ```go
 module sigs.k8s.io/controller-tools
