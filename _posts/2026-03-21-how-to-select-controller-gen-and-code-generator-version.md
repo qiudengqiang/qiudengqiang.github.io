@@ -24,8 +24,8 @@ code-generator工具集中包含了client-gen、lister-gen、informer-gen、deep
 
 而code-generator、client-go、apimachinery都是kubernetes的staging项目中的子项目。K8s发版时会同时更新。
 k8s是v1.x，他们就是v0.x，严格跟 K8s 版本一一对应。例如：
-K8s (v1.20.13) → code-generator、client-go、 apimachinery（v0.20.x）→  controller-gen (v0.5.0)
-K8s (v1.31) → code-generator、client-go、 apimachinery（v0.31.x）→  controller-gen (v0.16.0)
+- K8s (v1.20.13) → code-generator、client-go、 apimachinery（v0.20.x）→  controller-gen (v0.5.0)
+- K8s (v1.31) → code-generator、client-go、 apimachinery（v0.31.x）→  controller-gen (v0.16.0)
 
 
 controller-tools 版本与 kubebuilder 版本绑定，而 kubebuilder 又与 Kubernetes 版本相关，虽然controller-gen 没有官方的“K8s版本对应表”，但可以通过它依赖的 apimachinery 版本，反推出它属于哪个 Kubernetes 时代。controller-gen 不只是要求某代K8s版本（某代指不需要关注major.minor.patch版本号中的patch），同时要求最低Go版本。
