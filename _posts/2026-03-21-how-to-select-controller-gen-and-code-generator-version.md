@@ -13,11 +13,11 @@ categories: k8s
 ## 如何选择正确的版本
 
 k8s，controller-gen，code-generator版本关系参考的官方资料：
-https://github.com/kubernetes/code-generator
-https://github.com/kubernetes-sigs/kubebuilder
-https://book.kubebuilder.io/versions_compatibility_supportability
-https://github.com/kubernetes-sigs/kubebuilder-release-tools/blob/master/VERSIONING.md
-https://github.com/kubernetes-sigs/controller-tools
+- https://github.com/kubernetes/code-generator
+- https://github.com/kubernetes-sigs/kubebuilder
+- https://book.kubebuilder.io/versions_compatibility_supportability
+- https://github.com/kubernetes-sigs/kubebuilder-release-tools/blob/master/VERSIONING.md
+- https://github.com/kubernetes-sigs/controller-tools
 
 
 code-generator工具集中包含了client-gen、lister-gen、informer-gen、deepcopy-gen、conversion-gen等工具
