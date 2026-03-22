@@ -42,11 +42,9 @@ mkdir -p /work/{bin,src,lab/{kind,kubeadm,manifests},data}
 ## 3.安装 Docker
 
 ```bash
-
 apt update
 apt install -y docker.io
 systemctl enable --now docker
-
 ```
 配置镜像加速：
 
