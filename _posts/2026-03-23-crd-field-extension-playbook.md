@@ -31,16 +31,16 @@ categories: k8s
 ### 3.2 定义 enum（示例）
 
 ```go
-type PolicyType string
+type ExampleType string
 
 const (
-    PolicyA PolicyType = "PolicyA"
-    PolicyB PolicyType = "PolicyB"
+    ExampleA ExampleType = "A"
+    ExampleB ExampleType = "B"
 )
 
 type ExampleSpec struct {
-    // +kubebuilder:validation:Enum=PolicyA;PolicyB
-    Policy PolicyType `json:"policy,omitempty"`
+    // +kubebuilder:validation:Enum=ExampleFiledA;ExampleFiledB
+    Type ExampleType `json:"type,omitempty"`
 }
 ```
 
@@ -58,11 +58,10 @@ type ExampleSpec struct {
 建议统一跑完整链路：
 
 1. `deepcopy-gen`
-2. `conversion-gen`
-3. `client-gen`
-4. `lister-gen`
-5. `informer-gen`
-6. `controller-gen`（CRD YAML）
+2. `client-gen`
+3. `lister-gen`
+4. `informer-gen`
+5. `controller-gen`
 
 原因：
 
