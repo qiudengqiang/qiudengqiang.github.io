@@ -13,7 +13,7 @@ timezone: Asia/Shanghai
 # jekyll-seo-tag settings › https://github.com/jekyll/jekyll-seo-tag/blob/master/docs/usage.md
 # ↓ --------------------------
 
-title: QDQ # the main title
+title: vinoqiu # the main title
 
 tagline: think bold, act fast.  # it will display as the subtitle
 
@@ -33,7 +33,7 @@ twitter:
 social:
   # Change to your full name.
   # It will be displayed as the default author of the posts and the copyright owner in the Footer
-  name: QDQ
+  name: vinoqiu
   email: qiudengqiang@gmail.com # change to your email address
   links:
     # The first element serves as the copyright owner's link
