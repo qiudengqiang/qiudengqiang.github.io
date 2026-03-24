@@ -1,14 +1,14 @@
 ---
-title: 使用controller-gen和code-generator为已有CRD新增字段
+title: 用controller-gen和code-generator为已有CRD新增字段
 date: 2026-03-24 08:20:47
 tags: [Kubernetes]
 categories: k8s
 ---
 
 
-# controller-gen
+## controller-gen
 
-## 生成 deepcopy
+### 生成 deepcopy
 ```go
 cd /work/src/operators/guestbook-operator
 
@@ -24,7 +24,7 @@ cd /work/src/operators/guestbook-operator
 ls -l api/apps/v1alpha1/zz_generated.deepcopy.go
 ```
 
-## 生成 crd yaml
+### 生成 crd yaml
 ```bash
 rm -f config/crd/v1alpha1/*.yaml
 controller-gen crd paths="./api/..." output:crd:artifacts:config=config/crd/v1alpha1
@@ -36,9 +36,9 @@ ls -l config/crd/v1alpha1/apps.alphabethub.com_guestbooks.yaml
 ```
 
 
-# code-generator
+## code-generator
 
-## 前提
+### 前提
 确认类型上有 +genclient
 ```go
 // +genclient
@@ -51,8 +51,9 @@ type Guestbook struct {
 ```go
 // +kubebuilder:object:root=true
 type GuestbookList struct {
+```
 
-## 准备临时 GOPATH
+### 准备临时 GOPATH
 ```bash
 rm -rf .gopath
 mkdir -p .gopath/src/alphabethub.com
@@ -67,21 +68,21 @@ ln -sfn "$(pwd)" .gopath/src/alphabethub.com/guestbook-operator
 ls -l .gopath/src/alphabethub.com
 ```
 
-## 下载code-generator（若不存在）
+### 下载code-generator（若不存在）
 
 ```bash
 cd /work/src
 git clone --depth=1 --branch=v0.29.2 https://github.com/kubernetes/code-generator.git
 ```
 
-## 清理旧产物
+### 清理旧产物
 ```bash
 cd /work/src/operators/guestbook-operator
 rm -rf pkg/client
 mkdir -p pkg/client
 ```
 
-## 生成 client/lister/informer
+### 生成 client/lister/informer
 ```bash
 cd /work/src/operators/guestbook-operator
 
@@ -94,7 +95,7 @@ GOPATH=/work/src/operators/guestbook-operator/.gopath \
   --go-header-file "$(pwd)/hack/boilerplate.go.txt" \
   --output-base "$(pwd)/.gopath/src"
 ```
-## 检查临时 GOPATH 里的真实生成结果
+### 检查临时 GOPATH 里的真实生成结果
 需要包含clientset,
 ```bash
 find .gopath/src/alphabethub.com/guestbook-operator/pkg/client -type f | sort
@@ -108,14 +109,14 @@ find ./pkg/client -type f | sort
 .../informers/externalversions/apps/v1alpha1/guestbook.go
 ```
 
-## 删除.gopath
+### 删除.gopath
 ```bash
 cd /work/src/operators/guestbook-operator
 
 rm -rf .gopath
 ```
 
-## 编译
+### 编译
 执行
 
 ```bash
@@ -174,12 +175,12 @@ func Kind(kind string) schema.GroupKind {
 ```
 
 
-# apply 
-## apply crd
+## apply 
+### apply crd
 kubectl apply -f config/crd/v1alpha1/apps.alphabethub.com_guestbooks.yaml
 kubectl get crd guestbooks.apps.alphabethub.com -oyaml|less
 
-## apply cr
+### apply cr
 kubectl apply -f config/samples/apps_v1alpha1_guestbook.yaml
 kubectl get guestbook guestbook-sample -oyaml|less
 
