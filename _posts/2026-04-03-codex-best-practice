@@ -1,0 +1,411 @@
+---
+title: Codex 最佳实践
+date: 2026-04-03 8:01:47
+tags: [Agentic]
+categories: Agentic
+---
+
+前言：使用一个工具的最好的方式是先阅读官方的最佳实践，于是利用codex agent翻译了官网的最佳实践，中英文对照如下。
+
+Getting started with Codex and proven practices for better results
+开始使用 Codex 以及经过验证的最佳实践，以获得更好的结果
+
+If you’re new to Codex or coding agents in general, this guide will help you get better results faster. It covers the core habits that make Codex more effective across the CLI, IDE extension, and the Codex app, from prompting and planning to validation, MCP, skills, and automations.
+如果你是 Codex 或编码代理的新手，这份指南将帮助你更快地获得更好的结果。它涵盖了让 Codex 在 CLI、IDE 扩展以及 Codex 应用中更高效的核心习惯，包括提示词、规划、验证、MCP、技能以及自动化等方面。
+
+Codex works best when you treat it less like a one-off assistant and more like a teammate you configure and improve over time.
+当你不把 Codex 当作一次性助手，而是把它当作一个可以持续配置和优化的团队成员时，它的效果最佳。
+
+A useful way to think about this: start with the right task context, use AGENTS.md for durable guidance, configure Codex to match your workflow, connect external systems with MCP, turn repeated work into skills, and automate stable workflows.
+一个有用的思考方式是：从正确的任务上下文开始，使用 AGENTS.md 提供长期有效的指导，将 Codex 配置为匹配你的工作流，通过 MCP 连接外部系统，将重复工作沉淀为技能，并对稳定流程进行自动化。
+
+
+## Strong first use: Context and prompts
+强起手：上下文与提示词
+
+Codex is already strong enough to be useful even when your prompt isn’t perfect. You can often hand it a hard problem with minimal setup and still get a strong result. Clear prompting isn’t required to get value, but it does make results more reliable, especially in larger codebases or higher-stakes tasks.
+即使你的提示词不完美，Codex 也已经足够强大，可以发挥作用。你通常只需很少的准备就可以把复杂问题交给它，并仍然获得不错的结果。清晰的提示词不是获得价值的必要条件，但它会让结果更加可靠，尤其是在大型代码库或高风险任务中。
+
+If you work in a large or complex repository, the biggest unlock is giving Codex the right task context and a clear structure for what you want done.
+如果你在一个大型或复杂的代码库中工作，最大的提升来自于为 Codex 提供正确的任务上下文以及清晰的任务结构。
+
+
+A good default is to include four things in your prompt:
+一个良好的默认做法是在提示词中包含以下四个要素：
+
+A good default is to include four things in your prompt:
+一个良好的默认做法是在提示词中包含以下四个要素：
+
+Goal: What are you trying to change or build?
+目标：你想要修改或构建什么？
+
+Context: Which files, folders, docs, examples, or errors matter for this task? You can @ mention certain files as context.
+上下文：哪些文件、目录、文档、示例或错误与该任务相关？你可以通过 @ 引用特定文件作为上下文。
+
+Constraints: What standards, architecture, safety requirements, or conventions should Codex follow?
+约束：Codex 应该遵循哪些标准、架构、安全要求或约定？
+
+Done when: What should be true before the task is complete, such as tests passing, behavior changing, or a bug no longer reproducing?
+完成标准：任务完成前应该满足哪些条件，例如测试通过、行为发生变化或 bug 不再复现？
+
+This helps Codex stay scoped, make fewer assumptions, and produce work that’s easier to review.
+这有助于 Codex 保持任务范围清晰、减少假设，并生成更易于审查的结果。
+
+## workflow speed configure
+工作流速度配置
+
+Choose a reasoning level based on how hard the task is and test what works best for your workflow. Different users and tasks work best with different settings.
+根据任务难度选择推理强度，并测试最适合你工作流的设置。不同用户和任务在不同设置下效果最佳。
+
+Low for faster, well-scoped tasks
+低：适用于更快、范围清晰的任务
+
+Medium or High for more complex changes or debugging
+中或高：适用于更复杂的修改或调试
+
+Extra High for long, agentic, reasoning-heavy tasks
+极高：适用于长流程、代理式、推理密集型任务
+
+## Plan first for difficult tasks
+对于困难任务，先进行规划
+
+If the task is complex, ambiguous, or hard to describe well, ask Codex to plan before it starts coding.
+如果任务复杂、不明确或难以清晰描述，应让 Codex 在开始编码之前先进行规划。
+
+A few approaches work well:
+有几种方法效果很好：
+
+Use Plan mode: For most users, this is the easiest and most effective option. Plan mode lets Codex gather context, ask clarifying questions, and build a stronger plan before implementation. Toggle with /plan or Shift+Tab.
+使用 Plan 模式：对于大多数用户来说，这是最简单且最有效的方式。Plan 模式允许 Codex 收集上下文、提出澄清问题，并在实现之前构建更完善的计划。可以通过 /plan 或 Shift+Tab 切换。
+
+Ask Codex to interview you: If you have a rough idea of what you want but aren’t sure how to describe it well, ask Codex to question you first. Tell it to challenge your assumptions and turn the fuzzy idea into something concrete before writing code.
+让 Codex 反向提问：如果你对需求有一个大致想法，但不确定如何清晰表达，可以让 Codex 先向你提问。让它质疑你的假设，在编写代码之前将模糊想法转化为具体方案。
+
+Use a PLANS.md template: For more advanced workflows, you can configure Codex to follow a PLANS.md or execution-plan template for longer-running or multi-step work. For more detail, see the execution plans guide.
+使用 PLANS.md 模板：对于更高级的工作流，你可以配置 Codex 遵循 PLANS.md 或执行计划模板，用于处理长时间运行或多步骤任务。更多细节可参考执行计划指南。
+
+## Make guidance reusable with AGENTS.md
+使用 AGENTS.md 复用指导
+
+Once a prompting pattern works, the next step is to stop repeating it manually. That’s where AGENTS.md comes in.
+一旦某种提示模式被验证有效，下一步就是停止手动重复它。这正是 AGENTS.md 的作用。
+
+Think of AGENTS.md as an open-format README for agents. It loads into context automatically and is the best place to encode how you and your team want Codex to work in a repository.
+可以把 AGENTS.md 看作是为智能代理准备的开放格式 README。它会自动加载到上下文中，是定义你和团队希望 Codex 在仓库中如何工作的最佳位置。
+
+A good AGENTS.md covers:
+一个好的 AGENTS.md 应该包含：
+
+repo layout and important directories
+仓库结构和重要目录
+
+How to run the project
+如何运行项目
+
+Build, test, and lint commands
+构建、测试和代码检查命令
+
+Engineering conventions and PR expectations
+工程规范和 PR 期望
+
+Constraints and do-not rules
+约束条件和禁止事项
+
+What done means and how to verify work
+完成标准以及如何验证结果
+
+The /init slash command in the CLI is the quick-start command to scaffold a starter AGENTS.md in the current directory. It’s a great starting point, but you should edit the result to match how your team actually builds, tests, reviews, and ships code.
+CLI 中的 /init 命令可以快速在当前目录生成一个初始的 AGENTS.md。这是一个很好的起点，但你需要根据团队实际的构建、测试、评审和发布流程进行修改。
+
+You can create AGENTS.md files at different levels: a global AGENTS.md for personal defaults that sits in ~/.codex, a repo-level file for shared standards, and more specific files in subdirectories for local rules. If there’s a more specific file closer to your current directory, that guidance wins.
+你可以在不同层级创建 AGENTS.md 文件：位于 ~/.codex 的全局 AGENTS.md 用于个人默认设置，仓库级文件用于共享规范，子目录中的文件用于局部规则。如果存在更靠近当前目录的更具体文件，则优先生效。
+
+Keep it practical. A short, accurate AGENTS.md is more useful than a long file full of vague rules. Start with the basics, then add new rules only after you notice repeated mistakes.
+保持实用性。简短且准确的 AGENTS.md 比充满模糊规则的长文档更有价值。从基础开始，仅在发现重复错误后再添加新规则。
+
+If AGENTS.md starts getting too large, keep the main file concise and reference task-specific markdown files for things like planning, code review, or architecture.
+如果 AGENTS.md 变得过大，应保持主文件简洁，并通过引用特定任务的 markdown 文件（例如规划、代码评审或架构）来扩展内容。
+
+> When Codex makes the same mistake twice, ask it for a retrospective and update AGENTS.md. Guidance stays practical and based on real friction.
+当 Codex 两次犯同样的错误时，让它进行一次复盘，并更新 AGENTS.md。这样指导会保持实用性，并基于真实遇到的问题。
+
+## Configure Codex for consistency
+为一致性配置 Codex
+
+Configuration is one of the main ways to make Codex behave more consistently across sessions and surfaces. For example, you can set defaults for model choice, reasoning effort, sandbox mode, approval policy, profiles, and MCP setup.
+配置是让 Codex 在不同会话和使用界面中保持一致行为的主要方式之一。例如，你可以设置模型选择、推理强度、沙箱模式、审批策略、配置档（profiles）以及 MCP 设置等默认值。
+
+A good starting pattern is:
+一个良好的起步模式是：
+
+Keep personal defaults in ~/.codex/config.toml (Settings → Configuration → Open config.toml from the Codex app)
+将个人默认配置保存在 ~/.codex/config.toml 中（在 Codex 应用中通过 Settings → Configuration → Open config.toml 打开）
+
+Keep repo-specific behavior in .codex/config.toml
+将仓库特定行为配置保存在 .codex/config.toml 中
+
+Use command-line overrides only for one-off situations (if you use the CLI)
+仅在一次性场景中使用命令行覆盖（如果你使用 CLI）
+
+config.toml is where you define durable preferences such as MCP servers, profiles, multi-agent setup, and feature flags. You can edit it directly or ask Codex to update it for you.
+`config.toml` 是定义持久化偏好的地方，例如 MCP 服务器、配置档、多代理设置以及功能开关。你可以直接编辑它，或让 Codex 帮你更新。
+
+Codex ships with operating level sandboxing and has two key knobs that you can control. Approval mode determines when Codex asks for your permission to run a command and sandbox mode determines if Codex can read or write in the directory and what files the agent can access.
+Codex 内置了操作系统级别的沙箱机制，并提供两个关键可控参数。审批模式决定 Codex 何时需要请求你的许可来执行命令，沙箱模式决定 Codex 是否可以在目录中读写，以及代理可以访问哪些文件。
+
+If you’re new to coding agents, start with the default permissions. Keep approval and sandboxing tight by default, then loosen permissions only for trusted repos or specific workflows once the need is clear.
+如果你是编码代理的新手，应从默认权限开始。默认保持严格的审批和沙箱限制，只有在明确需要时，才为可信仓库或特定工作流放宽权限。
+
+Note that the CLI, IDE, and Codex app all share the same configuration layers. Learn more on the sample configuration page.
+请注意，CLI、IDE 和 Codex 应用共享相同的配置层。更多信息可以参考示例配置页面。
+
+> Configure Codex for your real environment early. Many quality issues are really setup issues, like the wrong working directory, missing write access, wrong model defaults, or missing tools and connectors.
+尽早为你的真实环境配置 Codex。许多质量问题实际上是配置问题，例如工作目录错误、缺少写权限、模型默认设置不正确，或缺少工具和连接器。
+
+
+# Improve reliability with testing and review
+通过测试和审查提升可靠性
+
+Don’t stop at asking Codex to make a change. Ask it to create tests when needed, run the relevant checks, confirm the result, and review the work before you accept it.
+不要在让 Codex 完成修改后就结束。应让它在需要时编写测试、运行相关检查、确认结果，并在你接受之前对工作进行审查。
+
+
+Codex can do this loop for you, but only if it knows what “good” looks like. That guidance can come from either the prompt or AGENTS.md.
+Codex 可以为你执行这一流程，但前提是它知道“好的结果”是什么样。这些指导可以来自提示词或 AGENTS.md。
+
+That can include:
+这可以包括
+- Writing or updating tests for the change
+为修改编写或更新测试
+
+- Running the right test suites
+运行合适的测试套件
+
+- Checking lint, formatting, or type checks
+检查代码规范、格式或类型检查
+
+- Confirming the final behavior matches the request
+确认最终行为符合需求
+
+- Reviewing the diff for bugs, regressions, or risky patterns
+检查代码差异（diff）以发现 bug、回归问题或潜在风险模式
+
+--- 
+
+A useful option here is the slash command /review, which gives you a few ways to review code:
+这里一个有用的选项是斜杠命令 /review，它提供了多种代码审查方式：
+
+
+Review against a base branch for PR-style review
+基于目标分支进行类似 PR 的代码审查
+
+Review uncommitted changes
+审查未提交的更改
+
+Review a commit
+审查某一次提交
+
+Use custom review instructions
+使用自定义的审查指令
+
+If you and your team have a code_review.md file and reference it from AGENTS.md, Codex can follow that guidance during review as well. This is a strong pattern for teams that want review behavior to stay consistent across repositories and contributors.
+如果你和团队有一个 code_review.md 文件，并在 AGENTS.md 中引用它，Codex 在审查时也可以遵循这些指导。这是一种很好的模式，可以让团队在不同仓库和贡献者之间保持一致的审查行为。
+
+Codex shouldn’t just generate code. With the right instructions, it can also help test it, check it, and review it.
+Codex 不应该只用于生成代码。在合适的指令下，它还可以帮助测试、检查以及审查代码。
+
+
+## Use MCPs for external context
+使用 MCP 获取外部上下文
+
+
+Use MCPs when the context Codex needs lives outside the repo. It lets Codex connect to the tools and systems you already use, so you don’t have to keep copying and pasting live information into prompts.
+当 Codex 所需的上下文存在于仓库之外时，使用 MCP。它可以让 Codex 连接到你已经在使用的工具和系统，这样你就不需要反复将实时信息复制粘贴到提示词中。
+
+
+Model Context Protocol, or MCP, is an open standard for connecting Codex to external tools and systems.
+模型上下文协议（Model Context Protocol，简称 MCP）是一种用于将 Codex 连接到外部工具和系统的开放标准。
+
+
+Use MCP when:
+在以下情况下使用 MCP：
+
+
+
+The needed context lives outside the repo
+所需上下文存在于仓库之外
+
+The data changes frequently
+数据变化频繁
+
+You want Codex to use a tool rather than rely on pasted instructions
+你希望 Codex 使用工具，而不是依赖粘贴的指令
+
+You need a repeatable integration across users or projects
+你需要在不同用户或项目之间实现可复用的集成
+
+
+
+Codex supports both STDIO and Streamable HTTP servers with OAuth.
+Codex 支持基于 STDIO 和可流式 HTTP 的服务器，并支持 OAuth。
+
+
+In the Codex App, head to Settings → MCP servers to see custom and recommended servers. Often, Codex can help you install the needed servers. All you need to do is ask.
+在 Codex 应用中，进入 Settings → MCP servers，可以查看自定义和推荐的服务器。通常，Codex 可以帮助你安装所需的服务器，你只需要提出请求。
+
+
+You can also use the codex mcp add command in the CLI to add your custom servers with a name, URL, and other details.
+你也可以在 CLI 中使用 codex mcp add 命令，通过名称、URL 及其他信息来添加自定义服务器。
+
+> 只有在工具能够真正解锁实际工作流程时才添加。不要一开始就接入你使用的所有工具。应从一两个能够明显消除你日常重复手动操作的工具开始，然后再逐步扩展。
+
+## Turn repeatable work into skills
+将可重复的工作转化为技能
+
+Once a workflow becomes repeatable, stop relying on long prompts or repeated back-and-forth. Use a Skill to package the instructions in a SKILL.md file, context, and supporting logic Codex should apply consistently. Skills work across the CLI, IDE extension, and Codex app.
+一旦某个工作流程变得可重复，就不要再依赖冗长的提示词或反复对话。应使用 Skill，将指令封装在 SKILL.md 文件中，并结合上下文和支持逻辑，让 Codex 持续一致地执行。Skill 可在 CLI、IDE 扩展和 Codex 应用中通用。
+
+Keep each skill scoped to one job. Start with 2 to 3 concrete use cases, define clear inputs and outputs, and write the description so it says what the skill does and when to use it. Include the kinds of trigger phrases a user would actually say.
+每个技能应聚焦于一个任务。从 2 到 3 个具体用例开始，定义清晰的输入和输出，并在描述中说明该技能的功能以及何时使用。同时包含用户实际可能使用的触发语句。
+
+Don’t try to cover every edge case up front. Start with one representative task, get it working well, then turn that workflow into a skill and improve from there. Include scripts or extra assets only when they improve reliability.
+不要一开始就试图覆盖所有边界情况。应从一个具有代表性的任务开始，先让它运行良好，再将该工作流程转化为技能，并在此基础上逐步改进。只有在确实能提升可靠性时，才引入脚本或额外资源。
+
+A good rule of thumb: if you keep reusing the same prompt or correcting the same workflow, it should probably become a skill.
+一个经验法则是：如果你反复使用相同的提示词，或反复修正同一个工作流程，那么它很可能应该被抽象为一个技能。
+
+Skills are especially useful for recurring jobs like:
+技能在以下重复性任务中尤其有用：
+
+Log triage
+日志排查
+
+Release note drafting
+发布说明撰写
+
+PR review against a checklist
+基于检查清单的 PR 审查
+
+Migration planning
+迁移规划
+
+Telemetry or incident summaries
+遥测数据或故障总结
+
+Standard debugging flows
+标准调试流程
+
+The `$skill-creator` skill is the best place to start to scaffold the first version of a skill. Keep the first version local while you iterate. When it’s ready to share broadly, package it as a plugin. One of the most important parts of a skill is the description. It should say what the skill does and when to use it.
+`$skill-creator` 技能是构建第一个技能版本的最佳起点。初始版本应在本地迭代完善，当准备好广泛共享时，再将其打包为插件。技能中最重要的部分之一是描述，应清楚说明该技能的功能以及何时使用。
+
+> Personal skills are stored in `$HOME/.agents/skills`, and shared team skills can be checked into `.agents/skills` inside a repository. This is especially helpful for onboarding new teammates. 个人技能存储在 `$HOME/.agents/skills` 中，而团队共享技能可以放在仓库内的 `.agents/skills` 目录中。这对于新成员入职尤其有帮助。
+
+# Use automations for repeated work
+使用自动化处理重复性工作
+
+Once a workflow is stable, you can schedule Codex to run it in the background for you. In the Codex app, automations let you choose the project, prompt, cadence, and execution environment for a recurring task.
+一旦某个工作流程稳定下来，你可以安排 Codex 在后台定期运行它。在 Codex 应用中，自动化功能允许你为重复任务选择项目、提示词、执行频率以及运行环境。
+
+Once a task becomes repetitive for you, you can create an automation in the Automations tab on the Codex app. You can choose which project it runs in, the prompt it runs (you can invoke skills), and the cadence it will run. You can also choose whether the automation runs in a dedicated git worktree or in your local environment. Learn more about git worktrees.
+当某个任务对你来说变得重复时，你可以在 Codex 应用的 Automations 标签页中创建自动化。你可以选择运行的项目、执行的提示词（可以调用技能）以及运行频率。你还可以选择让自动化在专用的 git worktree 中运行，或在本地环境中运行。有关 git worktree 的更多信息可进一步了解。
+
+Good candidates include:
+适合自动化的任务包括：
+
+Summarizing recent commits
+总结最近的提交
+
+Scanning for likely bugs
+扫描潜在 bug
+
+Drafting release notes
+撰写发布说明
+
+Checking CI failures
+检查 CI 失败
+
+Producing standup summaries
+生成站会总结
+
+Running repeatable analysis workflows on a schedule
+按计划运行可重复的分析流程
+
+A useful rule is that skills define the method, automations define the schedule. If a workflow still needs a lot of steering, turn it into a skill first. Once it’s predictable, automation becomes a force multiplier.
+一个实用的规则是：技能定义方法，自动化定义调度。如果一个工作流程仍然需要大量引导，应先将其抽象为技能；当它变得可预测后，自动化将成为效率放大器。
+
+> Use automations for reflection and maintenance, not just execution. Review recent sessions, summarize repeated friction, and improve prompts, instructions, or workflow setup over time.
+不仅将自动化用于执行任务，也要用于复盘和维护。回顾最近的会话，总结重复出现的问题，并持续优化提示词、指令或工作流配置。
+
+
+## Organize long-running work with session controls
+通过会话控制来组织长时间运行的工作
+
+Codex sessions aren’t just chat history. They’re working threads that accumulate context, decisions, and actions over time, so managing them well has a big impact on quality.
+Codex 的会话不仅仅是聊天记录，它们是随着时间累积上下文、决策和操作的工作线程，因此良好的管理会对结果质量产生重要影响。
+
+The Codex app UI makes thread management easiest because you can pin threads and create worktrees. If you are using the CLI, these slash commands are especially useful:
+Codex 应用的 UI 使线程管理最为方便，因为你可以固定线程并创建 worktree。如果你使用 CLI，以下斜杠命令尤其有用：
+
+`/experimental` to toggle experimental features and add to your config.toml
+`/experimental`：用于切换实验性功能并写入 config.toml
+
+`/resume` to resume a saved conversation
+`/resume`：恢复已保存的对话
+
+`/fork` to create a new thread while preserving the original transcript
+`/fork`：在保留原始对话记录的情况下创建一个新线程
+
+`/compact` when the thread is getting long and you want a summarized version of earlier context. Note that Codex does automatically compact conversations for you
+`/compact`：当线程变得很长时，用于生成早期上下文的摘要版本。注意 Codex 会自动进行压缩
+
+`/agent` when you are running parallel agents and want to switch between the active agent thread
+`/agent`：在运行多个代理时，用于切换当前活跃的代理线程
+
+`/theme` to choose a syntax highlighting theme
+`/theme`：选择语法高亮主题
+
+`/apps` to use ChatGPT apps directly in Codex
+`/apps`：在 Codex 中直接使用 ChatGPT 应用
+
+`/status` to inspect the current session state
+`/status`：查看当前会话状态
+
+Keep one thread per coherent unit of work. If the work is still part of the same problem, staying in the same thread is often better because it preserves the reasoning trail. Fork only when the work truly branches.
+为每一个连贯的工作单元保持一个线程。如果任务仍然属于同一个问题，继续使用同一个线程通常更好，因为可以保留推理过程。只有当工作真正分支时，才进行 fork。
+
+> Use Codex’s subagent workflows to offload bounded work from the main thread. Keep the main agent focused on the core problem, and use subagents for tasks like exploration, tests, or triage.
+使用 Codex 的子代理工作流，将有边界的任务从主线程中拆分出去。让主代理专注于核心问题，并使用子代理处理探索、测试或排查等任务。
+
+## Common mistakes
+常见错误
+
+A few common mistakes to avoid when first using Codex:
+在首次使用 Codex 时需要避免的一些常见错误：
+
+Overloading the prompt with durable rules instead of moving them into AGENTS.md or a skill
+将长期规则塞进提示词，而不是放入 AGENTS.md 或技能中
+
+Not letting the agent see its work by not giving details on how to best run build and test commands
+没有提供如何运行构建和测试命令的细节，导致代理无法正确验证自己的工作
+
+Skipping planning on multi-step and complex tasks
+在多步骤或复杂任务中跳过规划
+
+Giving Codex full permission to your computer before you understand the workflow
+在尚未理解工作流程之前就给予 Codex 完全的系统权限
+
+Running live threads on the same files without using git worktrees
+在同一文件上运行多个线程而不使用 git worktree
+
+Turning a recurring task into an automation before it’s reliable manually
+在任务尚未手动稳定之前就将其自动化
+
+Treating Codex like something you have to watch step by step instead of using it in parallel with your own work
+将 Codex 当作需要逐步盯着执行的工具，而不是与自己并行工作的助手
+
+Using one thread per project instead of one thread per task. This leads to bloated context and worse results over time
+使用“每个项目一个线程”而不是“每个任务一个线程”，这会导致上下文膨胀，并随着时间推移使结果变差
+
+
+## reference 
+- https://developers.openai.com/codex/learn/best-practices
